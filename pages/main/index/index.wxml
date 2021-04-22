@@ -11,7 +11,7 @@
           </van-tab>
           <van-tab title="小区">
              <view class="tab-input" data-type="HOUSE" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
-              请输入小区名称
+              请输入小区的名称
             </view>
           </van-tab>
         </van-tabs>
