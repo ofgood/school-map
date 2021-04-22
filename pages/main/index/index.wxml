@@ -1,0 +1,65 @@
+<view class='main-box'>
+  <map id="myMap" class="index-map" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}" show-location>
+  </map>
+  <view class="cover-view" hidden="{{!tabsShow}}" style="height: 130rpx">
+      <view  class="container">
+        <van-tabs type="card" color="#07c160">
+          <van-tab title="学校">
+            <view class="tab-input" data-type="SCHOOL" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
+              请输入学校名称
+            </view>
+          </van-tab>
+          <van-tab title="小区">
+             <view class="tab-input" data-type="HOUSE" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
+              请输入小区名称
+            </view>
+          </van-tab>
+        </van-tabs>
+      </view>
+  </view>
+  <page-container
+  class="search-page-container"
+  show="{{searchShow}}"
+  round="{{round}}"
+  overlay="{{overlay}}"
+  duration="{{duration}}"
+  position="{{position}}"
+  close-on-slide-down="{{false}}"
+  bindafterleave="onAfterLeave"
+>
+  <view class="detail-page">
+    <van-search
+      value="{{ searchValue }}"
+      focus="{{searchFocus}}"
+      placeholder="请输入搜索关键词"
+      show-action
+      bind:change="onChangeSearch"
+      bind:search="onSearch"
+      bind:cancel="onCancel"/>
+       <scroll-view scroll-y="true" style="height: {{scroll_height}}rpx" bindscrolltolower="loadMore">
+          <list loading="{{searchLoading}}" empty="{{list.length === 0}}" finished="{{loadFinished}}" error="{{loadError}}">
+            <view wx:for="{{list}}" wx:key="id">
+               <van-cell bind:click="onSelectItem" id="{{item.id}}" title="{{item.name}}" label="{{item.address}}" border/>
+            </view>
+          </list>
+        </scroll-view>
+  </view>
+</page-container>
+<view class="house-btn" wx:if="{{houses.length}}" bindtap="showHouses" hover-class="none" hover-stop-propagation="false">
+ <image class="bgImg" src="../image/list.png"></image>
+</view>
+<van-overlay show="{{ showOverlay }}" bind:click="hideHouses">
+  <view class="house-wrapper" hover-class="none" hover-stop-propagation="true">
+    <view class="house-block" hover-class="none"  hover-stop-propagation="true">
+      <scroll-view scroll-y="true" style="height: 760rpx">
+        <van-cell-group title="学校">
+          <van-cell title="{{schoolName}}" label="{{schoolAddress}}" />
+        </van-cell-group>
+        <van-cell-group title="对应小区">
+          <van-cell wx:for="{{houses}}" wx:key="id" catch:tap="noop" id="{{item.id}}" title="{{item.name}}" label="{{item.address}}" border/>
+         </van-cell-group>
+      </scroll-view>
+    </view>
+  </view>
+</van-overlay>
+</view>
