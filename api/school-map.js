@@ -1,13 +1,15 @@
 import request from '../request/axios'
 
 const api = {
-  schoolList: '/school/list', // 搜学校
-  houseList: '/house/list', // 搜小区
-  getHouseBySchoolId: '/school/houses', // 根据学校id 查询对应的小区
-  getSchoolByHouseId: '/house/houses', // 根据小区id
-  qqMapTranslate: '/ws/coord/v1/translate',
-  getSchoolDetail: '/school/detail',
-  getHouseDetail: '/house/detail'
+  schoolList: '/baos/school/list', // 搜学校
+  houseList: '/baos/house/list', // 搜小区
+  getHouseBySchoolId: '/baos/school/houses', // 根据学校id 查询对应的小区
+  getSchoolByHouseId: '/baos/house/schools', // 根据小区id
+  getSchoolDetail: '/baos/school/detail',
+  getHouseDetail: '/baos/house/detail',
+
+  // 腾讯地图转换 经纬度api
+  qqMapTranslate: '/ws/coord/v1/translate'
 }
 // 腾通地区基础地址
 const qqMapBaseUrl = 'https://apis.map.qq.com'

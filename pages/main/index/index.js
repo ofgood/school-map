@@ -1,9 +1,10 @@
 // const app = getApp()
+import Notify from '../../../miniprogram_npm/@vant/weapp/notify/notify'
 const windowHeight = wx.getSystemInfoSync().windowHeight // 屏幕的高度
 const windowWidth = wx.getSystemInfoSync().windowWidth // 屏幕的宽度
 const ratio = 750 / windowWidth
-const { searchSchoolOrHouse, getSchoolDetail, qqMapTranslate, getHouseDetail } = require('../../../api/school-map')
-const { getRandomItemFromArr } = require('../../../utils/index')
+const { searchSchoolOrHouse, getSchoolDetail, qqMapTranslate, getHouseDetail, getSchoolByHouseId } = require('../../../api/school-map')
+
 Page({
   data: {
     latitude: 31.079337,
@@ -32,6 +33,7 @@ Page({
     showOverlay: false,
     colors: ['#ee0a24'],
     polygons: [],
+    markers: [],
     mapScale: 16
   },
   onLoad() {
@@ -65,6 +67,7 @@ Page({
   showSearch(e) {
     const { dataset: { type }} = e.currentTarget
     this.setData({ searchType: type, searchShow: true, tabsShow: false, searchFocus: true })
+    Notify.clear()
   },
 
   // search-page
@@ -156,7 +159,7 @@ Page({
   },
   // 选择
   async onSelectItem(e) {
-    const { currentTarget: { id }} = e
+    const locId = e.currentTarget.id
     const { searchType } = this.data
     if (searchType === 'SCHOOL' || searchType === 'HOUSE') {
       wx.showLoading({
@@ -178,7 +181,21 @@ Page({
         const { lat = 31.22114, lng = 121.54409 } = res.locations && res.locations[0] || {}
         element.latitude = lat
         element.longitude = lng
-        // element.iconPath = '../image/location.png'
+        element.width = 0
+        element.height = 0
+        element.callout = {
+          content: element.name,
+          color: '#ff0000',
+          fontSize: 14,
+          borderWidth: 1,
+          borderRadius: 10,
+          borderColor: '#dddddd',
+          bgColor: '#fff',
+          padding: 4,
+          display: 'ALWAYS',
+          textAlign: 'center'
+        }
+        console.log(element)
         markers.push(element)
       }
       markers.forEach(item => {
@@ -188,9 +205,6 @@ Page({
           longitude
         })
       })
-      this.mapCtx.addMarkers({
-        markers
-      })
       this.mapCtx.includePoints({
         points
       })
@@ -198,18 +212,34 @@ Page({
         latitude: translateRes.locations[0].lat,
         longitude: translateRes.locations[0].lng
       })
-      this.mapCtx.addMarkers({
-        markers: [
-          {
-            id: 99,
-            latitude: translateRes.locations[0].lat,
-            longitude: translateRes.locations[0].lng,
-            iconPath: '../image/pin.png'
+      markers.push(
+        {
+          id: id,
+          latitude: translateRes.locations[0].lat,
+          longitude: translateRes.locations[0].lng,
+          width: 0,
+          height: 0,
+          callout: {
+            content: name,
+            color: '#ff0000',
+            fontSize: 14,
+            borderWidth: 1,
+            borderRadius: 10,
+            borderColor: '#dddddd',
+            bgColor: '#fff',
+            padding: 4,
+            display: 'ALWAYS',
+            textAlign: 'center'
           }
-        ]
-      })
-      this.setData({ searchShow: false, tabsShow: true, houses: list, schoolName: name, schoolAddress: address, mapScale: 16 })
+        }
+      )
+      this.setData({ searchShow: false, tabsShow: true, houses: list, schoolName: name, schoolAddress: address, markers })
       wx.hideLoading()
+      Notify({
+        type: 'success',
+        message: name,
+        duration: 0
+      })
     }
   },
   noop() {
@@ -222,7 +252,12 @@ Page({
     console.log(this.data.showOverlay)
     this.setData({ showOverlay: false })
   },
-  getRandomColor() {
-    return getRandomItemFromArr(this.data.colors)
+  async bindcallouttap(e) {
+    const { markerId } = e.detail
+    const res = await getSchoolByHouseId({ id: markerId })
+    console.log(res)
+  },
+  bindmarkertap(e) {
+    console.log(e)
   }
 })

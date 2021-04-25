@@ -37,7 +37,7 @@
     "minifyWXSS": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.14.3",
+  "libVersion": "2.16.1",
   "appid": "wx8ada5e793f1eb861",
   "projectname": "weapp-template",
   "debugOptions": {

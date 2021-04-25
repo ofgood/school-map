@@ -1,17 +1,18 @@
 <view class='main-box'>
-  <map id="myMap" class="index-map" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}" show-location>
+  <van-notify id="van-notify" />
+  <map id="myMap" class="index-map" bindmarkertap="bindmarkertap" bindcallouttap="bindcallouttap" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}"  markers="{{markers}}" show-location>
   </map>
   <view class="cover-view" hidden="{{!tabsShow}}" style="height: 130rpx">
       <view  class="container">
-        <van-tabs type="card" color="#07c160">
-          <van-tab title="学校">
+        <van-tabs type="line" line-width="350rpx" title-inactive-color="#fff" title-active-colo="#000">
+          <van-tab title="查学校">
             <view class="tab-input" data-type="SCHOOL" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
-              请输入学校名称
+              <van-icon name="search" size="20px" />请输入学校名称
             </view>
           </van-tab>
-          <van-tab title="小区">
+          <van-tab title="查小区">
              <view class="tab-input" data-type="HOUSE" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
-              请输入小区名称
+              <van-icon name="search" size="20px" />请输入小区名称
             </view>
           </van-tab>
         </van-tabs>
@@ -26,6 +27,7 @@
   position="{{position}}"
   close-on-slide-down="{{false}}"
   bindafterleave="onAfterLeave"
+  z-index="99999"
 >
   <view class="detail-page">
     <van-search
