@@ -11,8 +11,11 @@ const api = {
   // 腾讯地图转换 经纬度api
   qqMapTranslate: '/ws/coord/v1/translate'
 }
-// 腾通地区基础地址
+
+// 腾讯地图基础地址
 const qqMapBaseUrl = 'https://apis.map.qq.com'
+// 腾讯地图key
+const qqMapKey = 'K5TBZ-OZCCJ-VSBFH-KZ24O-X4P2S-JEBIQ'
 
 // 搜索学校或小区
 export function searchSchoolOrHouse(data, type) {
@@ -23,19 +26,19 @@ export function searchSchoolOrHouse(data, type) {
   })
 }
 
-export function getHouseBySchoolId(data) {
+export function getHouseBySchoolId(param) {
   return request.axios({
     method: 'GET',
     url: api.getHouseBySchoolId,
-    data
+    param
   })
 }
 
-export function getSchoolByHouseId(data) {
+export function getSchoolByHouseId(param) {
   return request.axios({
     method: 'GET',
     url: api.getSchoolByHouseId,
-    data
+    param
   })
 }
 
@@ -46,7 +49,7 @@ export function qqMapTranslate(data) {
     url: api.qqMapTranslate,
     data: {
       type: 3,
-      key: 'K5TBZ-OZCCJ-VSBFH-KZ24O-X4P2S-JEBIQ',
+      key: qqMapKey,
       ...data
     }
   })

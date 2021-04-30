@@ -99,3 +99,20 @@ page .title {
 .container {
   --tabs-line-height: 38px;
 }
+.customCallout {
+  box-sizing: border-box;
+  background-color: #fff; 
+  border:none;
+  border-radius: 50px;
+  height: 60px;
+  width: 60px;
+  display: inline-flex;
+  padding: 5px 20px;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 30px;
+  color: #fff;
+  background-color:  #07c160;
+}

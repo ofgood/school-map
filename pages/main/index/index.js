@@ -3,8 +3,8 @@ import Notify from '../../../miniprogram_npm/@vant/weapp/notify/notify'
 const windowHeight = wx.getSystemInfoSync().windowHeight // 屏幕的高度
 const windowWidth = wx.getSystemInfoSync().windowWidth // 屏幕的宽度
 const ratio = 750 / windowWidth
-const { searchSchoolOrHouse, getSchoolDetail, qqMapTranslate, getHouseDetail, getSchoolByHouseId } = require('../../../api/school-map')
-
+const { searchSchoolOrHouse, qqMapTranslate, getSchoolDetail, getHouseDetail, getSchoolByHouseId } = require('../../../api/school-map')
+const { translateQQLocation } = require('../../../utils/index')
 Page({
   data: {
     latitude: 31.079337,
@@ -34,7 +34,12 @@ Page({
     colors: ['#ee0a24'],
     polygons: [],
     markers: [],
-    mapScale: 16
+    includePoints: [],
+    customCalloutMarker: [],
+    mapScale: 14,
+    list2: [],
+    activeName: '',
+    markers2: []
   },
   onLoad() {
   },
@@ -55,7 +60,6 @@ Page({
       altitude: true,
       isHighAccuracy: true,
       success(res) {
-        console.log(res)
         const { longitude, latitude } = res
         self.setData({
           longitude: longitude,
@@ -157,47 +161,93 @@ Page({
       self.getData('loadMore', searchType)
     }, 300)
   },
-  // 选择
-  async onSelectItem(e) {
+  onSelectItem(e) {
     const locId = e.currentTarget.id
+    this.renderMap(locId)
+  },
+  // 选择
+  async renderMap(locId) {
+    // const locId = e.currentTarget.id
     const { searchType } = this.data
     if (searchType === 'SCHOOL' || searchType === 'HOUSE') {
       wx.showLoading({
         title: '加载中...'
       })
-      const res = searchType === 'SCHOOL' ? await getSchoolDetail({ id: 1 }) : await getHouseDetail({ id: 1 })
-      const list = searchType === 'SCHOOL' ? res.result.houses : res.result.schools
-      const { lat, lng, id, name, address } = res.result
       const markers = []
       const points = []
+      const detailRes = searchType === 'SCHOOL' ? await getSchoolDetail({ id: locId }) : await getHouseDetail({ id: locId })
+      const list = searchType === 'SCHOOL' ? detailRes.result.houses : detailRes.result.schools
+      const { lat, lng, id, name, address, tags } = detailRes.result
+
+      // 所搜的学校或者小区
       const translateRes = await qqMapTranslate({
         locations: `${lat},${lng}`
       })
-      for (let index = 0; index < list.length; index++) {
-        const element = list[index]
-        const res = await qqMapTranslate({
-          locations: `${element.lat},${element.lng}`
-        })
-        const { lat = 31.22114, lng = 121.54409 } = res.locations && res.locations[0] || {}
-        element.latitude = lat
-        element.longitude = lng
-        element.width = 0
-        element.height = 0
-        element.callout = {
-          content: element.name,
-          color: '#ff0000',
+      const schoolOrHouseLocation = {
+        latitude: translateRes.locations[0].lat,
+        longitude: translateRes.locations[0].lng
+      }
+
+      // 拿到学校或者小区列表,组装makers
+      Array.isArray(list) && list.forEach(item => {
+        const marker = {}
+        const { latitude, longitude } = translateQQLocation(item.qqLocation)
+        marker.id = item.id
+        marker.latitude = latitude
+        marker.longitude = longitude
+        marker.width = 1
+        marker.height = 1
+        marker.iconPath = '../image/pin.png'
+        marker.callout = {
+          content: `${item.name}(${item.tags})`,
+          color: '#ffffff',
           fontSize: 14,
           borderWidth: 1,
           borderRadius: 10,
-          borderColor: '#dddddd',
-          bgColor: '#fff',
+          borderColor: '#07c160',
+          bgColor: '#07c160',
           padding: 4,
           display: 'ALWAYS',
           textAlign: 'center'
         }
-        console.log(element)
-        markers.push(element)
+        markers.push(marker)
+      })
+      // 所搜的学校或者小区的maker
+      const activeMaker = {
+        id: id,
+        latitude: schoolOrHouseLocation.latitude,
+        longitude: schoolOrHouseLocation.longitude,
+        width: 1,
+        height: 1,
+        iconPath: '../image/pin.png',
+        callout: {
+          content: `${name}(${tags})`,
+          color: '#ffffff',
+          fontSize: 14,
+          borderWidth: 1,
+          borderRadius: 10,
+          borderColor: '#ee0a24',
+          bgColor: '#ee0a24',
+          padding: 4,
+          display: 'ALWAYS',
+          textAlign: 'center'
+        }
       }
+      const customCallout = {
+        id: 999999,
+        latitude: schoolOrHouseLocation.latitude,
+        longitude: schoolOrHouseLocation.longitude,
+        width: 1,
+        height: 1,
+        count: markers.length,
+        iconPath: '../image/pin.png',
+        customCallout: {
+          anchorY: 0,
+          anchorX: 0,
+          display: 'ALWAYS'
+        }
+      }
+      markers.push(activeMaker)
       markers.forEach(item => {
         const { latitude, longitude } = item
         points.push({
@@ -205,39 +255,22 @@ Page({
           longitude
         })
       })
-      this.mapCtx.includePoints({
-        points
-      })
-      this.mapCtx.moveToLocation({
-        latitude: translateRes.locations[0].lat,
-        longitude: translateRes.locations[0].lng
-      })
-      markers.push(
-        {
-          id: id,
-          latitude: translateRes.locations[0].lat,
-          longitude: translateRes.locations[0].lng,
-          width: 0,
-          height: 0,
-          callout: {
-            content: name,
-            color: '#ff0000',
-            fontSize: 14,
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: '#dddddd',
-            bgColor: '#fff',
-            padding: 4,
-            display: 'ALWAYS',
-            textAlign: 'center'
-          }
-        }
-      )
-      this.setData({ searchShow: false, tabsShow: true, houses: list, schoolName: name, schoolAddress: address, markers })
+      if (markers.length < 20) {
+        this.setData({ searchShow: false, customCalloutMarker: [], tabsShow: true, houses: list, schoolName: name, schoolAddress: address, markers })
+      } else {
+        this.setData({ markers2: markers, searchShow: false, customCalloutMarker: [customCallout], tabsShow: true, houses: list, schoolName: name, schoolAddress: address, markers: [customCallout] })
+      }
+      if (searchType === 'SCHOOL') {
+        this.mapCtx.includePoints({ points, padding: [20, 40, 20, 40] })
+      }
+
+      this.mapCtx.moveToLocation(schoolOrHouseLocation)
       wx.hideLoading()
       Notify({
+        color: '#fff',
+        background: 'rgba(1,1,1,.7)',
         type: 'success',
-        message: name,
+        message: `搜索结果-${name}(${tags})`,
         duration: 0
       })
     }
@@ -253,11 +286,18 @@ Page({
     this.setData({ showOverlay: false })
   },
   async bindcallouttap(e) {
+    console.log(this)
     const { markerId } = e.detail
-    const res = await getSchoolByHouseId({ id: markerId })
-    console.log(res)
+    // this.renderMap(markerId)
+    if (markerId === 999999) {
+      console.log(this.data.markers2)
+      this.setData({ customCalloutMarker: [], markers: this.data.markers2 })
+    }
   },
   bindmarkertap(e) {
+    console.log(e)
+  },
+  regionchange(e) {
     console.log(e)
   }
 })

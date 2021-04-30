@@ -3,16 +3,16 @@
  */
 
 /* eslint-disable no-underscore-dangle */
-import wxRequest from './wxRequest';
-import defaults from './defaults';
-import { combineUrl, mergeConfig } from './util';
-import Buffer from '../utils/cache/Buffer';
-import Storage from '../utils/cache/Storage';
-import StorageMap from '../utils/cache/StorageMap';
+import wxRequest from './wxRequest'
+import defaults from './defaults'
+import { combineUrl, mergeConfig, addQueryPath } from './util'
+import Buffer from '../utils/cache/Buffer'
+import Storage from '../utils/cache/Storage'
+import StorageMap from '../utils/cache/StorageMap'
 
 class Axios {
   constructor(config = defaults) {
-    this.defaultConfig = config;
+    this.defaultConfig = config
   }
 
   /**
@@ -20,26 +20,30 @@ class Axios {
    * @param {Object} _config 配置
    */
   creat(_config = {}) {
-    this.defaultConfig = mergeConfig(this.defaultConfig, _config);
+    this.defaultConfig = mergeConfig(this.defaultConfig, _config)
   }
 
   axios($1 = {}, $2 = {}) {
-    let config = $1;
+    let config = $1
     // 兼容axios(url[, config])方式
     if (typeof $1 === 'string') {
-      config = $2;
-      config.url = $1;
+      config = $2
+      config.url = $1
     }
-    return this.request(config);
+    const { param } = config
+    if (param) {
+      config.url += addQueryPath(param)
+    }
+    return this.request(config)
   }
 
   get(url, _config = {}) {
     const config = {
       ..._config,
       url,
-      method: 'GET',
-    };
-    return this.request(config);
+      method: 'GET'
+    }
+    return this.request(config)
   }
 
   post(url, data = {}, _config = {}) {
@@ -47,9 +51,9 @@ class Axios {
       ..._config,
       url,
       data,
-      method: 'POST',
-    };
-    return this.request(config);
+      method: 'POST'
+    }
+    return this.request(config)
   }
 
   /**
@@ -60,9 +64,9 @@ class Axios {
       ..._config,
       url,
       data,
-      method: 'POST',
-    };
-    return this._cache(config);
+      method: 'POST'
+    }
+    return this._cache(config)
   }
 
   /**
@@ -74,9 +78,9 @@ class Axios {
       url,
       data,
       method: 'POST',
-      cacheStorage: true,
-    };
-    return this._cache(config);
+      cacheStorage: true
+    }
+    return this._cache(config)
   }
 
   /**
@@ -96,80 +100,80 @@ class Axios {
       cacheName: _cacheName,
       cacheStorage,
       cacheLabel,
-      cacheExpireTime,
-    } = _config;
-    const computedCacheName = _cacheName || `${url}#${JSON.stringify(data)}`;
-    const cacheName = StorageMap.getCacheName(computedCacheName);
+      cacheExpireTime
+    } = _config
+    const computedCacheName = _cacheName || `${url}#${JSON.stringify(data)}`
+    const cacheName = StorageMap.getCacheName(computedCacheName)
 
     // return buffer
     if (useCache && Buffer.has(cacheName, cacheLabel)) {
-      return Buffer.get(cacheName);
+      return Buffer.get(cacheName)
     }
 
     // return storage
     if (useCache && cacheStorage) {
       if (Storage.has(cacheName, cacheLabel)) {
-        const data = Storage.get(cacheName);
+        const data = Storage.get(cacheName)
         // storage => buffer
         Buffer.set(
           cacheName,
           Promise.resolve(data),
           cacheExpireTime,
           cacheLabel
-        );
-        return Promise.resolve(data);
+        )
+        return Promise.resolve(data)
       }
     }
     const curPromise = new Promise((resolve, reject) => {
       const handleFunc = (res) => {
         // do storage
         if (useCache && cacheStorage) {
-          Storage.set(cacheName, res, cacheExpireTime, cacheLabel);
+          Storage.set(cacheName, res, cacheExpireTime, cacheLabel)
         }
-        return res;
-      };
+        return res
+      }
 
       this._request(_config)
         .then((res) => {
-          resolve(handleFunc(res));
+          resolve(handleFunc(res))
         })
-        .catch(reject);
-    });
+        .catch(reject)
+    })
 
     // do buffer
-    Buffer.set(cacheName, curPromise, cacheExpireTime, cacheLabel);
+    Buffer.set(cacheName, curPromise, cacheExpireTime, cacheLabel)
 
-    return curPromise;
+    return curPromise
   }
 
   request(_config) {
     // config支持缓存
-    if (_config.useCache) return this._cache(_config);
+    if (_config.useCache) return this._cache(_config)
 
-    return this._request(_config);
+    return this._request(_config)
   }
 
   _request(_config = {}) {
-    let config = mergeConfig(this.defaultConfig, _config);
-    const { baseUrl, url, header, data = {}, transformRequest } = config;
+    let config = mergeConfig(this.defaultConfig, _config)
+    const { baseUrl, url, header, data = {}, transformRequest } = config
     const computedConfig = {
       header: {
         'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
         ycFrom: 'yc-component',
-        ...header,
+        ...header
       },
       ...(baseUrl && {
-        url: combineUrl(url, baseUrl),
+        url: combineUrl(url, baseUrl)
       }),
       ...(transformRequest &&
         typeof transformRequest === 'function' && {
-          data: transformRequest(data),
-        }),
-    };
-    config = mergeConfig(config, computedConfig);
+        data: transformRequest(data)
+      })
+    }
+    config = mergeConfig(config, computedConfig)
     // console.log('iyourcar-component-axios__request-config :', config);
-    return wxRequest(config);
+    return wxRequest(config)
   }
 }
 
-export default Axios;
+export default Axios

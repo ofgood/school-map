@@ -131,3 +131,18 @@ export function locationsToPoints(locations) {
   }
   return points
 }
+
+/**
+ * 转换后端传过来的qq地图坐标
+ * @param {} location
+ * @return {}
+ */
+export function translateQQLocation(location) {
+  const locationObj = {}
+  if (typeof location === 'string' && location.includes(',')) {
+    const tempArr = location.split(',')
+    locationObj.latitude = tempArr[0]
+    locationObj.longitude = tempArr[1]
+  }
+  return locationObj
+}

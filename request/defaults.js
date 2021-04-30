@@ -5,6 +5,8 @@ export default {
   url: undefined,
   // 请求的参数
   data: {},
+  // 请求的参数
+  param: null,
   // 请求的 header
   header: 'application/json',
   // 超时时间，单位为毫秒

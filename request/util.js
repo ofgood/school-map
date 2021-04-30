@@ -65,3 +65,13 @@ export function handleError(res) {
     })
   }
 }
+
+export function addQueryPath(params) {
+  let paramsData = ''
+  if (params) {
+    Object.keys(params).forEach(key => {
+      paramsData += `/${params[key]}`
+    })
+  }
+  return paramsData
+}
