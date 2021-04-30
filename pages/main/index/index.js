@@ -20,7 +20,7 @@ Page({
     searchValue: '',
     scroll_height: '',
     pageNo: 1,
-    pageSize: 10,
+    pageSize: 15,
     currentPage: 1,
     list: [],
     pages: 0,
@@ -88,6 +88,7 @@ Page({
     this.setData({
       searchValue: e.detail
     })
+    this.onSearch()
   },
   onCancel() {
     this.initSearch()
@@ -96,7 +97,7 @@ Page({
   initSearch() {
     this.setData({
       pageNo: 1,
-      pageSize: 10,
+      pageSize: 15,
       currentPage: 1,
       list: [],
       pages: 0,
@@ -107,11 +108,13 @@ Page({
   // 获取列表数据
   getData(handleType, searchType) {
     const { pageSize, searchValue } = this.data
+    if (!searchValue) {
+      return
+    }
     this.setData({
       pageNo: handleType === 'init' ? 1 : this.data.pageNo,
       searchLoading: true
     })
-
     // 发送请求
     searchSchoolOrHouse({
       name: searchValue,
@@ -199,7 +202,7 @@ Page({
         marker.height = 1
         marker.iconPath = '../image/pin.png'
         marker.callout = {
-          content: `${item.name}(${item.tags})`,
+          content: item.tags === '住宅区' || item.tags === null ? `${item.name}` : `${item.name}(${item.tags})`,
           color: '#ffffff',
           fontSize: 14,
           borderWidth: 1,
@@ -221,7 +224,7 @@ Page({
         height: 1,
         iconPath: '../image/pin.png',
         callout: {
-          content: `${name}(${tags})`,
+          content: tags === '住宅区' || tags === null ? `${name}` : `${name}(${tags})`,
           color: '#ffffff',
           fontSize: 14,
           borderWidth: 1,
@@ -270,7 +273,7 @@ Page({
         color: '#fff',
         background: 'rgba(1,1,1,.7)',
         type: 'success',
-        message: `搜索结果-${name}(${tags})`,
+        message: tags === '住宅区' || tags === null ? `搜索结果-${name}` : `搜索结果-${name}(${tags})`,
         duration: 0
       })
     }
