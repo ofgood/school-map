@@ -1,69 +1,52 @@
 <view class='main-box'>
   <van-notify id="van-notify" />
-  <map id="myMap" class="index-map" bindregionchange="regionchange" bindmarkertap="bindmarkertap" bindcallouttap="bindcallouttap" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}"  markers="{{markers}}" show-location>
-  <cover-view slot="callout">
-        <block wx:for="{{customCalloutMarker}}" wx:key="*this">
-          <cover-view  class="customCallout" marker-id="{{item.id}}" >
-            {{item.count}}
-          </cover-view>
-        </block>
-      </cover-view>
+  <map id="myMap" class="index-map" bindregionchange="regionchange" bindmarkertap="bindmarkertap" bindcallouttap="bindcallouttap" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" show-location>
+    <cover-view slot="callout">
+      <block wx:for="{{customCalloutMarker}}" wx:key="*this">
+        <cover-view class="customCallout" marker-id="{{item.id}}">{{item.count}}</cover-view>
+      </block>
+    </cover-view>
   </map>
   <view class="cover-view" hidden="{{!tabsShow}}" style="height: 130rpx">
-      <view  class="container">
-        <van-tabs type="line" line-width="350rpx" title-inactive-color="#fff" title-active-colo="#000">
-          <van-tab title="查学校">
-            <view class="tab-input" data-type="SCHOOL" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
-              <van-icon name="search" size="20px" />请输入学校名称
-            </view>
-          </van-tab>
-          <van-tab title="查小区">
-             <view class="tab-input" data-type="HOUSE" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
-              <van-icon name="search" size="20px" />请输入小区名称
-            </view>
-          </van-tab>
-        </van-tabs>
-      </view>
-  </view>
-  <page-container
-  class="search-page-container"
-  show="{{searchShow}}"
-  round="{{round}}"
-  overlay="{{overlay}}"
-  duration="{{duration}}"
-  position="{{position}}"
-  close-on-slide-down="{{false}}"
-  bindafterleave="onAfterLeave"
-  z-index="99999"
->
-  <view class="detail-page">
-    <van-search
-      value="{{ searchValue }}"
-      focus="{{searchFocus}}"
-      placeholder="请输入搜索关键词"
-      show-action
-      bind:change="onChangeSearch"
-      bind:search="onSearch"
-      bind:cancel="onCancel"/>
-       <scroll-view scroll-y="true" style="height: {{scroll_height}}rpx" bindscrolltolower="loadMore">
-          <list loading="{{searchLoading}}" empty="{{list.length === 0}}" finished="{{loadFinished}}" error="{{loadError}}">
-            <view wx:for="{{list}}" wx:key="id">
-               <van-cell bind:click="onSelectItem" id="{{item.id}}" title="{{item.name}}" label="{{item.address}}" border/>
-            </view>
-          </list>
-        </scroll-view>
-  </view>
-</page-container>
-<view class="house-btn" wx:if="{{houses.length}}" bindtap="showHouses" hover-class="none" hover-stop-propagation="false">
- <image class="bgImg" src="../image/list.png"></image>
-</view>
-<van-overlay show="{{ showOverlay }}" bind:click="hideHouses">
-  <view class="house-wrapper" hover-class="none" hover-stop-propagation="true">
-    <view class="house-block" hover-class="none"  hover-stop-propagation="true">
-      <scroll-view scroll-y="true" style="height: 760rpx">
-         <van-cell wx:for="{{houses}}" wx:key="id" catch:tap="noop" id="{{item.id}}" title="{{item.name}}" label="{{item.address}}" border/>
-      </scroll-view>
+    <view class="container">
+      <van-tabs type="line" line-width="350rpx" title-inactive-color="#fff" title-active-colo="#000">
+        <van-tab title="按学校查">
+          <view class="tab-input" data-type="SCHOOL" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
+            <van-icon name="search" size="20px" />
+            请输入学校名称
+          </view>
+        </van-tab>
+        <van-tab title="按小区查">
+          <view class="tab-input" data-type="HOUSE" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
+            <van-icon name="search" size="20px" />
+            请输入小区名称
+          </view>
+        </van-tab>
+      </van-tabs>
     </view>
   </view>
-</van-overlay>
+  <view class="house-btn" wx:if="{{houses.length}}" bindtap="showHouses" hover-class="none" hover-stop-propagation="false">
+    <image class="bgImg" src="../image/list.png"></image>
+  </view>
+  <page-container class="search-page-container" show="{{searchShow}}" round="{{round}}" overlay="{{overlay}}" duration="{{duration}}" position="{{position}}" close-on-slide-down="{{false}}" bindafterleave="onAfterLeave" z-index="99999">
+    <view class="detail-page">
+      <van-search value="{{ searchValue }}" focus="{{searchFocus}}" placeholder="请输入搜索关键词" show-action bind:change="onChangeSearch" bind:search="onSearch" bind:cancel="onCancel" />
+      <scroll-view scroll-y="true" style="height: {{scroll_height}}rpx" bindscrolltolower="loadMore">
+        <list loading="{{searchLoading}}" empty="{{list.length === 0}}" finished="{{loadFinished}}" error="{{loadError}}">
+          <view wx:for="{{list}}" wx:key="id">
+            <van-cell bind:click="onSelectItem" id="{{item.id}}" title="{{item.name}}" label="{{item.address}}" border />
+          </view>
+        </list>
+      </scroll-view>
+    </view>
+  </page-container>
+  <van-overlay show="{{ showOverlay }}" bind:click="hideHouses">
+    <view class="house-wrapper" hover-class="none" hover-stop-propagation="true">
+      <view class="house-block" hover-class="none" hover-stop-propagation="true">
+        <scroll-view scroll-y="true" style="height: 760rpx">
+          <van-cell wx:for="{{houses}}" wx:key="id" catch:tap="noop" id="{{item.id}}" title="{{item.name}}" label="{{item.address}}" border />
+        </scroll-view>
+      </view>
+    </view>
+  </van-overlay>
 </view>

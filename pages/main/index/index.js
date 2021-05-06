@@ -81,20 +81,22 @@ Page({
   },
   onSearch() {
     const { searchType } = this.data
-    this.initSearch()
     this.getData('loadMore', searchType)
   },
   onChangeSearch(e) {
     this.setData({
       searchValue: e.detail
     })
-    this.onSearch()
+    // this.onSearch()
+  },
+  onChangeBlur() {
+    return
   },
   onCancel() {
     this.initSearch()
     this.setData({ searchShow: false, tabsShow: true })
   },
-  initSearch() {
+  initSearch(callback) {
     this.setData({
       pageNo: 1,
       pageSize: 15,
@@ -103,6 +105,8 @@ Page({
       pages: 0,
       searchLoading: false,
       loadFinished: false
+    }, () => {
+      callback && callback()
     })
   },
   // 获取列表数据
@@ -180,7 +184,7 @@ Page({
       const points = []
       const detailRes = searchType === 'SCHOOL' ? await getSchoolDetail({ id: locId }) : await getHouseDetail({ id: locId })
       const list = searchType === 'SCHOOL' ? detailRes.result.houses : detailRes.result.schools
-      const { lat, lng, id, name, address, tags } = detailRes.result
+      const { lat, lng, id, name, address, tags, type } = detailRes.result
 
       // 所搜的学校或者小区
       const translateRes = await qqMapTranslate({
@@ -196,6 +200,7 @@ Page({
         const marker = {}
         const { latitude, longitude } = translateQQLocation(item.qqLocation)
         marker.id = item.id
+        marker.type = item.type
         marker.latitude = latitude
         marker.longitude = longitude
         marker.width = 1
@@ -218,6 +223,7 @@ Page({
       // 所搜的学校或者小区的maker
       const activeMaker = {
         id: id,
+        type: type,
         latitude: schoolOrHouseLocation.latitude,
         longitude: schoolOrHouseLocation.longitude,
         width: 1,
@@ -237,7 +243,7 @@ Page({
         }
       }
       const customCallout = {
-        id: 999999,
+        id: 9999999,
         latitude: schoolOrHouseLocation.latitude,
         longitude: schoolOrHouseLocation.longitude,
         width: 1,
@@ -273,7 +279,7 @@ Page({
         color: '#fff',
         background: 'rgba(1,1,1,.7)',
         type: 'success',
-        message: tags === '住宅区' || tags === null ? `搜索结果-${name}` : `搜索结果-${name}(${tags})`,
+        message: tags === '住宅区' || tags === null ? `已选-${name}` : `已选-${name}(${tags})`,
         duration: 0
       })
     }
@@ -291,10 +297,19 @@ Page({
   async bindcallouttap(e) {
     console.log(this)
     const { markerId } = e.detail
-    // this.renderMap(markerId)
-    if (markerId === 999999) {
-      console.log(this.data.markers2)
+    if (markerId === 9999999) {
       this.setData({ customCalloutMarker: [], markers: this.data.markers2 })
+    } else {
+      let activeMaker = {}
+      this.data.markers.forEach(item => {
+        if (item.id === markerId) {
+          activeMaker = { ...item }
+        }
+      })
+      console.log(activeMaker)
+      const { type } = activeMaker
+      type === 1 ? this.setData({ searchType: 'SCHOOL' }) : this.setData({ searchType: 'HOUSE' })
+      this.renderMap(markerId)
     }
   },
   bindmarkertap(e) {
