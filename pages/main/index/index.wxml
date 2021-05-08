@@ -25,8 +25,13 @@
       </van-tabs>
     </view>
   </view>
-  <view class="house-btn" wx:if="{{houses.length}}" bindtap="showHouses" hover-class="none" hover-stop-propagation="false">
-    <image class="bgImg" src="../image/list.png"></image>
+  <view class="right-btns-wrap" hover-class="none" hover-stop-propagation="false">
+    <view class="list-btn right-btn" wx:if="{{houses.length}}" bindtap="showHouses" hover-class="none" hover-stop-propagation="false">
+      <image class="bgImg" src="../image/list.png"></image>
+    </view>
+    <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="showRightPopup" hover-class="none" hover-stop-propagation="false">
+      <image class="bgImg" src="../image/filter.png"></image>
+    </view>
   </view>
   <page-container class="search-page-container" show="{{searchShow}}" round="{{round}}" overlay="{{overlay}}" duration="{{duration}}" position="{{position}}" close-on-slide-down="{{false}}" bindafterleave="onAfterLeave" z-index="99999">
     <view class="detail-page">
@@ -49,4 +54,17 @@
       </view>
     </view>
   </van-overlay>
+  <van-popup
+    show="{{ showFilterPopup }}"
+    position="right"
+    z-index="{{9999}}"
+    custom-style="height: 100%;width: 60%"
+    bind:close="onCloseFilterPopup">
+    <view style="text-align:center;display:flex;align-items:center;flex-direction: column;padding-top:400rpx;" hover-class="none" hover-stop-propagation="false">
+       <image style="width: 120rpx; height: 120rpx" src="../image/construct.png"></image>
+       <view style="color:#ddd;padding-top:30rpx;padding-left:30rpx;" hover-class="none" hover-stop-propagation="false">
+         建设中.....
+       </view>
+    </view>
+  </van-popup>
 </view>

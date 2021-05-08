@@ -39,7 +39,8 @@ Page({
     mapScale: 14,
     list2: [],
     activeName: '',
-    markers2: []
+    markers2: [],
+    showFilterPopup: false
   },
   onLoad() {
   },
@@ -81,13 +82,14 @@ Page({
   },
   onSearch() {
     const { searchType } = this.data
-    this.getData('loadMore', searchType)
+    this.getData('init', searchType)
   },
   onChangeSearch(e) {
+    const { searchType } = this.data
     this.setData({
       searchValue: e.detail
     })
-    // this.onSearch()
+    this.getData('init', searchType)
   },
   onChangeBlur() {
     return
@@ -96,7 +98,7 @@ Page({
     this.initSearch()
     this.setData({ searchShow: false, tabsShow: true })
   },
-  initSearch(callback) {
+  initSearch() {
     this.setData({
       pageNo: 1,
       pageSize: 15,
@@ -105,8 +107,6 @@ Page({
       pages: 0,
       searchLoading: false,
       loadFinished: false
-    }, () => {
-      callback && callback()
     })
   },
   // 获取列表数据
@@ -115,17 +115,22 @@ Page({
     if (!searchValue) {
       return
     }
-    this.setData({
-      pageNo: handleType === 'init' ? 1 : this.data.pageNo,
-      searchLoading: true
-    })
+    if (handleType === 'init') {
+      console.log('handleType', handleType)
+      this.initSearch()
+    } else {
+      this.setData({
+        pageNo: this.data.currentPage,
+        searchLoading: true
+      })
+    }
     // 发送请求
     searchSchoolOrHouse({
       name: searchValue,
       area: '浦东新区',
       city: '上海市',
       province: '上海市',
-      pageNo: this.data.currentPage,
+      pageNo: this.data.pageNo,
       pageSize
     }, searchType).then(res => {
       if (!res.success) {
@@ -183,13 +188,23 @@ Page({
       const markers = []
       const points = []
       const detailRes = searchType === 'SCHOOL' ? await getSchoolDetail({ id: locId }) : await getHouseDetail({ id: locId })
+      console.log(detailRes)
       const list = searchType === 'SCHOOL' ? detailRes.result.houses : detailRes.result.schools
       const { lat, lng, id, name, address, tags, type } = detailRes.result
-
+      if (!lat || !lng) {
+        Notify({ type: 'danger', message: '经纬度返回为空', duration: 1500 })
+        wx.hideLoading()
+        return
+      }
       // 所搜的学校或者小区
       const translateRes = await qqMapTranslate({
         locations: `${lat},${lng}`
       })
+      if (!translateRes.locations && translateRes.message) {
+        Notify({ type: 'danger', message: translateRes.message, duration: 1500 })
+        wx.hideLoading()
+        return
+      }
       const schoolOrHouseLocation = {
         latitude: translateRes.locations[0].lat,
         longitude: translateRes.locations[0].lng
@@ -284,8 +299,14 @@ Page({
       })
     }
   },
-  noop() {
-    this.setData({ showOverlay: true })
+  noop(e) {
+    console.log(e)
+    const { id: markerId } = e.currentTarget
+    if (!Number.isNaN(+markerId)) {
+      this.activeTab(+markerId, () => {
+        this.setData({ showOverlay: false })
+      })
+    }
   },
   showHouses() {
     this.setData({ showOverlay: true })
@@ -295,8 +316,11 @@ Page({
     this.setData({ showOverlay: false })
   },
   async bindcallouttap(e) {
-    console.log(this)
     const { markerId } = e.detail
+    console.log(markerId)
+    this.activeTab(markerId)
+  },
+  async activeTab(markerId, callback) {
     if (markerId === 9999999) {
       this.setData({ customCalloutMarker: [], markers: this.data.markers2 })
     } else {
@@ -309,7 +333,8 @@ Page({
       console.log(activeMaker)
       const { type } = activeMaker
       type === 1 ? this.setData({ searchType: 'SCHOOL' }) : this.setData({ searchType: 'HOUSE' })
-      this.renderMap(markerId)
+      await this.renderMap(markerId)
+      callback && callback()
     }
   },
   bindmarkertap(e) {
@@ -317,5 +342,15 @@ Page({
   },
   regionchange(e) {
     console.log(e)
+  },
+  showRightPopup() {
+    this.setData({
+      showFilterPopup: true
+    })
+  },
+  onCloseFilterPopup() {
+    this.setData({
+      showFilterPopup: false
+    })
   }
 })

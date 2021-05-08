@@ -10,7 +10,7 @@ export default {
   // 请求的 header
   header: 'application/json',
   // 超时时间，单位为毫秒
-  timeout: undefined,
+  timeout: 5000,
   // HTTP 请求方法
   method: 'GET',
   // 返回的数据格式

@@ -46,17 +46,20 @@ page .title {
   overflow-y: scroll;
   background-color: #fff;
 }
-.house-btn{
+.right-btns-wrap{
   position: fixed;
   right: 30rpx;
   bottom: 300rpx;
-  width: 64rpx;
-  height: 60rpx;
+}
+.right-btn{
   background-color: #fff;
   box-shadow: 0 1px 2px 1px rgba(1,1,1,.2);
-  border-radius: 2px;
+  border-radius: 8px;
+  width: 64rpx;
+  height: 60rpx;
+  margin-top: 16rpx;
 }
-.house-btn image{
+.right-btn image{
   width: 64rpx;
   height: 64rpx;
   display: block;
