@@ -3,7 +3,7 @@ import Notify from '../../../miniprogram_npm/@vant/weapp/notify/notify'
 const windowHeight = wx.getSystemInfoSync().windowHeight // 屏幕的高度
 const windowWidth = wx.getSystemInfoSync().windowWidth // 屏幕的宽度
 const ratio = 750 / windowWidth
-const { searchSchoolOrHouse, qqMapTranslate, getSchoolDetail, getHouseDetail, getSchoolByHouseId } = require('../../../api/school-map')
+const { searchSchoolOrHouse, qqMapTranslate, getSchoolDetail, getHouseDetail, getPlaceList } = require('../../../api/school-map')
 const { translateQQLocation } = require('../../../utils/index')
 Page({
   data: {
@@ -125,7 +125,7 @@ Page({
       })
     }
     // 发送请求
-    searchSchoolOrHouse({
+    getPlaceList({
       name: searchValue,
       area: '浦东新区',
       city: '上海市',
@@ -174,130 +174,142 @@ Page({
     }, 300)
   },
   onSelectItem(e) {
+    console.log(e)
     const locId = e.currentTarget.id
-    this.renderMap(locId)
+    const { type } = e.currentTarget.dataset.place
+    this.renderMap(locId, type)
   },
   // 选择
-  async renderMap(locId) {
-    // const locId = e.currentTarget.id
-    const { searchType } = this.data
-    if (searchType === 'SCHOOL' || searchType === 'HOUSE') {
-      wx.showLoading({
-        title: '加载中...'
-      })
-      const markers = []
-      const points = []
-      const detailRes = searchType === 'SCHOOL' ? await getSchoolDetail({ id: locId }) : await getHouseDetail({ id: locId })
-      console.log(detailRes)
-      const list = searchType === 'SCHOOL' ? detailRes.result.houses : detailRes.result.schools
-      const { lat, lng, id, name, address, tags, type } = detailRes.result
-      if (!lat || !lng) {
-        Notify({ type: 'danger', message: '经纬度返回为空', duration: 1500 })
-        wx.hideLoading()
-        return
-      }
-      // 所搜的学校或者小区
-      const translateRes = await qqMapTranslate({
-        locations: `${lat},${lng}`
-      })
-      if (!translateRes.locations && translateRes.message) {
-        Notify({ type: 'danger', message: translateRes.message, duration: 1500 })
-        wx.hideLoading()
-        return
-      }
-      const schoolOrHouseLocation = {
-        latitude: translateRes.locations[0].lat,
-        longitude: translateRes.locations[0].lng
-      }
+  async renderMap(locId, placeType) {
+    console.log(placeType)
+    wx.showLoading({
+      title: '加载中...'
+    })
+    const markers = []
+    const points = []
+    let detailRes = {}
+    let list = []
+    const isSchool = placeType === 1
+    const isHouse = placeType === 2
+    if (isSchool) {
+      detailRes = await getSchoolDetail({ id: locId })
+      list = detailRes.result.houses
+    }
+    if (isHouse) {
+      detailRes = await getHouseDetail({ id: locId })
+      list = detailRes.result.schools
+    }
+    const { lat, lng, id, name, address, tags, type } = detailRes.result
+    if (!lat || !lng) {
+      Notify({ type: 'danger', message: '经纬度返回为空', duration: 1500 })
+      wx.hideLoading()
+      return
+    }
+    // 所搜的学校或者小区
+    const translateRes = await qqMapTranslate({
+      locations: `${lat},${lng}`
+    })
+    if (!translateRes.locations && translateRes.message) {
+      Notify({ type: 'danger', message: translateRes.message, duration: 1500 })
+      wx.hideLoading()
+      return
+    }
+    const schoolOrHouseLocation = {
+      latitude: translateRes.locations[0].lat,
+      longitude: translateRes.locations[0].lng
+    }
 
-      // 拿到学校或者小区列表,组装makers
-      Array.isArray(list) && list.forEach(item => {
-        const marker = {}
-        const { latitude, longitude } = translateQQLocation(item.qqLocation)
-        marker.id = item.id
-        marker.type = item.type
-        marker.latitude = latitude
-        marker.longitude = longitude
-        marker.width = 1
-        marker.height = 1
-        marker.iconPath = '../image/pin.png'
-        marker.callout = {
-          content: item.tags === '住宅区' || item.tags === null ? `${item.name}` : `${item.name}(${item.tags})`,
-          color: '#ffffff',
-          fontSize: 14,
-          borderWidth: 1,
-          borderRadius: 10,
-          borderColor: '#07c160',
-          bgColor: '#07c160',
-          padding: 4,
-          display: 'ALWAYS',
-          textAlign: 'center'
-        }
+    // 拿到学校或者小区列表,组装makers
+    Array.isArray(list) && list.forEach(item => {
+      const marker = {}
+      const { latitude, longitude } = translateQQLocation(item.qqLocation)
+      marker.id = item.placeId
+      marker.type = item.type
+      marker.latitude = latitude
+      marker.longitude = longitude
+      marker.width = 1
+      marker.height = 1
+      marker.iconPath = '../image/pin.png'
+      marker.callout = {
+        content: isSchool ? `${item.name}` : `${item.name}${item.tags ? item.tags : ''}`,
+        color: '#ffffff',
+        fontSize: 14,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#07c160',
+        bgColor: '#07c160',
+        padding: 4,
+        display: 'ALWAYS',
+        textAlign: 'center'
+      }
+      if (marker.latitude && marker.longitude) {
         markers.push(marker)
-      })
-      // 所搜的学校或者小区的maker
-      const activeMaker = {
-        id: id,
-        type: type,
-        latitude: schoolOrHouseLocation.latitude,
-        longitude: schoolOrHouseLocation.longitude,
-        width: 1,
-        height: 1,
-        iconPath: '../image/pin.png',
-        callout: {
-          content: tags === '住宅区' || tags === null ? `${name}` : `${name}(${tags})`,
-          color: '#ffffff',
-          fontSize: 14,
-          borderWidth: 1,
-          borderRadius: 10,
-          borderColor: '#ee0a24',
-          bgColor: '#ee0a24',
-          padding: 4,
-          display: 'ALWAYS',
-          textAlign: 'center'
-        }
       }
-      const customCallout = {
-        id: 9999999,
-        latitude: schoolOrHouseLocation.latitude,
-        longitude: schoolOrHouseLocation.longitude,
-        width: 1,
-        height: 1,
-        count: markers.length,
-        iconPath: '../image/pin.png',
-        customCallout: {
-          anchorY: 0,
-          anchorX: 0,
-          display: 'ALWAYS'
-        }
+    })
+    // 所搜的学校或者小区的maker
+    const activeMaker = {
+      id: id,
+      type: type,
+      latitude: schoolOrHouseLocation.latitude,
+      longitude: schoolOrHouseLocation.longitude,
+      width: 1,
+      height: 1,
+      iconPath: '../image/pin.png',
+      callout: {
+        content: isHouse ? `${name}` : `${name}(${tags})`,
+        color: '#ffffff',
+        fontSize: 14,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#ee0a24',
+        bgColor: '#ee0a24',
+        padding: 4,
+        display: 'ALWAYS',
+        textAlign: 'center'
       }
-      markers.push(activeMaker)
-      markers.forEach(item => {
-        const { latitude, longitude } = item
+    }
+    const customCallout = {
+      id: 9999999,
+      latitude: schoolOrHouseLocation.latitude,
+      longitude: schoolOrHouseLocation.longitude,
+      width: 1,
+      height: 1,
+      count: markers.length,
+      iconPath: '../image/pin.png',
+      customCallout: {
+        anchorY: 0,
+        anchorX: 0,
+        display: 'ALWAYS'
+      }
+    }
+    markers.push(activeMaker)
+    markers.forEach(item => {
+      const { latitude, longitude } = item
+      if (latitude && longitude) {
         points.push({
           latitude,
           longitude
         })
-      })
-      if (markers.length < 20) {
-        this.setData({ searchShow: false, customCalloutMarker: [], tabsShow: true, houses: list, schoolName: name, schoolAddress: address, markers })
-      } else {
-        this.setData({ markers2: markers, searchShow: false, customCalloutMarker: [customCallout], tabsShow: true, houses: list, schoolName: name, schoolAddress: address, markers: [customCallout] })
       }
-      if (searchType === 'SCHOOL') {
-        this.mapCtx.includePoints({ points, padding: [20, 40, 20, 40] })
-      }
-
-      this.mapCtx.moveToLocation(schoolOrHouseLocation)
-      wx.hideLoading()
-      Notify({
-        color: '#fff',
-        background: 'rgba(1,1,1,.7)',
-        type: 'success',
-        message: tags === '住宅区' || tags === null ? `已选-${name}` : `已选-${name}(${tags})`,
-        duration: 0
-      })
+    })
+    if (markers.length < 21) {
+      this.setData({ searchShow: false, customCalloutMarker: [], tabsShow: true, houses: list, schoolName: name, schoolAddress: address, markers })
+    } else {
+      this.setData({ markers2: markers, activeName: name, searchShow: false, customCalloutMarker: [customCallout], tabsShow: true, houses: list, schoolName: name, schoolAddress: address, markers: [customCallout] })
     }
+    if (type === 1) {
+      this.mapCtx.includePoints({ points, padding: [20, 100, 20, 100] })
+    }
+
+    this.mapCtx.moveToLocation(schoolOrHouseLocation)
+    wx.hideLoading()
+    Notify({
+      color: '#fff',
+      background: 'rgba(1,1,1,.7)',
+      type: 'success',
+      message: tags === '住宅区' || tags === null ? `已选-${name}` : `已选-${name}(${tags})`,
+      duration: 0
+    })
   },
   noop(e) {
     console.log(e)
@@ -316,6 +328,7 @@ Page({
     this.setData({ showOverlay: false })
   },
   async bindcallouttap(e) {
+    console.log(e)
     const { markerId } = e.detail
     console.log(markerId)
     this.activeTab(markerId)
@@ -330,10 +343,8 @@ Page({
           activeMaker = { ...item }
         }
       })
-      console.log(activeMaker)
       const { type } = activeMaker
-      type === 1 ? this.setData({ searchType: 'SCHOOL' }) : this.setData({ searchType: 'HOUSE' })
-      await this.renderMap(markerId)
+      await this.renderMap(markerId, type)
       callback && callback()
     }
   },

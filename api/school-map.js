@@ -7,6 +7,7 @@ const api = {
   getSchoolByHouseId: '/baos/house/schools', // 根据小区id
   getSchoolDetail: '/baos/school/detail',
   getHouseDetail: '/baos/house/detail',
+  getPlaceList: '/baos/place/list', // 整合学校和小区的接口
 
   // 腾讯地图转换 经纬度api
   qqMapTranslate: '/ws/coord/v1/translate'
@@ -71,3 +72,10 @@ export function getHouseDetail(data) {
   })
 }
 
+export function getPlaceList(data) {
+  return request.axios({
+    method: 'GET',
+    url: api.getPlaceList,
+    data
+  })
+}

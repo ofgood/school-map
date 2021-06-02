@@ -3,26 +3,23 @@
   <map id="myMap" class="index-map" bindregionchange="regionchange" bindmarkertap="bindmarkertap" bindcallouttap="bindcallouttap" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" show-location>
     <cover-view slot="callout">
       <block wx:for="{{customCalloutMarker}}" wx:key="*this">
-        <cover-view class="customCallout" marker-id="{{item.id}}">{{item.count}}</cover-view>
+        <cover-view class="customCallout" marker-id="{{item.id}}">
+          <cover-view style="white-space:wrap;margin-top: 24px;width:100%;text-overflow: ellipsis;overflow:hidden">
+          {{activeName}}
+          </cover-view>
+          <cover-view style="margin-top: 4px;width:100%;text-align:center">
+            {{item.count}}
+          </cover-view>
+        </cover-view>
       </block>
     </cover-view>
   </map>
   <view class="cover-view" hidden="{{!tabsShow}}" style="height: 130rpx">
     <view class="container">
-      <van-tabs type="line" line-width="350rpx" title-inactive-color="#fff" title-active-colo="#000">
-        <van-tab title="按学校查">
-          <view class="tab-input" data-type="SCHOOL" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
+       <view class="tab-input" data-type="SCHOOL" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
             <van-icon name="search" size="20px" />
-            请输入学校名称
+            请输入学校、小区
           </view>
-        </van-tab>
-        <van-tab title="按小区查">
-          <view class="tab-input" data-type="HOUSE" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
-            <van-icon name="search" size="20px" />
-            请输入小区名称
-          </view>
-        </van-tab>
-      </van-tabs>
     </view>
   </view>
   <view class="right-btns-wrap" hover-class="none" hover-stop-propagation="false">
@@ -39,7 +36,7 @@
       <scroll-view scroll-y="true" style="height: {{scroll_height}}rpx" bindscrolltolower="loadMore">
         <list loading="{{searchLoading}}" empty="{{list.length === 0}}" finished="{{loadFinished}}" error="{{loadError}}">
           <view wx:for="{{list}}" wx:key="id">
-            <van-cell bind:click="onSelectItem" id="{{item.id}}" title="{{item.name}}" label="{{item.address}}" border />
+            <van-cell bind:click="onSelectItem" id="{{item.placeId}}" data-place="{{item}}" title="{{item.name}}" label="{{item.address}}" border />
           </view>
         </list>
       </scroll-view>
