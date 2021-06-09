@@ -1,4 +1,8 @@
 import request from '../request/axios'
+// 腾讯地图地址
+const qqMapBaseUrl = 'https://apis.map.qq.com'
+// 腾讯地图key
+const qqMapKey = 'K5TBZ-OZCCJ-VSBFH-KZ24O-X4P2S-JEBIQ'
 
 const api = {
   schoolList: '/baos/school/list', // 搜学校
@@ -13,33 +17,12 @@ const api = {
   qqMapTranslate: '/ws/coord/v1/translate'
 }
 
-// 腾讯地图基础地址
-const qqMapBaseUrl = 'https://apis.map.qq.com'
-// 腾讯地图key
-const qqMapKey = 'K5TBZ-OZCCJ-VSBFH-KZ24O-X4P2S-JEBIQ'
-
 // 搜索学校或小区
 export function searchSchoolOrHouse(data, type) {
   return request.axios({
     method: 'GET',
     url: type === 'SCHOOL' ? api.schoolList : api.houseList,
     data
-  })
-}
-
-export function getHouseBySchoolId(param) {
-  return request.axios({
-    method: 'GET',
-    url: api.getHouseBySchoolId,
-    param
-  })
-}
-
-export function getSchoolByHouseId(param) {
-  return request.axios({
-    method: 'GET',
-    url: api.getSchoolByHouseId,
-    param
   })
 }
 
@@ -56,7 +39,7 @@ export function qqMapTranslate(data) {
   })
 }
 
-export function getSchoolDetail(data) {
+export function getSchoolDetailById(data) {
   return request.axios({
     method: 'GET',
     url: api.getSchoolDetail,
@@ -64,7 +47,7 @@ export function getSchoolDetail(data) {
   })
 }
 
-export function getHouseDetail(data) {
+export function getHouseDetailById(data) {
   return request.axios({
     method: 'GET',
     url: api.getHouseDetail,

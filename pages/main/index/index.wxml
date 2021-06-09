@@ -1,5 +1,9 @@
 <view class='main-box'>
+
+  <!-- 提示 -->
   <van-notify id="van-notify" />
+
+  <!-- 地图 -->
   <map id="myMap" class="index-map" bindregionchange="regionchange" bindmarkertap="bindmarkertap" bindcallouttap="bindcallouttap" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" show-location>
     <cover-view slot="callout">
       <block wx:for="{{customCalloutMarker}}" wx:key="*this">
@@ -12,6 +16,8 @@
       </block>
     </cover-view>
   </map>
+
+  <!-- 底部搜索框 -->
   <view class="cover-view" hidden="{{!tabsShow}}" style="height: 130rpx">
     <view class="container">
        <view class="tab-input" data-type="SCHOOL" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
@@ -20,6 +26,8 @@
           </view>
     </view>
   </view>
+
+  <!-- 右侧控制按钮 -->
   <view class="right-btns-wrap" hover-class="none" hover-stop-propagation="false">
     <view class="list-btn right-btn" wx:if="{{houses.length}}" bindtap="showHouses" hover-class="none" hover-stop-propagation="false">
       <image class="bgImg" src="../image/list.png"></image>
@@ -28,6 +36,8 @@
       <image class="bgImg" src="../image/filter.png"></image>
     </view>
   </view>
+
+  <!-- 搜索界面 -->
   <page-container class="search-page-container" show="{{searchShow}}" round="{{round}}" overlay="{{overlay}}" duration="{{duration}}" position="{{position}}" close-on-slide-down="{{false}}" bindafterleave="onAfterLeave" z-index="99999">
     <view class="detail-page">
       <van-search value="{{ searchValue }}" focus="{{searchFocus}}" placeholder="请输入搜索关键词" show-action bind:change="onChangeSearch" bind:search="onSearch" bind:cancel="onCancel" />
@@ -40,6 +50,8 @@
       </scroll-view>
     </view>
   </page-container>
+
+<!-- 弹出列表 -->
   <van-overlay show="{{ showOverlay }}" bind:click="hideHouses">
     <view class="house-wrapper" hover-class="none" hover-stop-propagation="true">
       <view class="house-block" hover-class="none" hover-stop-propagation="true">
@@ -49,6 +61,8 @@
       </view>
     </view>
   </van-overlay>
+
+<!-- 右侧popup -->
   <van-popup
     show="{{ showFilterPopup }}"
     position="right"
@@ -61,5 +75,24 @@
          建设中.....
        </view>
     </view>
+  </van-popup>
+
+  <!-- 底部弹出卡片 -->
+  <van-popup
+  overlay="{{false}}"
+  show="{{ showPlaceCard }}"
+  closeable
+  close-icon-position="top-right"
+  position="bottom"
+  bind:close="onClosePlaceCard">
+    <van-card
+    thumb-mode="aspectFill"
+    desc="{{placeInfo.desc}}"
+    title="{{placeInfo.title}}"
+    thumb="{{placeInfo.imgSrc}}">
+    <view class="tags" slot="tags" wx:if="{{placeInfo.tags.length}}">
+       <van-tag wx:for="{{placeInfo.tags}}" wx:key="*this" type="success"> {{item}}</van-tag>
+    </view>
+    </van-card>
   </van-popup>
 </view>

@@ -3,8 +3,9 @@ import Notify from '../../../miniprogram_npm/@vant/weapp/notify/notify'
 const windowHeight = wx.getSystemInfoSync().windowHeight // 屏幕的高度
 const windowWidth = wx.getSystemInfoSync().windowWidth // 屏幕的宽度
 const ratio = 750 / windowWidth
-const { searchSchoolOrHouse, qqMapTranslate, getSchoolDetail, getHouseDetail, getPlaceList } = require('../../../api/school-map')
+const { qqMapTranslate, getSchoolDetailById, getHouseDetailById, getPlaceList } = require('../../../api/school-map')
 const { translateQQLocation } = require('../../../utils/index')
+const { houseNatrue, schoolNatrue, schoolType } = require('../../../dict/index')
 Page({
   data: {
     latitude: 31.079337,
@@ -40,7 +41,14 @@ Page({
     list2: [],
     activeName: '',
     markers2: [],
-    showFilterPopup: false
+    showFilterPopup: false,
+    showPlaceCard: false,
+    placeInfo: {
+      desc: '',
+      title: '',
+      imgSrc: '',
+      tags: []
+    }
   },
   onLoad() {
   },
@@ -174,7 +182,6 @@ Page({
     }, 300)
   },
   onSelectItem(e) {
-    console.log(e)
     const locId = e.currentTarget.id
     const { type } = e.currentTarget.dataset.place
     this.renderMap(locId, type)
@@ -187,19 +194,10 @@ Page({
     })
     const markers = []
     const points = []
-    let detailRes = {}
-    let list = []
-    const isSchool = placeType === 1
-    const isHouse = placeType === 2
-    if (isSchool) {
-      detailRes = await getSchoolDetail({ id: locId })
-      list = detailRes.result.houses
-    }
-    if (isHouse) {
-      detailRes = await getHouseDetail({ id: locId })
-      list = detailRes.result.schools
-    }
-    const { lat, lng, id, name, address, tags, type } = detailRes.result
+    const placeDetailRes = await this.getPlaceDetailByIdAndType(locId, placeType)
+    const { detailRes, list } = placeDetailRes
+    this.initPlaceInfo(detailRes, placeType)
+    const { lat, lng, id, name, address, tags, type } = detailRes
     if (!lat || !lng) {
       Notify({ type: 'danger', message: '经纬度返回为空', duration: 1500 })
       wx.hideLoading()
@@ -224,14 +222,14 @@ Page({
       const marker = {}
       const { latitude, longitude } = translateQQLocation(item.qqLocation)
       marker.id = item.placeId
-      marker.type = item.type
+      marker.type = placeType === 1 ? 2 : 1
       marker.latitude = latitude
       marker.longitude = longitude
       marker.width = 1
       marker.height = 1
       marker.iconPath = '../image/pin.png'
       marker.callout = {
-        content: isSchool ? `${item.name}` : `${item.name}${item.tags ? item.tags : ''}`,
+        content: type === 1 ? `${item.name}` : `${item.name}${item.tags ? item.tags : ''}`,
         color: '#ffffff',
         fontSize: 14,
         borderWidth: 1,
@@ -249,14 +247,14 @@ Page({
     // 所搜的学校或者小区的maker
     const activeMaker = {
       id: id,
-      type: type,
+      type: placeType,
       latitude: schoolOrHouseLocation.latitude,
       longitude: schoolOrHouseLocation.longitude,
       width: 1,
       height: 1,
       iconPath: '../image/pin.png',
       callout: {
-        content: isHouse ? `${name}` : `${name}(${tags})`,
+        content: placeType === 2 ? `${name}` : `${name}(${tags})`,
         color: '#ffffff',
         fontSize: 14,
         borderWidth: 1,
@@ -311,13 +309,37 @@ Page({
       duration: 0
     })
   },
+  async getPlaceDetailByIdAndType(id, type) {
+    let detailRes = {}
+    let list = []
+    switch (type) {
+      case 1:
+        detailRes = await getSchoolDetailById({ id })
+        list = detailRes.result.houses
+        break
+      case 2:
+        detailRes = await getHouseDetailById({ id })
+        list = detailRes.result.schools
+        break
+      default:
+        break
+    }
+    console.log(detailRes)
+    return {
+      detailRes: detailRes.result,
+      list
+    }
+  },
   noop(e) {
     console.log(e)
     const { id: markerId } = e.currentTarget
     if (!Number.isNaN(+markerId)) {
-      this.activeTab(+markerId, () => {
-        this.setData({ showOverlay: false })
-      })
+      // this.activeTab(+markerId, () => {
+      //   this.setData({ showOverlay: false })
+      // })
+      // wx.navigateTo({
+      //   url: 'pages/placeList/index'
+      // })
     }
   },
   showHouses() {
@@ -330,23 +352,24 @@ Page({
   async bindcallouttap(e) {
     console.log(e)
     const { markerId } = e.detail
-    console.log(markerId)
-    this.activeTab(markerId)
-  },
-  async activeTab(markerId, callback) {
     if (markerId === 9999999) {
       this.setData({ customCalloutMarker: [], markers: this.data.markers2 })
-    } else {
-      let activeMaker = {}
-      this.data.markers.forEach(item => {
-        if (item.id === markerId) {
-          activeMaker = { ...item }
-        }
-      })
-      const { type } = activeMaker
-      await this.renderMap(markerId, type)
-      callback && callback()
+      return
     }
+    const activeMaker = this.getActiveMakerById(markerId)
+    console.log(activeMaker)
+    const { type } = activeMaker
+    await this.renderMap(markerId, type)
+    this.showPlaceCard()
+  },
+  getActiveMakerById(markerId) {
+    let result = {}
+    this.data.markers.forEach(item => {
+      if (item.id === markerId) {
+        result = { ...item }
+      }
+    })
+    return result
   },
   bindmarkertap(e) {
     console.log(e)
@@ -362,6 +385,47 @@ Page({
   onCloseFilterPopup() {
     this.setData({
       showFilterPopup: false
+    })
+  },
+  onClosePlaceCard() {
+    this.closePlaceCard()
+  },
+  showPlaceCard() {
+    this.setData({
+      showPlaceCard: true
+    })
+  },
+  closePlaceCard() {
+    this.setData({
+      showPlaceCard: false
+    })
+  },
+  initPlaceInfo(activePlace, placeType) {
+    console.log(activePlace)
+    let placeTags = []
+    let placeNature
+    let imgSrc
+    const { nature, address, name, city, area } = activePlace
+    switch (placeType) {
+      case 1:
+        placeNature = schoolNatrue[nature]
+        imgSrc = 'https://gss0.baidu.com/70cFfyinKgQFm2e88IuM_a/baike/pic/item/aa18972bd40735fa4a884f5c9c510fb30e2408de.jpg'
+        break
+      case 2:
+        placeNature = houseNatrue[nature]
+        imgSrc = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg2012.fccs.com.cn%2Ffycj%2F164%2Fbuilding_310000%2Fimages%2F30%2F70e792fa3787baae10b413bfb9f4bb9c.jpg&refer=http%3A%2F%2Fimg2012.fccs.com.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1625740947&t=5361654992d06a1ff4573e8573ca51ba'
+        break
+      default:
+        break
+    }
+    placeTags = [placeNature].filter(item => item)
+    this.setData({
+      placeInfo: {
+        desc: city + area + address,
+        title: name,
+        imgSrc: imgSrc,
+        tags: placeTags
+      }
     })
   }
 })

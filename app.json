@@ -1,7 +1,8 @@
 {
   "pages":[
     "pages/main/index/index",
-    "pages/main/me/index"
+    "pages/main/me/index",
+    "pages/placeList/index"
   ],
   "window":{
     "navigationBarBackgroundColor": "#ffffff",
