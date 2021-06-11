@@ -3,7 +3,7 @@ import Notify from '../../../miniprogram_npm/@vant/weapp/notify/notify'
 const windowHeight = wx.getSystemInfoSync().windowHeight // 屏幕的高度
 const windowWidth = wx.getSystemInfoSync().windowWidth // 屏幕的宽度
 const ratio = 750 / windowWidth
-const { qqMapTranslate, getSchoolDetailById, getHouseDetailById, getPlaceList } = require('../../../api/school-map')
+const { qqMapTranslate, getSchoolDetailById, getHouseDetailById, getPlaceList, getHouseNearby, getSchoolNearby } = require('../../../api/school-map')
 const { translateQQLocation } = require('../../../utils/index')
 const { houseNatrue, schoolNatrue, schoolType } = require('../../../dict/index')
 Page({
@@ -43,11 +43,16 @@ Page({
     markers2: [],
     showFilterPopup: false,
     showPlaceCard: false,
+    showNearBy: true,
     placeInfo: {
       desc: '',
       title: '',
       imgSrc: '',
-      tags: []
+      price: '',
+      plate: '',
+      buildDate: '',
+      tags: [],
+      placeType: ''
     }
   },
   onLoad() {
@@ -56,37 +61,60 @@ Page({
   },
   onShow() {
   },
-  onReady() {
+  async onReady() {
+    // 创建地图实例
     this.mapCtx = wx.createMapContext('myMap')
-    this.setCurPos()
+
+    // 初始化中心点
+    await this.initCenter()
+    const initPos = await this.getCurPos()
+    const { longitude, latitude } = initPos
+    this.initNearby(latitude, longitude)
+    // 设置窗口高度
     this.setData({
       scroll_height: (windowHeight - 60) * ratio
     })
   },
-  setCurPos() {
-    const self = this
-    wx.getLocation({
-      altitude: true,
-      isHighAccuracy: true,
-      success(res) {
-        const { longitude, latitude } = res
-        self.setData({
-          longitude: longitude,
-          latitude: latitude
-        })
-      }
+  // 获取当前位置
+  getCurPos() {
+    return new Promise((resolve, rejeect) => {
+      wx.getLocation({
+        type: 'gcj02',
+        altitude: true,
+        isHighAccuracy: true,
+        success(res) {
+          resolve(res)
+        },
+        fail(err) {
+          rejeect(err)
+        }
+      })
     })
+  },
+  // 设置中心点
+  setCenter(longitude, latitude) {
+    this.setData({
+      longitude: longitude,
+      latitude: latitude
+    })
+  },
+  async initCenter() {
+    const initPos = await this.getCurPos()
+    const { longitude, latitude } = initPos
+    if (longitude && latitude) {
+      this.setCenter(longitude, latitude)
+    }
   },
   showSearch(e) {
     const { dataset: { type }} = e.currentTarget
-    this.setData({ searchType: type, searchShow: true, tabsShow: false, searchFocus: true })
+    this.setData({ searchType: type, searchShow: true, tabsShow: false, searchFocus: true, showNearBy: false })
     Notify.clear()
   },
 
   // search-page
   onAfterLeave(res) {
     this.initSearch()
-    this.setData({ searchShow: false, tabsShow: true })
+    this.setData({ searchShow: false, tabsShow: true, showNearBy: true })
   },
   onSearch() {
     const { searchType } = this.data
@@ -104,7 +132,7 @@ Page({
   },
   onCancel() {
     this.initSearch()
-    this.setData({ searchShow: false, tabsShow: true })
+    this.setData({ searchShow: false, tabsShow: true, showNearBy: true })
   },
   initSearch() {
     this.setData({
@@ -132,7 +160,7 @@ Page({
         searchLoading: true
       })
     }
-    // 发送请求
+    // 获取列表
     getPlaceList({
       name: searchValue,
       area: '浦东新区',
@@ -192,18 +220,101 @@ Page({
     wx.showLoading({
       title: '加载中...'
     })
-    const markers = []
-    const points = []
+
     const placeDetailRes = await this.getPlaceDetailByIdAndType(locId, placeType)
     const { detailRes, list } = placeDetailRes
-    this.initPlaceInfo(detailRes, placeType)
     const { lat, lng, id, name, address, tags, type } = detailRes
     if (!lat || !lng) {
       Notify({ type: 'danger', message: '经纬度返回为空', duration: 1500 })
       wx.hideLoading()
       return
     }
-    // 所搜的学校或者小区
+
+    // 初始化卡片信息
+    this.initPlaceInfo(detailRes, placeType)
+
+    // 百度坐标转qq地图
+    const placeLocation = await this.getBaiduPos(lat, lng)
+
+    // 拿到列表,组装makers
+    const markers = this.getMarkers(list, placeType, type)
+
+    // 所搜的学校或者小区的maker
+    const activeMaker = {
+      id: id,
+      type: placeType,
+      latitude: placeLocation.latitude,
+      longitude: placeLocation.longitude,
+      width: 1,
+      height: 1,
+      iconPath: '../image/pin.png',
+      callout: {
+        content: placeType === 2 ? `${name}` : `${name}(${schoolType[type]})`,
+        color: '#ffffff',
+        fontSize: 14,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#ee0a24',
+        bgColor: '#ee0a24',
+        padding: 4,
+        display: 'ALWAYS',
+        textAlign: 'center'
+      }
+    }
+    const customCallout = {
+      id: 9999999,
+      latitude: placeLocation.latitude,
+      longitude: placeLocation.longitude,
+      width: 1,
+      height: 1,
+      count: markers.length,
+      iconPath: '../image/pin.png',
+      customCallout: {
+        anchorY: 0,
+        anchorX: 0,
+        display: 'ALWAYS'
+      }
+    }
+    markers.push(activeMaker)
+    if (markers.length < 21) {
+      this.setData({
+        searchShow: false,
+        showNearBy: true,
+        tabsShow: true,
+        customCalloutMarker: [],
+        houses: list,
+        schoolName: name,
+        schoolAddress: address,
+        markers
+      })
+    } else {
+      this.setData({
+        markers2: markers,
+        activeName: name,
+        searchShow: false,
+        showNearBy: true,
+        tabsShow: true,
+        customCalloutMarker: [customCallout],
+        houses: list,
+        schoolName: name,
+        schoolAddress: address,
+        markers: [customCallout]
+      })
+    }
+    if (type === 1) {
+      this.mapCtx.includePoints({ points: this.getPoints(markers), padding: [20, 100, 20, 100] })
+    }
+    this.mapCtx.moveToLocation(placeLocation)
+    wx.hideLoading()
+    Notify({
+      color: '#fff',
+      background: 'rgba(1,1,1,.7)',
+      type: 'success',
+      message: tags === '住宅区' || tags === null ? `已选-${name}` : `已选-${name}(${tags})`,
+      duration: 0
+    })
+  },
+  async getBaiduPos(lat, lng) {
     const translateRes = await qqMapTranslate({
       locations: `${lat},${lng}`
     })
@@ -212,12 +323,33 @@ Page({
       wx.hideLoading()
       return
     }
-    const schoolOrHouseLocation = {
+    return {
       latitude: translateRes.locations[0].lat,
       longitude: translateRes.locations[0].lng
     }
-
-    // 拿到学校或者小区列表,组装makers
+  },
+  async getPlaceDetailByIdAndType(id, type) {
+    let detailRes = {}
+    let list = []
+    switch (type) {
+      case 1:
+        detailRes = await getSchoolDetailById({ id })
+        list = detailRes.result.houses
+        break
+      case 2:
+        detailRes = await getHouseDetailById({ id })
+        list = detailRes.result.schools
+        break
+      default:
+        break
+    }
+    return {
+      detailRes: detailRes.result,
+      list
+    }
+  },
+  getMarkers(list, placeType, type) {
+    const markers = []
     Array.isArray(list) && list.forEach(item => {
       const marker = {}
       const { latitude, longitude } = translateQQLocation(item.qqLocation)
@@ -244,43 +376,10 @@ Page({
         markers.push(marker)
       }
     })
-    // 所搜的学校或者小区的maker
-    const activeMaker = {
-      id: id,
-      type: placeType,
-      latitude: schoolOrHouseLocation.latitude,
-      longitude: schoolOrHouseLocation.longitude,
-      width: 1,
-      height: 1,
-      iconPath: '../image/pin.png',
-      callout: {
-        content: placeType === 2 ? `${name}` : `${name}(${tags})`,
-        color: '#ffffff',
-        fontSize: 14,
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: '#ee0a24',
-        bgColor: '#ee0a24',
-        padding: 4,
-        display: 'ALWAYS',
-        textAlign: 'center'
-      }
-    }
-    const customCallout = {
-      id: 9999999,
-      latitude: schoolOrHouseLocation.latitude,
-      longitude: schoolOrHouseLocation.longitude,
-      width: 1,
-      height: 1,
-      count: markers.length,
-      iconPath: '../image/pin.png',
-      customCallout: {
-        anchorY: 0,
-        anchorX: 0,
-        display: 'ALWAYS'
-      }
-    }
-    markers.push(activeMaker)
+    return markers
+  },
+  getPoints(markers) {
+    const points = []
     markers.forEach(item => {
       const { latitude, longitude } = item
       if (latitude && longitude) {
@@ -290,47 +389,9 @@ Page({
         })
       }
     })
-    if (markers.length < 21) {
-      this.setData({ searchShow: false, customCalloutMarker: [], tabsShow: true, houses: list, schoolName: name, schoolAddress: address, markers })
-    } else {
-      this.setData({ markers2: markers, activeName: name, searchShow: false, customCalloutMarker: [customCallout], tabsShow: true, houses: list, schoolName: name, schoolAddress: address, markers: [customCallout] })
-    }
-    if (type === 1) {
-      this.mapCtx.includePoints({ points, padding: [20, 100, 20, 100] })
-    }
-
-    this.mapCtx.moveToLocation(schoolOrHouseLocation)
-    wx.hideLoading()
-    Notify({
-      color: '#fff',
-      background: 'rgba(1,1,1,.7)',
-      type: 'success',
-      message: tags === '住宅区' || tags === null ? `已选-${name}` : `已选-${name}(${tags})`,
-      duration: 0
-    })
+    return points
   },
-  async getPlaceDetailByIdAndType(id, type) {
-    let detailRes = {}
-    let list = []
-    switch (type) {
-      case 1:
-        detailRes = await getSchoolDetailById({ id })
-        list = detailRes.result.houses
-        break
-      case 2:
-        detailRes = await getHouseDetailById({ id })
-        list = detailRes.result.schools
-        break
-      default:
-        break
-    }
-    console.log(detailRes)
-    return {
-      detailRes: detailRes.result,
-      list
-    }
-  },
-  noop(e) {
+  onClickListItem(e) {
     console.log(e)
     const { id: markerId } = e.currentTarget
     if (!Number.isNaN(+markerId)) {
@@ -350,14 +411,12 @@ Page({
     this.setData({ showOverlay: false })
   },
   async bindcallouttap(e) {
-    console.log(e)
     const { markerId } = e.detail
     if (markerId === 9999999) {
       this.setData({ customCalloutMarker: [], markers: this.data.markers2 })
       return
     }
     const activeMaker = this.getActiveMakerById(markerId)
-    console.log(activeMaker)
     const { type } = activeMaker
     await this.renderMap(markerId, type)
     this.showPlaceCard()
@@ -375,12 +434,23 @@ Page({
     console.log(e)
   },
   regionchange(e) {
-    console.log(e)
+    // if (e.type === 'end') {
+    //   const { detail } = e
+    //   const { centerLocation } = detail
+    //   const { latitude, longitude } = centerLocation
+    //   this.initNearby(latitude, longitude)
+    // }
   },
   showRightPopup() {
     this.setData({
       showFilterPopup: true
     })
+  },
+  async showNearByPlace() {
+    this.setData({
+      showNearBy: true
+    })
+    this.mapCtx.moveToLocation(this.latitude, this.longitude)
   },
   onCloseFilterPopup() {
     this.setData({
@@ -405,7 +475,7 @@ Page({
     let placeTags = []
     let placeNature
     let imgSrc
-    const { nature, address, name, city, area } = activePlace
+    const { nature, address, name, city, area, price, plate, buildDate } = activePlace
     switch (placeType) {
       case 1:
         placeNature = schoolNatrue[nature]
@@ -419,13 +489,43 @@ Page({
         break
     }
     placeTags = [placeNature].filter(item => item)
+    console.log(placeTags)
     this.setData({
       placeInfo: {
         desc: city + area + address,
         title: name,
         imgSrc: imgSrc,
-        tags: placeTags
+        tags: placeTags,
+        price: price,
+        plate,
+        buildDate,
+        placeType: placeType
       }
+    })
+  },
+  async getNearbySchool(nearbyData) {
+    const res = await getSchoolNearby(nearbyData)
+    return res
+  },
+  async getNearbyHouse(nearbyData) {
+    const res = await getHouseNearby(nearbyData)
+    return res
+  },
+  async initNearby(latitude, longitude) {
+    const baiduPos = await this.getBaiduPos(latitude, longitude)
+    const { result } = await this.getNearbySchool({
+      distance: 1,
+      longitude: baiduPos.longitude,
+      latitude: baiduPos.latitude
+    })
+    const markers = this.getMarkers(result, 1, 1)
+    this.setData({
+      searchShow: false,
+      showNearBy: true,
+      tabsShow: true,
+      customCalloutMarker: [],
+      houses: result,
+      markers
     })
   }
 })

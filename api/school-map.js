@@ -5,25 +5,14 @@ const qqMapBaseUrl = 'https://apis.map.qq.com'
 const qqMapKey = 'K5TBZ-OZCCJ-VSBFH-KZ24O-X4P2S-JEBIQ'
 
 const api = {
-  schoolList: '/baos/school/list', // 搜学校
-  houseList: '/baos/house/list', // 搜小区
-  getHouseBySchoolId: '/baos/school/houses', // 根据学校id 查询对应的小区
-  getSchoolByHouseId: '/baos/house/schools', // 根据小区id
   getSchoolDetail: '/baos/school/detail',
   getHouseDetail: '/baos/house/detail',
   getPlaceList: '/baos/place/list', // 整合学校和小区的接口
+  getHouseNearby: '/baos/house/nearby', // 附近的小区
+  getSchoolNearby: '/baos/school/nearby', // 附近的学校
 
   // 腾讯地图转换 经纬度api
   qqMapTranslate: '/ws/coord/v1/translate'
-}
-
-// 搜索学校或小区
-export function searchSchoolOrHouse(data, type) {
-  return request.axios({
-    method: 'GET',
-    url: type === 'SCHOOL' ? api.schoolList : api.houseList,
-    data
-  })
 }
 
 export function qqMapTranslate(data) {
@@ -59,6 +48,22 @@ export function getPlaceList(data) {
   return request.axios({
     method: 'GET',
     url: api.getPlaceList,
+    data
+  })
+}
+
+export function getHouseNearby(data) {
+  return request.axios({
+    method: 'GET',
+    url: api.getHouseNearby,
+    data
+  })
+}
+
+export function getSchoolNearby(data) {
+  return request.axios({
+    method: 'GET',
+    url: api.getSchoolNearby,
     data
   })
 }

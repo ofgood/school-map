@@ -8,7 +8,9 @@ export default {
   // 请求的参数
   param: null,
   // 请求的 header
-  header: 'application/json',
+  header: {
+    accessToken: 'testtokenadmin'
+  },
   // 超时时间，单位为毫秒
   timeout: 5000,
   // HTTP 请求方法

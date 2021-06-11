@@ -121,3 +121,50 @@ page .title {
   background-color:  #07c160;
   text-align: center;
 }
+.img-map{
+  width: 54rpx;
+	height: 54rpx;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%); 
+}
+.bottom-card{
+  display: flex;
+}
+.card-img{
+  padding: 10rpx;
+}
+.card-pic{
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 4rpx;
+}
+.card-right{
+  padding: 10rpx;
+}
+.card-title{
+  font-size: 16px;
+  font-weight: bold;
+}
+.card-price{
+  color: red;
+  font-weight: bold;
+  margin-top: 4rpx;
+}
+.card-time, .card-price-tip{
+  color: #999;
+  font-size: 12px;
+}
+.card-tags{
+  display: flex;
+  margin-top: 6rpx;
+}
+.card-tag{
+  padding: 4rpx;
+  background-color: #07c160;
+  color: #fff;
+  font-size: 12px;
+  vertical-align: middle;
+  display: flex;
+}
