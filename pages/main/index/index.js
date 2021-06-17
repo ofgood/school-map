@@ -52,7 +52,8 @@ Page({
       plate: '',
       buildDate: '',
       tags: [],
-      placeType: ''
+      placeType: '',
+      hasImg: false
     }
   },
   onLoad() {
@@ -249,7 +250,7 @@ Page({
       height: 1,
       iconPath: '../image/pin.png',
       callout: {
-        content: placeType === 2 ? `${name}` : `${name}(${schoolType[type]})`,
+        content: name,
         color: '#ffffff',
         fontSize: 14,
         borderWidth: 1,
@@ -434,6 +435,7 @@ Page({
     console.log(e)
   },
   regionchange(e) {
+    console.log(e)
     // if (e.type === 'end') {
     //   const { detail } = e
     //   const { centerLocation } = detail
@@ -474,21 +476,25 @@ Page({
     console.log(activePlace)
     let placeTags = []
     let placeNature
+    let schoolTypeText
     let imgSrc
-    const { nature, address, name, city, area, price, plate, buildDate } = activePlace
+    const { nature, address, name, city, area, price, plate, buildDate, imageUrl, type } = activePlace
+    const hasImg = !!imageUrl
     switch (placeType) {
       case 1:
         placeNature = schoolNatrue[nature]
-        imgSrc = 'https://gss0.baidu.com/70cFfyinKgQFm2e88IuM_a/baike/pic/item/aa18972bd40735fa4a884f5c9c510fb30e2408de.jpg'
+        schoolTypeText = schoolType[type]
+        imgSrc = imageUrl || '../image/camera.png'
         break
       case 2:
         placeNature = houseNatrue[nature]
-        imgSrc = 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg2012.fccs.com.cn%2Ffycj%2F164%2Fbuilding_310000%2Fimages%2F30%2F70e792fa3787baae10b413bfb9f4bb9c.jpg&refer=http%3A%2F%2Fimg2012.fccs.com.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1625740947&t=5361654992d06a1ff4573e8573ca51ba'
+        schoolTypeText = ''
+        imgSrc = imageUrl || '../image/camera.png'
         break
       default:
         break
     }
-    placeTags = [placeNature].filter(item => item)
+    placeTags = [placeNature, schoolTypeText].filter(item => item)
     console.log(placeTags)
     this.setData({
       placeInfo: {
@@ -499,7 +505,8 @@ Page({
         price: price,
         plate,
         buildDate,
-        placeType: placeType
+        placeType: placeType,
+        hasImg
       }
     })
   },

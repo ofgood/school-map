@@ -131,9 +131,25 @@ page .title {
 }
 .bottom-card{
   display: flex;
+  min-height: 200rpx;
 }
 .card-img{
   padding: 10rpx;
+  position: relative;
+  border: 1px solid #ddd;
+  margin: 10rpx;
+  background-color: rgba(1,1,1,0.05);
+}
+.taking{
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%);
+  color: #999;
+  font-size: 12px;
+}
+.no-img .card-pic{
+  height: 100rpx;
 }
 .card-pic{
   width: 200rpx;
@@ -161,10 +177,12 @@ page .title {
   margin-top: 6rpx;
 }
 .card-tag{
-  padding: 4rpx;
+  padding: 4rpx 6rpx;
   background-color: #07c160;
   color: #fff;
   font-size: 12px;
   vertical-align: middle;
   display: flex;
+  border-radius: 2px;
+  margin-left: 6rpx;
 }
