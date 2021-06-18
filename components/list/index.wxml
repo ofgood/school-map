@@ -1,5 +1,7 @@
 <view class="data-list">
-  <slot></slot>
+  <view class="list-content">
+     <slot></slot>
+  </view>
   <view class="list-footer">
     <van-loading wx:if="{{loading}}" class="footer-text" size="30rpx" text-size="30rpx">加载中...</van-loading>
     <text wx:elif="{{error}}" class="footer-text" bindtap="restore">{{errorText}}</text>

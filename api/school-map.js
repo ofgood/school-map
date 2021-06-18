@@ -4,6 +4,11 @@ const qqMapBaseUrl = 'https://apis.map.qq.com'
 // 腾讯地图key
 const qqMapKey = 'K5TBZ-OZCCJ-VSBFH-KZ24O-X4P2S-JEBIQ'
 
+// 百度地图地址
+// http://api.map.baidu.com/geoconv/v1/?coords=114.21892734521,29.575429778924&from=1&to=5&ak=你的密钥 //GET请求
+const baiduMapBaseUrl = 'http://api.map.baidu.com'
+const baiduMapAk = 'R9XKzinYoZLt4UTZA9Rd7BkfGBGLf5qj'
+
 const api = {
   getSchoolDetail: '/baos/school/detail',
   getHouseDetail: '/baos/house/detail',
@@ -12,7 +17,9 @@ const api = {
   getSchoolNearby: '/baos/school/nearby', // 附近的学校
 
   // 腾讯地图转换 经纬度api
-  qqMapTranslate: '/ws/coord/v1/translate'
+  qqMapTranslate: '/ws/coord/v1/translate',
+  // 百度地图转换
+  baiduMapTranslate: '/geoconv/v1/'
 }
 
 export function qqMapTranslate(data) {
@@ -23,6 +30,19 @@ export function qqMapTranslate(data) {
     data: {
       type: 3,
       key: qqMapKey,
+      ...data
+    }
+  })
+}
+export function baiduMapTranslate(data) {
+  return request.axios({
+    baseUrl: baiduMapBaseUrl,
+    method: 'GET',
+    url: api.baiduMapTranslate,
+    data: {
+      from: 3,
+      to: 5,
+      ak: baiduMapAk,
       ...data
     }
   })
