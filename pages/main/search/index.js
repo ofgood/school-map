@@ -33,6 +33,9 @@ Page({
   onChangeSearch(e) {
     this._initSearch(e.detail)
   },
+  onCancel() {
+    this._backToPre()
+  },
   onLoadMore() {
     const { loadFinished } = this.data
     if (loadFinished) {
@@ -49,7 +52,10 @@ Page({
   },
   onClickListItem(e) {
     this._saveHistory()
-    this._backToPre(e)
+    const prePage = this._getPrePage()
+    this._backToPre(() => {
+      prePage.onSelectItem(e)
+    })
   },
   onClickHistoryItem(e) {
     this._initSearch(e.currentTarget.dataset.value)
@@ -150,15 +156,17 @@ Page({
       }
     }
   },
-  _backToPre(e) {
+  _backToPre(callback) {
     setTimeout(() => {
-      const pages = getCurrentPages()
-      const prePage = pages[pages.length - 2]
       wx.navigateBack({
-        success() {
-          prePage.onSelectItem(e)
+        success(res) {
+          callback && callback(res)
         }
       })
-    }, 5000)
+    }, 100)
+  },
+  _getPrePage() {
+    const pages = getCurrentPages()
+    return pages[pages.length - 2]
   }
 })
