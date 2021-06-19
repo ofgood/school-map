@@ -1,11 +1,21 @@
-// const app = getApp()
 import Notify from '../../../miniprogram_npm/@vant/weapp/notify/notify'
-const windowHeight = wx.getSystemInfoSync().windowHeight // 屏幕的高度
-const windowWidth = wx.getSystemInfoSync().windowWidth // 屏幕的宽度
-const ratio = 750 / windowWidth
-const { qqMapTranslate, getSchoolDetailById, getHouseDetailById, getPlaceList, getHouseNearby, getSchoolNearby, baiduMapTranslate } = require('../../../api/school-map')
-const { translateQQLocation } = require('../../../utils/index')
-const { houseNatrue, schoolNatrue, schoolType } = require('../../../dict/index')
+const {
+  qqMapTranslate,
+  getSchoolDetailById,
+  getHouseDetailById,
+  getHouseNearby,
+  getSchoolNearby,
+  baiduMapTranslate
+} = require('../../../api/school-map')
+const {
+  translateQQLocation,
+  getViewHeight
+} = require('../../../utils/index')
+const {
+  houseNatrue,
+  schoolNatrue,
+  schoolType
+} = require('../../../dict/index')
 Page({
   data: {
     latitude: 31.079337,
@@ -20,11 +30,6 @@ Page({
     overlay: true,
     searchValue: '',
     scroll_height: '',
-    pageNo: 1,
-    pageSize: 15,
-    currentPage: 1,
-    list: [],
-    pages: 0,
     searchLoading: false,
     loadFinished: false,
     loadError: false,
@@ -59,7 +64,7 @@ Page({
   },
   onLoad() {
     this.setData({
-      scroll_height: (windowHeight - 60) * ratio
+      scroll_height: getViewHeight(-60)
     })
     const that = this
     wx.getStorage({
@@ -132,12 +137,12 @@ Page({
     }
   },
   showSearch(e) {
-    const { dataset: { type }} = e.currentTarget
-    this.setData({ searchType: type, searchShow: true, tabsShow: false, searchFocus: true, searchValue: '' })
-    Notify.clear()
-    // wx.navigateTo({
-    //   url: '/pages/placeList/index'
-    // })
+    // const { dataset: { type }} = e.currentTarget
+    // this.setData({ searchType: type, searchShow: true, tabsShow: false, searchFocus: true, searchValue: '' })
+    // Notify.clear()
+    wx.navigateTo({
+      url: '/pages/main/search/index'
+    })
   },
 
   // search-page
@@ -162,81 +167,6 @@ Page({
   onCancel() {
     this.initSearch()
     this.setData({ searchShow: false, tabsShow: true })
-  },
-  initSearch() {
-    this.setData({
-      pageNo: 1,
-      pageSize: 15,
-      currentPage: 1,
-      list: [],
-      pages: 0,
-      searchLoading: false,
-      loadFinished: false
-    })
-  },
-  // 获取列表数据
-  getData(handleType, searchType) {
-    const { pageSize, searchValue } = this.data
-    if (!searchValue) {
-      return
-    }
-    if (handleType === 'init') {
-      console.log('handleType', handleType)
-      this.initSearch()
-    } else {
-      this.setData({
-        pageNo: this.data.currentPage,
-        searchLoading: true
-      })
-    }
-    // 获取列表
-    getPlaceList({
-      name: searchValue,
-      area: '浦东新区',
-      city: '上海市',
-      province: '上海市',
-      pageNo: this.data.pageNo,
-      pageSize
-    }, searchType).then(res => {
-      if (!res.success) {
-        this.setData({ loadError: true })
-        return
-      }
-      const { result } = res
-      const pageData = this.data.list
-      if (!result.records.length) {
-        this.setData({ loadFinished: true, searchLoading: false })
-        return
-      }
-      this.setData({
-        list: handleType === 'init' ? result.records : pageData.concat(result.records),
-        searchLoading: false,
-        pages: result.pages,
-        loadFinished: result.records.length < this.data.pageSize
-      })
-    }).catch(err => {
-      console.log(err)
-    })
-  },
-  // 上拉加载更多
-  loadMore() {
-    const self = this
-    // 当前页是最后一页
-    if (self.data.currentPage === self.data.pages) {
-      this.setData({
-        loadFinished: true
-      })
-      return
-    }
-    setTimeout(function() {
-      let tempCurrentPage = self.data.currentPage
-      tempCurrentPage = tempCurrentPage + 1
-      self.setData({
-        currentPage: tempCurrentPage
-      })
-      const { searchType } = self.data
-      self.getData('loadMore', searchType)
-    }, 300)
   },
   // 选择
   async renderMap(locId, placeType, isCallouttap = false) {
@@ -344,7 +274,6 @@ Page({
     wx.nextTick(() => {
       this.renderMap(locId, type)
     })
-    this.save()
   },
 
   async getPlaceDetailByIdAndType(id, type) {

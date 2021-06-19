@@ -44,7 +44,7 @@
   </view>
 
   <!-- 搜索界面 -->
-  <page-container class="search-page-container" show="{{searchShow}}" round="{{round}}" overlay="{{overlay}}" duration="{{duration}}" position="{{position}}" close-on-slide-down="{{false}}" bindafterleave="onAfterLeave" z-index="99999">
+  <!-- <page-container class="search-page-container" show="{{searchShow}}" round="{{round}}" overlay="{{overlay}}" duration="{{duration}}" position="{{position}}" close-on-slide-down="{{false}}" bindafterleave="onAfterLeave" z-index="99999">
     <view class="detail-page">
       <van-search value="{{ searchValue }}" focus="{{searchFocus}}" placeholder="请输入搜索关键词" show-action bind:change="onChangeSearch" bind:search="onSearch" bind:cancel="onCancel" />
       <scroll-view scroll-y="true" style="height: {{scroll_height}}rpx" bindscrolltolower="loadMore">
@@ -67,7 +67,7 @@
         </list>
       </scroll-view>
     </view>
-  </page-container>
+  </page-container> -->
 
 <!-- 右侧popup -->
   <!-- <van-popup

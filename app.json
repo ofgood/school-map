@@ -1,8 +1,7 @@
 {
   "pages":[
     "pages/main/index/index",
-    "pages/main/me/index",
-    "pages/placeList/index"
+    "pages/main/search/index"
   ],
   "window":{
     "navigationBarBackgroundColor": "#ffffff",
@@ -10,19 +9,8 @@
     "navigationBarTextStyle":"black"
   },
   "sitemapLocation": "sitemap.json",
-  "subpackages": [
-    {
-      "root": "pages/activity",
-      "pages": [
-        "index/index"
-      ],
-      "independent": true
-    }
-  ],
   "usingComponents": {
-    "time": "/components/time/index",
     "svg-icon": "/components/svg-icon/index",
-    "unit": "/components/unit/index",
     "van-field": "@vant/weapp/field/index",
     "van-dialog": "@vant/weapp/dialog/index",
     "van-popup": "@vant/weapp/popup/index",

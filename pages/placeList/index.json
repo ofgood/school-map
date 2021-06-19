@@ -1,7 +1,5 @@
 {
     "usingComponents": {
     },
-    "window": {
-        "navigationBarTitleText": "列表"
-      }
-  }
+    "navigationBarTitleText": "搜索"
+}

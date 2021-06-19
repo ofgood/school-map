@@ -1,0 +1,49 @@
+<view class="detail-page">
+      <van-search
+          placeholder="请输入搜索关键词"
+          show-action
+          value="{{ searchValue }}"
+          focus
+          bind:clear="onClear"
+          bind:change="onChangeSearch"
+          bind:search="onSearch"
+          bind:cancel="onCancel"/>
+      <scroll-view
+        scroll-y="true"
+        style="height: {{scrollHeight}}rpx"
+        bindscrolltolower="onLoadMore">
+        <list
+          loading="{{searchLoading}}"
+          empty="{{list.length === 0}}"
+          finished="{{loadFinished}}"
+          error="{{loadError}}">
+          <view wx:for="{{list}}" wx:key="id">
+            <van-cell
+              border
+              id="{{item.placeId}}"
+              data-place="{{item}}"
+              title="{{item.name}}"
+              label="{{item.address}}"
+              bind:click="onClickListItem"/>
+          </view>
+          <view class="history-section" wx:if="{{!list.length}}">
+            <view class="history-top">
+              <view class="history-title">搜索历史</view>
+              <view class="history-del">
+                <image src='../image/del.png' wx:if="{{historyList.length!=0}}" catchtap="onRemoveHistroy"></image>
+              </view>
+            </view>
+            <view class="history-list">
+              <view class="history-item" wx:if="{{historyList.length==0}}">暂无搜索记录</view>
+              <view class="history-item"
+                wx:for="{{historyList}}"
+                wx:key="*this"
+                bindtap='onClickHistoryItem'
+                data-value='{{item}}'>
+                  {{item}}
+                </view>
+            </view>
+          </view>
+        </list>
+      </scroll-view>
+</view>

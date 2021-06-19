@@ -146,3 +146,16 @@ export function translateQQLocation(location) {
   }
   return locationObj
 }
+
+/**
+ * 计算区域高度
+ * @param {string} height
+ * @returns
+ */
+export function getViewHeight(height) {
+  const windowHeight = wx.getSystemInfoSync().windowHeight // 屏幕的高度
+  const windowWidth = wx.getSystemInfoSync().windowWidth // 屏幕的宽度
+  const ratio = 750 / windowWidth
+  return (windowHeight + height) * ratio
+}
+
