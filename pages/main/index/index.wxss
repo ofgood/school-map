@@ -190,3 +190,21 @@ page .title {
   border-radius: 2px;
   margin-left: 6rpx;
 }
+.main-box{
+  box-shadow: 2px -2px 2px 1px rgba(1,1,1,.2);
+}
+.top-filter{
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  top: 30rpx;
+}
+.top-filter .van-dropdown-item, .top-filter .van-dropdown-menu {
+  position: fixed;
+  left: 40rpx;
+  right: 40rpx;
+}
+.top-filter .van-transition {
+  opacity: 0;
+}

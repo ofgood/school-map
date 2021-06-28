@@ -27,7 +27,7 @@
           </view>
           <view class="history-section" wx:if="{{!list.length}}">
             <view class="history-top">
-              <view class="history-title">搜索历史</view>
+              <view class="history-title">历史搜索</view>
               <view class="history-del">
                 <image src='../image/del.png' wx:if="{{historyList.length!=0}}" catchtap="onRemoveHistroy"></image>
               </view>

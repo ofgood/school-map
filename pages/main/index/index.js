@@ -1,4 +1,3 @@
-import Notify from '../../../miniprogram_npm/@vant/weapp/notify/notify'
 const {
   qqMapTranslate,
   getSchoolDetailById,
@@ -8,8 +7,7 @@ const {
   baiduMapTranslate
 } = require('../../../api/school-map')
 const {
-  translateQQLocation,
-  getViewHeight
+  translateQQLocation
 } = require('../../../utils/index')
 const {
   houseNatrue,
@@ -21,23 +19,15 @@ Page({
     latitude: 31.079337,
     longitude: 121.592369,
     tabsShow: true,
-    searchType: '',
-    searchShow: false,
-    searchFocus: false,
+
     duration: 300,
     position: 'center',
     round: false,
-    overlay: true,
-    searchValue: '',
-    scroll_height: '',
-    searchLoading: false,
-    loadFinished: false,
-    loadError: false,
+
     houses: [],
     schoolName: '',
     schoolAddress: '',
-    showOverlay: false,
-    colors: ['#ee0a24'],
+
     polygons: [],
     markers: [],
     includePoints: [],
@@ -46,7 +36,7 @@ Page({
     list2: [],
     activeName: '',
     markers2: [],
-    showFilterPopup: false,
+
     showPlaceCard: false,
     showNearBy: true,
     placeInfo: {
@@ -60,21 +50,26 @@ Page({
       placeType: '',
       hasImg: false
     },
-    hisList: []
+    option1: [
+      { text: '附近1km', value: 1 },
+      { text: '附近2km', value: 2 },
+      { text: '附近3km', value: 3 }
+    ],
+    option2: [
+      { text: '学校', value: 'school' },
+      { text: '小区', value: 'house' }
+    ],
+    option3: [
+      { text: '公办', value: 'a' },
+      { text: '私立', value: 'b' }
+    ],
+    distance: 1,
+    queryPlaceType: 'school',
+    showOverlay: false,
+    currentLatitude: '',
+    currentLongitude: ''
   },
   onLoad() {
-    this.setData({
-      scroll_height: getViewHeight(-60)
-    })
-    const that = this
-    wx.getStorage({
-      key: 'historySearch',
-      success(res) {
-        that.setData({
-          hisList: res.data
-        })
-      }
-    })
   },
   onUnload() {
   },
@@ -88,7 +83,13 @@ Page({
     await this.initCenter()
     const initPos = await this.getCurPos()
     const { longitude, latitude } = initPos
-    this.initNearby(latitude, longitude)
+    const { distance, queryPlaceType } = this.data
+    this.initNearby({
+      latitude,
+      longitude,
+      distance,
+      queryPlaceType
+    })
     // 设置窗口高度
   },
   // 获取当前位置
@@ -120,8 +121,6 @@ Page({
       locations: `${lat},${lng}`
     })
     if (!translateRes.locations && translateRes.message) {
-      Notify({ type: 'danger', message: translateRes.message, duration: 1500 })
-      wx.hideLoading()
       return
     }
     return {
@@ -136,38 +135,12 @@ Page({
       this.setCenter(longitude, latitude)
     }
   },
-  showSearch(e) {
-    // const { dataset: { type }} = e.currentTarget
-    // this.setData({ searchType: type, searchShow: true, tabsShow: false, searchFocus: true, searchValue: '' })
-    // Notify.clear()
+  showSearch() {
     wx.navigateTo({
       url: '/pages/main/search/index'
     })
   },
 
-  // search-page
-  onAfterLeave(res) {
-    this.initSearch()
-    this.setData({ searchShow: false, tabsShow: true })
-  },
-  onSearch() {
-    const { searchType } = this.data
-    this.getData('init', searchType)
-  },
-  onChangeSearch(e) {
-    const { searchType } = this.data
-    this.setData({
-      searchValue: e.detail
-    })
-    this.getData('init', searchType)
-  },
-  onChangeBlur() {
-    return
-  },
-  onCancel() {
-    this.initSearch()
-    this.setData({ searchShow: false, tabsShow: true })
-  },
   // 选择
   async renderMap(locId, placeType, isCallouttap = false) {
     wx.showLoading({
@@ -177,11 +150,6 @@ Page({
     const placeDetailRes = await this.getPlaceDetailByIdAndType(locId, placeType)
     const { detailRes, list } = placeDetailRes
     const { lat, lng, id, name, address, type } = detailRes
-    if (!lat || !lng) {
-      Notify({ type: 'danger', message: '经纬度返回为空', duration: 1500 })
-      wx.hideLoading()
-      return
-    }
 
     // 初始化卡片信息
     this.initPlaceInfo(detailRes, placeType)
@@ -204,12 +172,12 @@ Page({
       callout: {
         content: name,
         color: '#ffffff',
-        fontSize: 14,
+        fontSize: 12,
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: '#ee0a24',
-        bgColor: '#ee0a24',
-        padding: 4,
+        borderColor: '#07c160',
+        bgColor: '#07c160',
+        padding: 6,
         display: 'ALWAYS',
         textAlign: 'center'
       }
@@ -257,13 +225,6 @@ Page({
     }
     this.mapCtx.moveToLocation(activeLocation)
     wx.hideLoading()
-    Notify({
-      color: '#fff',
-      background: 'rgba(1,1,1,.7)',
-      type: 'success',
-      message: `已选-${name}`,
-      duration: 0
-    })
   },
   onSelectItem(e) {
     const locId = e.currentTarget.id
@@ -309,13 +270,13 @@ Page({
       marker.iconPath = '../image/pin.png'
       marker.callout = {
         content: item.name,
-        color: '#ffffff',
-        fontSize: 14,
+        color: '#07c160',
+        fontSize: 12,
         borderWidth: 1,
         borderRadius: 10,
         borderColor: '#07c160',
-        bgColor: '#07c160',
-        padding: 4,
+        bgColor: '#ffffff',
+        padding: 6,
         display: 'ALWAYS',
         textAlign: 'center'
       }
@@ -343,20 +304,8 @@ Page({
     })
     return points
   },
-  onClickListItem(e) {
-    console.log(e)
-    const { id: markerId } = e.currentTarget
-    if (!Number.isNaN(+markerId)) {
-      // this.activeTab(+markerId, () => {
-      //   this.setData({ showOverlay: false })
-      // })
-      // wx.navigateTo({
-      //   url: 'pages/placeList/index'
-      // })
-    }
-  },
   showHouses() {
-    this.setData({ showOverlay: true })
+    // this.setData({ showOverlay: true })
   },
   hideHouses() {
     this.setData({ showOverlay: false })
@@ -390,34 +339,41 @@ Page({
   regionchange(e) {
     if (this.data.showNearBy && (e.type === 'end')) {
       const { detail } = e
-      console.log(detail)
+      const { distance, queryPlaceType } = this.data
       const { centerLocation } = detail
       const { latitude, longitude } = centerLocation
-      this.initNearby(latitude, longitude)
+      this.setData({
+        currentLatitude: latitude,
+        currentLongitude: longitude
+      })
+      this.initNearby({
+        latitude,
+        longitude,
+        distance,
+        queryPlaceType
+      })
     }
   },
-  showRightPopup() {
-    this.setData({
-      showFilterPopup: true
-    })
-  },
+
   showNearByPlace() {
-    const that = this
-    that.setData({
+    const _this = this
+    _this.setData({
       showNearBy: true
     })
-    that.mapCtx.getCenterLocation({
+    const { distance, queryPlaceType } = _this.data
+    _this.mapCtx.getCenterLocation({
       success(res) {
         const { latitude, longitude } = res
-        that.initNearby(latitude, longitude)
+        _this.initNearby({
+          latitude,
+          longitude,
+          distance,
+          queryPlaceType
+        })
       }
     })
   },
-  onCloseFilterPopup() {
-    this.setData({
-      showFilterPopup: false
-    })
-  },
+
   onClosePlaceCard() {
     this.closePlaceCard()
   },
@@ -473,15 +429,24 @@ Page({
     const res = await getSchoolNearby(nearbyData)
     return res
   },
+  async getNearyHouse(nearbyData) {
+    const res = await getHouseNearby(nearbyData)
+    return res
+  },
   async getNearbyHouse(nearbyData) {
     const res = await getHouseNearby(nearbyData)
     return res
   },
-  async initNearby(latitude, longitude, distance = 1) {
+  async initNearby(options) {
+    const { latitude, longitude, distance = 1, queryPlaceType = 'school' } = options
     const coords = `${longitude},${latitude}`
     const baiduPos = await baiduMapTranslate({ coords })
     const baiduPosresult = baiduPos.result[0]
-    const { result } = await this.getNearbySchool({
+    const { result } = queryPlaceType === 'school' ? await this.getNearbySchool({
+      distance,
+      longitude: baiduPosresult.x,
+      latitude: baiduPosresult.y
+    }) : await this.getNearbyHouse({
       distance,
       longitude: baiduPosresult.x,
       latitude: baiduPosresult.y
@@ -495,58 +460,92 @@ Page({
       houses: result,
       markers
     })
-    Notify.clear()
   },
   backToOrigin() {
     this.mapCtx.moveToLocation(this.latitude, this.longitude)
+    this.setData({
+      showNearBy: true
+    })
     this.onReady()
   },
-  save() {
-    var list = this.data.hisList
-    if (list.indexOf(this.data.searchValue) === -1 & this.data.searchValue !== '') {
-      list.push(this.data.searchValue)
+  onOpenDropdown() {
+    this.setData({
+      showOverlay: true
+    })
+  },
+  onCloseDropdown() {
+    this.setData({
+      showOverlay: false
+    })
+  },
+  onClickHideOverlay() {
+    console.log(this.selectComponent('#distanceDropdown'))
+    this.selectComponent('#distanceDropdown').toggle()
+  },
+  onChangeDropdown(e) {
+    console.log(e)
+    const { currentTarget, detail } = e
+    const { id } = currentTarget
+    const { currentLatitude, currentLongitude, distance, queryPlaceType } = this.data
+    switch (id) {
+      case 'distanceDropdown':
+        this.setData({
+          distance: detail
+        })
+        this.initNearby(
+          {
+            distance: detail,
+            longitude: currentLongitude,
+            latitude: currentLatitude,
+            queryPlaceType
+          }
+        )
+        break
+      case 'placeTypeDropdown':
+        this.setData({
+          queryPlaceType: detail
+        })
+        this.initNearby(
+          {
+            distance,
+            longitude: currentLongitude,
+            latitude: currentLatitude,
+            queryPlaceType: detail
+          }
+        )
+        break
+      default:
+        break
     }
-    this.setData({
-      hisList: list
-    })
-    wx.setStorage({
-      key: 'historySearch',
-      data: list
-    })
   },
-  searchName(e) {
+  onChangeDistanceDropdown(e) {
+    const { detail } = e
+    const { currentLatitude, currentLongitude, queryPlaceType } = this.data
     this.setData({
-      searchValue: e.currentTarget.dataset.value
+      distance: detail
     })
-    const { searchType } = this.data
-    this.getData('init', searchType)
-  },
-  remove() {
-    const that = this
-    wx.showModal({
-      title: '提示',
-      content: '确认清空所有记录?',
-      success(res) {
-        if (res.confirm) {
-          wx.removeStorage({
-            key: 'historySearch',
-            success() {
-              that.setData({
-                hisList: []
-              })
-            }
-          })
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
+    this.initNearby(
+      {
+        distance: detail,
+        longitude: currentLongitude,
+        latitude: currentLatitude,
+        queryPlaceType
       }
-    })
+    )
   },
-  clean() {
-    setTimeout(() => {
-      this.setData({
-        searchValue: ''
-      })
-    }, 100)
+  onChangePlaceTypeDropdown(e) {
+    const { detail } = e
+    const { currentLatitude, currentLongitude, distance } = this.data
+    this.setData({
+      queryPlaceType: detail
+    })
+    this.initNearby(
+      {
+        distance,
+        longitude: currentLongitude,
+        latitude: currentLatitude,
+        queryPlaceType: detail
+      }
+    )
   }
 })

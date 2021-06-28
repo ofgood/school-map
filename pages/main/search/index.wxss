@@ -25,6 +25,6 @@
     font-size: 14px;
   }
   .history-del image{
-      width: 36rpx;
-      height: 36rpx;
+      width: 32rpx;
+      height: 32rpx;
   }

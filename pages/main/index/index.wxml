@@ -1,8 +1,23 @@
 <view class='main-box'>
-
-  <!-- 提示 -->
-  <van-notify id="van-notify" />
-
+  <view class="top-filter" wx:if="{{showNearBy}}">
+    <van-dropdown-menu active-color="#07c160">
+      <van-dropdown-item 
+      id="distanceDropdown"
+      value="{{ distance }}" 
+      options="{{ option1 }}"
+      bind:change="onChangeDistanceDropdown"
+      bind:open="onOpenDropdown"
+      bind:close="onCloseDropdown"/>
+      <van-dropdown-item
+      id="placeTypeDropdown" 
+      value="{{ queryPlaceType }}" 
+      options="{{ option2 }}"
+      bind:change="onChangePlaceTypeDropdown"
+      bind:open="onOpenDropdown"
+      bind:close="onCloseDropdown"/>
+    </van-dropdown-menu>
+  </view>
+  <van-overlay wx:if="{{showNearBy}}" z-index="{{998}}" show="{{ showOverlay }}" bind:click="onClickHideOverlay" />
   <!-- 地图 -->
   <map id="myMap" class="index-map" bindregionchange="regionchange" bindmarkertap="bindmarkertap" bindcallouttap="bindcallouttap" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" show-location>
     <cover-view slot="callout">
@@ -17,6 +32,7 @@
     </cover-view>
   </map>
  <image wx:if="{{showNearBy}}" class="img-map" src="../image/pin.png"></image>
+
   <!-- 底部搜索框 -->
   <view class="cover-view" hidden="{{!tabsShow}}" style="height: 130rpx">
     <view class="container">
@@ -43,100 +59,45 @@
     </view>
   </view>
 
-  <!-- 搜索界面 -->
-  <!-- <page-container class="search-page-container" show="{{searchShow}}" round="{{round}}" overlay="{{overlay}}" duration="{{duration}}" position="{{position}}" close-on-slide-down="{{false}}" bindafterleave="onAfterLeave" z-index="99999">
-    <view class="detail-page">
-      <van-search value="{{ searchValue }}" focus="{{searchFocus}}" placeholder="请输入搜索关键词" show-action bind:change="onChangeSearch" bind:search="onSearch" bind:cancel="onCancel" />
-      <scroll-view scroll-y="true" style="height: {{scroll_height}}rpx" bindscrolltolower="loadMore">
-        <list loading="{{searchLoading}}" empty="{{list.length === 0}}" finished="{{loadFinished}}" error="{{loadError}}">
-          <view wx:for="{{list}}" wx:key="id">
-            <van-cell bind:click="onSelectItem" id="{{item.placeId}}" data-place="{{item}}" title="{{item.name}}" label="{{item.address}}" border />
-          </view>
-          <view wx:if="{{!list.length}}" hover-class="none" hover-stop-propagation="false">
-            <view class='flex space_between align_center search_title'>
-              <view>
-                  搜索历史
-              </view>
-              <image src='../image/del.png' wx:if="{{hisList.length!=0}}"  catchtap='remove'></image>
-            </view>
-            <view class='list'>
-              <view class="key" wx:if="{{hisList.length==0}}">暂无搜索记录</view>
-              <view class="key" wx:for="{{hisList}}" wx:key="" bindtap='searchName' data-value='{{item}}'>{{item}}</view>
-            </view>
-          </view>
-        </list>
-      </scroll-view>
-    </view>
-  </page-container> -->
-
-<!-- 右侧popup -->
-  <!-- <van-popup
-    show="{{ showFilterPopup }}"
-    position="right"
-    z-index="{{9999}}"
-    custom-style="height: 100%;width: 60%"
-    bind:close="onCloseFilterPopup">
-    <view style="text-align:center;display:flex;align-items:center;flex-direction: column;padding-top:400rpx;" hover-class="none" hover-stop-propagation="false">
-       <image style="width: 120rpx; height: 120rpx" src="../image/construct.png"></image>
-       <view style="color:#ddd;padding-top:30rpx;padding-left:30rpx;" hover-class="none" hover-stop-propagation="false">
-         建设中.....
-       </view>
-    </view>
-  </van-popup> -->
-
   <!-- 底部弹出卡片 -->
   <van-popup
-  overlay="{{false}}"
-  show="{{ showPlaceCard }}"
-  closeable
-  close-icon-position="top-right"
-  position="bottom"
-  bind:close="onClosePlaceCard">
+    overlay="{{false}}"
+    show="{{ showPlaceCard }}"
+    closeable
+    close-icon-position="top-right"
+    position="bottom"
+    bind:close="onClosePlaceCard">
     <view class="bottom-card">
-    <!-- <view class="tags" slot="tags" wx:if="{{placeInfo.tags.length}}">
-       <van-tag wx:for="{{placeInfo.tags}}" wx:key="*this" type="success"> {{item}}</van-tag>
-    </view> -->
-    <view class="card-img" hover-class="none" hover-stop-propagation="false">
-          <view class="{{placeInfo.hasImg ? 'place-img' : 'no-img'}}" hover-class="none" hover-stop-propagation="false">
-             <image class="card-pic" src="{{placeInfo.imgSrc}}" mode="{{ placeInfo.hasImg ? 'aspectFill' : 'center'}}" lazy-load="false"></image>
+      <view class="card-img">
+        <view class="{{placeInfo.hasImg ? 'place-img' : 'no-img'}}">
+          <image class="card-pic" src="{{placeInfo.imgSrc}}" mode="{{ placeInfo.hasImg ? 'aspectFill' : 'center'}}" lazy-load="false"></image>
+        </view>
+        <view class="taking" wx:if="{{!placeInfo.hasImg}}" selectable="false" space="false" decode="false">
+          收集中
+        </view>
+      </view>
+      <view class="card-right">
+        <view class="card-title">
+          {{placeInfo.title}}
+        </view>
+        <view class="" wx:if="{{placeInfo.placeType === 2}}">
+          <view class="card-price" wx:if="{{placeInfo.price}}">
+          {{placeInfo.price ?placeInfo.price + '元/m²' : '' }}
+        </view>
+        <view class="card-price-tip" wx:else>
+          房价更新中
+        </view>
+        </view>
+        <view class="card-time">
+          {{placeInfo.buildDate ? placeInfo.buildDate: ''}}
+          {{placeInfo.plate ? placeInfo.plate: ''}}
+        </view>
+        <view class="card-tags">
+          <view class="card-tag" wx:for="{{placeInfo.tags}}" wx:key="*this">
+            {{item}}
           </view>
-          <view class="taking" wx:if="{{!placeInfo.hasImg}}" selectable="false" space="false" decode="false">
-            收集中
-          </view>
-    </view>
-    <view class="card-right">
-      <view class="card-title" hover-class="none" hover-stop-propagation="false">
-        {{placeInfo.title}}
+        </view>
       </view>
-      <view class="" wx:if="{{placeInfo.placeType === 2}}" hover-class="none" hover-stop-propagation="false">
-         <view class="card-price" wx:if="{{placeInfo.price}}" hover-class="none" hover-stop-propagation="false">
-        {{placeInfo.price ?placeInfo.price + '元/m²' : '' }}
-      </view>
-      <view class="card-price-tip" wx:else>
-        房价更新中
-      </view>
-      </view>
-      <view class="card-time" hover-class="none" hover-stop-propagation="false">
-        {{placeInfo.buildDate ? placeInfo.buildDate: ''}}
-        {{placeInfo.plate ? placeInfo.plate: ''}}
-      </view>
-      <view class="card-tags" hover-class="none" hover-stop-propagation="false">
-         <view class="card-tag" wx:for="{{placeInfo.tags}}" wx:key="*this">
-           {{item}}
-         </view>
-      </view>
-    </view>
     </view>
   </van-popup>
-
-  <!-- 弹出列表 -->
-  <van-overlay show="{{ showOverlay }}" bind:click="hideHouses" z-index="9999">
-    <view class="house-wrapper" hover-class="none" hover-stop-propagation="true">
-      <view class="house-block" hover-class="none" hover-stop-propagation="true">
-        <scroll-view scroll-y="true" style="height: 760rpx">
-          <van-cell wx:for="{{houses}}" wx:key="id" catch:tap="onClickListItem" id="{{item.id}}" title="{{item.name}}" label="{{item.address}}" border />
-        </scroll-view>
-      </view>
-    </view>
-  </van-overlay>
 </view>
