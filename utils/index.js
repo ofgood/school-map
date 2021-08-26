@@ -159,3 +159,12 @@ export function getViewHeight(height) {
   return (windowHeight + height) * ratio
 }
 
+/**
+ * 设置页面标题
+ * @param {*} titleText
+ */
+export function setNavigationBarTitle(titleText) {
+  wx.setNavigationBarTitle({
+    title: titleText
+  })
+}

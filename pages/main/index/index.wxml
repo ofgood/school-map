@@ -45,17 +45,26 @@
 
   <!-- 右侧工具栏-->
   <view class="right-btns-wrap" hover-class="none" hover-stop-propagation="false">
-    <view class="list-btn right-btn" wx:if="{{houses.length}}" bindtap="showHouses" hover-class="none" hover-stop-propagation="false">
+    <view class="list-btn right-btn" wx:if="{{houses.length}}" bindtap="showList" hover-class="none" hover-stop-propagation="false">
       <image class="bgImg" src="../image/list.png"></image>
+      <view class="ctrl-text">
+        列表
+      </view>
     </view>
     <!-- <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="showRightPopup" hover-class="none" hover-stop-propagation="false">
       <image class="bgImg" src="../image/filter.png"></image>
     </view> -->
      <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="showNearByPlace" hover-class="none" hover-stop-propagation="false">
       <image class="bgImg" src="../image/nearby.png"></image>
+      <view class="ctrl-text">
+        附近
+      </view>
     </view>
      <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="backToOrigin" hover-class="none" hover-stop-propagation="false">
       <image class="bgImg" src="../image/loc.png"></image>
+      <view class="ctrl-text">
+        定位
+      </view>
     </view>
   </view>
 
@@ -69,11 +78,17 @@
     bind:close="onClosePlaceCard">
     <view class="bottom-card">
       <view class="card-img">
-        <view class="{{placeInfo.hasImg ? 'place-img' : 'no-img'}}">
-          <image class="card-pic" src="{{placeInfo.imgSrc}}" mode="{{ placeInfo.hasImg ? 'aspectFill' : 'center'}}" lazy-load="false"></image>
+        <view class="place-img" wx:if="{{placeInfo.hasImg}}">
+          <image class="card-pic" src="{{placeInfo.imgSrc}}" mode="aspectFill}" lazy-load="false"></image>
         </view>
-        <view class="taking" wx:if="{{!placeInfo.hasImg}}" selectable="false" space="false" decode="false">
-          收集中
+        <view class="taking" wx:else selectable="false" space="false" decode="false">
+          <view class="taking-icon" hover-class="none" hover-stop-propagation="false">
+           <image src="{{placeInfo.takingIcon}}" mode="center" lazy-load="false"></image>
+            收集中
+          </view>
+          <view class="taking-bg" hover-class="none" hover-stop-propagation="false">
+             <image class="card-pic" src="{{placeInfo.takingBg}}" mode="aspectFill" lazy-load="false"></image>
+          </view>
         </view>
       </view>
       <view class="card-right">

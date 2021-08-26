@@ -16,7 +16,7 @@ const {
 } = require('../../../dict/index')
 Page({
   data: {
-    latitude: 31.079337,
+    latitude: 32.079337,
     longitude: 121.592369,
     tabsShow: true,
 
@@ -32,7 +32,7 @@ Page({
     markers: [],
     includePoints: [],
     customCalloutMarker: [],
-    mapScale: 14,
+    mapScale: 10,
     list2: [],
     activeName: '',
     markers2: [],
@@ -48,7 +48,9 @@ Page({
       buildDate: '',
       tags: [],
       placeType: '',
-      hasImg: false
+      hasImg: false,
+      takingBg: '',
+      takingIcon: ''
     },
     option1: [
       { text: '附近1km', value: 1 },
@@ -140,7 +142,11 @@ Page({
       url: '/pages/main/search/index'
     })
   },
-
+  showList() {
+    // wx.navigateTo({
+    //   url: '/pages/main/search/index'
+    // })
+  },
   // 选择
   async renderMap(locId, placeType, isCallouttap = false) {
     wx.showLoading({
@@ -392,36 +398,34 @@ Page({
     let placeTags = []
     let placeNature
     let schoolTypeText
-    let imgSrc
     const { nature, address, name, city, area, price, plate, buildDate, imageUrl, type } = activePlace
     const hasImg = !!imageUrl
     switch (placeType) {
       case 1:
         placeNature = schoolNatrue[nature]
         schoolTypeText = schoolType[type]
-        imgSrc = imageUrl || '../image/camera.png'
         break
       case 2:
         placeNature = houseNatrue[nature]
         schoolTypeText = ''
-        imgSrc = imageUrl || '../image/camera.png'
         break
       default:
         break
     }
     placeTags = [placeNature, schoolTypeText].filter(item => item)
-    console.log(placeTags)
     this.setData({
       placeInfo: {
         desc: city + area + address,
         title: name,
-        imgSrc: imgSrc,
+        imgSrc: imageUrl,
         tags: placeTags,
         price: price,
         plate,
         buildDate,
         placeType: placeType,
-        hasImg
+        hasImg,
+        takingBg: '../image/bg.png',
+        takingIcon: '../image/camera.png'
       }
     })
   },

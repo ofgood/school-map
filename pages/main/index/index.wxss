@@ -8,12 +8,9 @@ page .title {
 }
 .cover-view {
   position: absolute;
-  width: 700rpx;
-  height: 200rpx;
+  right: 40rpx;
+  left: 40rpx;
   bottom: 30rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  /* background-color: #fff; */
   border-radius: 6px;
 }
 .index-map{
@@ -54,26 +51,35 @@ page .title {
 .right-btn{
   background-color: #fff;
   box-shadow: 0 1px 2px 1px rgba(1,1,1,.2);
-  border-radius: 8px;
-  width: 64rpx;
-  height: 60rpx;
-  padding: 5rpx;
+  border-radius: 4px;
+  width: 68rpx;
+  height: 68rpx;
+  padding:4rpx;
   margin-top: 16rpx;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 20rpx;
 }
 .right-btn image{
-  width: 64rpx;
-  height: 64rpx;
+  width: 40rpx;
+  height: 40rpx;
   display: block;
+}
+.right-btns-wrap .ctrl-text{
+  margin-top: -2px;
+}
+.list-btn .ctrl-text{
+  margin-top: -4px;
 }
 .tab-input{
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 90rpx;
-  line-height: 90rpx;
-  font-size: 30rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 13px;
   color: #666;
   text-align: center;
   background-color: #fff;
@@ -133,26 +139,19 @@ page .title {
 	transform: translate(-50%,-54rpx);
 }
 .bottom-card{
-  display: flex;
   min-height: 200rpx;
+  overflow:hidden;
 }
 .card-img{
-  padding: 10rpx;
   position: relative;
   border: 1px solid #efefef;
   margin: 10rpx;
   background-color: rgba(1,1,1,0.05);
-}
-.taking{
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%);
-  color: #999;
-  font-size: 12px;
-}
-.no-img .card-pic{
-  height: 100rpx;
+  width: 200rpx;
+  height: 200rpx;
+  box-sizing: border-box;
+  overflow:hidden;
+  float: left;
 }
 .card-pic{
   width: 200rpx;
@@ -161,6 +160,39 @@ page .title {
 }
 .card-right{
   padding: 10rpx;
+  overflow:hidden;
+}
+.taking{
+  width: 100%;
+  height: 100%;
+}
+.taking .taking-bg, .taking .taking-icon{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.taking .taking-icon{
+  z-index: 1;
+}
+.taking .taking-icon image{
+  width: 60rpx;
+  height: 60rpx;
+  margin-top: 40rpx;
+  margin-bottom: 10rpx;
+}
+.taking .taking-bg{
+  width: 100%;
+  height: 100%;
+  filter: blur(3px);
+}
+.taking-icon{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: #ffffff;
+  font-size: 12px;
 }
 .card-title{
   font-size: 16px;
@@ -204,6 +236,7 @@ page .title {
   position: fixed;
   left: 40rpx;
   right: 40rpx;
+  border-radius: 3px;
 }
 .top-filter .van-transition {
   opacity: 0;
