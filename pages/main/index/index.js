@@ -14,8 +14,14 @@ const {
   schoolNatrue,
   schoolType
 } = require('../../../dict/index')
+const PDXQ = {
+  latitude: 31.221522,
+  longitude: 121.544374
+}
 Page({
   data: {
+    cardOffsetTop: wx.getSystemInfoSync().windowHeight - 300,
+    cardHeight: '300px',
     latitude: 32.079337,
     longitude: 121.592369,
     tabsShow: true,
@@ -28,11 +34,75 @@ Page({
     schoolName: '',
     schoolAddress: '',
 
+    areaTitle: '区域',
+    mainActiveIndex: 0,
+    activeId: 101,
+
     polygons: [],
-    markers: [],
+    markers: [{
+      id: 112,
+      latitude: PDXQ.latitude,
+      longitude: PDXQ.longitude,
+      width: 1,
+      height: 1,
+      count: 2,
+      name: '浦东',
+      iconPath: '../image/pin.png',
+      customCallout: {
+        anchorY: 0,
+        anchorX: 0,
+        display: 'ALWAYS'
+      }
+    },
+    {
+      id: 123333,
+      latitude: 31.231641,
+      longitude: 121.483979,
+      width: 1,
+      height: 1,
+      count: 2,
+      name: '黄浦',
+      iconPath: '../image/pin.png',
+      customCallout: {
+        anchorY: 0,
+        anchorX: 0,
+        display: 'ALWAYS'
+      }
+    }],
     includePoints: [],
-    customCalloutMarker: [],
-    mapScale: 10,
+    customCalloutMarker: [
+      {
+        id: 112,
+        latitude: PDXQ.latitude,
+        longitude: PDXQ.longitude,
+        width: 1,
+        height: 1,
+        count: 2,
+        name: '上海市浦东新区人名政府',
+        iconPath: '../image/pin.png',
+        customCallout: {
+          anchorY: 0,
+          anchorX: 0,
+          display: 'ALWAYS'
+        }
+      },
+      {
+        id: 123333,
+        latitude: 31.231641,
+        longitude: 121.483979,
+        width: 1,
+        height: 1,
+        count: 2,
+        name: '黄浦',
+        iconPath: '../image/pin.png',
+        customCallout: {
+          anchorY: 0,
+          anchorX: 0,
+          display: 'ALWAYS'
+        }
+      }
+    ],
+    mapScale: 11,
     list2: [],
     activeName: '',
     markers2: [],
@@ -63,7 +133,11 @@ Page({
     ],
     option3: [
       { text: '公办', value: 'a' },
-      { text: '私立', value: 'b' }
+      { text: '民办', value: 'b' }
+    ],
+    option4: [
+      { text: '重点', value: 'a' },
+      { text: '一般', value: 'b' }
     ],
     distance: 1,
     queryPlaceType: 'school',
@@ -86,12 +160,12 @@ Page({
     const initPos = await this.getCurPos()
     const { longitude, latitude } = initPos
     const { distance, queryPlaceType } = this.data
-    this.initNearby({
-      latitude,
-      longitude,
-      distance,
-      queryPlaceType
-    })
+    // this.initNearby({
+    //   latitude,
+    //   longitude,
+    //   distance,
+    //   queryPlaceType
+    // })
     // 设置窗口高度
   },
   // 获取当前位置
@@ -137,7 +211,7 @@ Page({
       this.setCenter(longitude, latitude)
     }
   },
-  showSearch() {
+  onClickTopSearch(data) {
     wx.navigateTo({
       url: '/pages/main/search/index'
     })
@@ -181,8 +255,8 @@ Page({
         fontSize: 12,
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: '#07c160',
-        bgColor: '#07c160',
+        borderColor: '#0092B6',
+        bgColor: '#0092B6',
         padding: 6,
         display: 'ALWAYS',
         textAlign: 'center'
@@ -276,11 +350,11 @@ Page({
       marker.iconPath = '../image/pin.png'
       marker.callout = {
         content: item.name,
-        color: '#07c160',
+        color: '#0092B6',
         fontSize: 12,
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: '#07c160',
+        borderColor: '#0092B6',
         bgColor: '#ffffff',
         padding: 6,
         display: 'ALWAYS',
@@ -352,12 +426,12 @@ Page({
         currentLatitude: latitude,
         currentLongitude: longitude
       })
-      this.initNearby({
-        latitude,
-        longitude,
-        distance,
-        queryPlaceType
-      })
+      // this.initNearby({
+      //   latitude,
+      //   longitude,
+      //   distance,
+      //   queryPlaceType
+      // })
     }
   },
 
@@ -472,20 +546,6 @@ Page({
     })
     this.onReady()
   },
-  onOpenDropdown() {
-    this.setData({
-      showOverlay: true
-    })
-  },
-  onCloseDropdown() {
-    this.setData({
-      showOverlay: false
-    })
-  },
-  onClickHideOverlay() {
-    console.log(this.selectComponent('#distanceDropdown'))
-    this.selectComponent('#distanceDropdown').toggle()
-  },
   onChangeDropdown(e) {
     console.log(e)
     const { currentTarget, detail } = e
@@ -551,5 +611,14 @@ Page({
         queryPlaceType: detail
       }
     )
+  },
+  onClickNav({ detail = {}}) {
+    this.setData({
+      mainActiveIndex: detail.index || 0
+    })
+  },
+  onClickItem({ detail = {}}) {
+    const activeId = this.data.activeId === detail.id ? null : detail.id
+    this.setData({ activeId })
   }
 })

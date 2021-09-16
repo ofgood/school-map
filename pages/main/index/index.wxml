@@ -1,47 +1,27 @@
 <view class='main-box'>
-  <view class="top-filter" wx:if="{{showNearBy}}">
-    <van-dropdown-menu active-color="#07c160">
-      <van-dropdown-item 
-      id="distanceDropdown"
-      value="{{ distance }}" 
-      options="{{ option1 }}"
-      bind:change="onChangeDistanceDropdown"
-      bind:open="onOpenDropdown"
-      bind:close="onCloseDropdown"/>
-      <van-dropdown-item
-      id="placeTypeDropdown" 
-      value="{{ queryPlaceType }}" 
-      options="{{ option2 }}"
-      bind:change="onChangePlaceTypeDropdown"
-      bind:open="onOpenDropdown"
-      bind:close="onCloseDropdown"/>
-    </van-dropdown-menu>
-  </view>
-  <van-overlay wx:if="{{showNearBy}}" z-index="{{998}}" show="{{ showOverlay }}" bind:click="onClickHideOverlay" />
   <!-- 地图 -->
   <map id="myMap" class="index-map" bindregionchange="regionchange" bindmarkertap="bindmarkertap" bindcallouttap="bindcallouttap" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" show-location>
     <cover-view slot="callout">
       <block wx:for="{{customCalloutMarker}}" wx:key="*this">
         <cover-view class="customCallout" marker-id="{{item.id}}">
-          <cover-view style="white-space:normal;margin-top: 20px;text-align:center;width:100%;min-height:40px">{{activeName}}</cover-view>
-          <cover-view style="margin-top: 4px;width:100%;text-align:center">
-            {{item.count}}
+          <cover-view style="width: 30px;height:30px;border-radius:30px;color:#fff;background-color: #0092B6;line-height:30px;">学</cover-view>
+          <cover-view style="margin-top: 4px;width:100%;text-align:center;position:absolute;bottom:-10px;color:#000;">
+              {{item.name}}
           </cover-view>
         </cover-view>
       </block>
     </cover-view>
   </map>
- <image wx:if="{{showNearBy}}" class="img-map" src="../image/pin.png"></image>
+ <!-- <image wx:if="{{showNearBy}}" class="img-map" src="../image/pin.png"></image> -->
+ <view class="top-filter-wrap">
+    <top-filter
+      bind:onClickSearch="onClickTopSearch"
+      bind:onClickItem="onClickItem"
+      bind:onClickNav="onClickNav">
+    </top-filter>
+ </view>
 
-  <!-- 底部搜索框 -->
-  <view class="cover-view" hidden="{{!tabsShow}}" style="height: 130rpx">
-    <view class="container">
-       <view class="tab-input" data-type="SCHOOL" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
-            <van-icon name="search" size="20px" />
-            请输入学校、小区
-          </view>
-    </view>
-  </view>
+
 
   <!-- 右侧工具栏-->
   <view class="right-btns-wrap" hover-class="none" hover-stop-propagation="false">
@@ -115,4 +95,8 @@
       </view>
     </view>
   </van-popup>
+
+    <custom-bottom-card bottomDistance="{{200}}">
+        12312312
+    </custom-bottom-card>
 </view>

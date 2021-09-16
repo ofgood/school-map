@@ -1,9 +1,5 @@
-const {
-  getViewHeight
-} = require('../../../utils/index')
-const {
-  getPlaceList
-} = require('../../../api/school-map')
+const { getViewHeight } = require('../../../utils/index')
+const { getPlaceList } = require('../../../api/school-map')
 const searchParams = {
   pageNo: 1,
   pageSize: 15,

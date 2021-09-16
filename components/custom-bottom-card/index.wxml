@@ -1,0 +1,7 @@
+<view class="content {{animate ? 'animate' : ''}}"
+      bindtouchstart="handleTouchStart"
+      catch:touchmove="handleTouchMove"
+      style="transform: translateY({{translateY}}px); top:{{winHeight}}px; height:{{wrapHeight}}px"
+>
+    <slot/>
+</view>

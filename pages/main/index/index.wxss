@@ -7,11 +7,11 @@ page .title {
   font-weight: bold;
 }
 .cover-view {
-  position: absolute;
+  /* position: absolute;
   right: 40rpx;
   left: 40rpx;
-  bottom: 30rpx;
-  border-radius: 6px;
+  bottom: 30rpx; */
+  /* border-radius: 6px; */
 }
 .index-map{
   width: 100%;
@@ -73,61 +73,14 @@ page .title {
 .list-btn .ctrl-text{
   margin-top: -4px;
 }
-.tab-input{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 80rpx;
-  line-height: 80rpx;
-  font-size: 13px;
-  color: #666;
-  text-align: center;
-  background-color: #fff;
-}
-.container{
-  overflow:hidden;
-}
-.container .van-tabs__line {
-  height: 200rpx;
-  border-radius: 0;
-  bottom: -3rpx;
-  background-color: #fff;
-}
-.container .van-tabs__line::before {
- content: "";
- position: absolute;
- background-color: #07c160;
- width: 40rpx;
- bottom: 10rpx;
- height: 4rpx;
- left: 50%;
- margin-left: -20rpx;
-}
-.container .van-tab {
-  z-index: 2;
-}
-.container .van-tabs__scroll {
-  background-color: rgba(1,1,1,.6);
-}
-.container .van-tabs {
-  border-top-right-radius: 10rpx;
-  border-top-left-radius: 10rpx;
-  overflow:hidden;
-}
-.container {
-  --tabs-line-height: 38px;
-}
 .customCallout {
   box-sizing: border-box;
-  background-color: #fff; 
   border:none;
-  border-radius: 60px;
-  height: 100px;
+  height: 50px;
   width: 100px;
   padding: 6px;
   font-size: 12px;
   color: #fff;
-  background-color:  #07c160;
   text-align: center;
 }
 .img-map{
@@ -214,7 +167,7 @@ page .title {
 }
 .card-tag{
   padding: 4rpx 6rpx;
-  background-color: #07c160;
+  background-color: #0092B6;
   color: #fff;
   font-size: 12px;
   vertical-align: middle;
@@ -225,19 +178,15 @@ page .title {
 .main-box{
   box-shadow: 2px -2px 2px 1px rgba(1,1,1,.2);
 }
-.top-filter{
-  position: fixed;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  top: 30rpx;
+
+.card-bottom{
+  width: 100vw;
+  background:blue;
 }
-.top-filter .van-dropdown-item, .top-filter .van-dropdown-menu {
+.top-filter-wrap{
   position: fixed;
-  left: 40rpx;
-  right: 40rpx;
-  border-radius: 3px;
-}
-.top-filter .van-transition {
-  opacity: 0;
+  top: 20rpx;
+  right: 20rpx;
+  left: 20rpx;
+  z-index: 9999;
 }
