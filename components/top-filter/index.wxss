@@ -1,0 +1,74 @@
+
+.tab-input{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    height: 80rpx;
+    padding-left: 20rpx;
+    line-height: 80rpx;
+    font-size: 13px;
+    color: #666;
+    text-align: left;
+    background-color: #fff;
+}
+.top-filter .van-dropdown-item, .top-filter .van-dropdown-menu {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.top-filter.open .van-dropdown-item, .top-filter.open .van-dropdown-menu  {
+  border-radius: 0;
+}
+.top-filter.open .van-dropdown-item--down{
+  border-radius: 0;
+}
+.top-filter .van-transition {
+  opacity: 0;
+}
+.top-filter .van-info--dot {
+  background-color: #0092B6;
+}
+.top-filter .van-sidebar-item--selected {
+  border-color: #0092B6;
+}
+.top-filter .van-tree-select__item--active {
+  color: #0092B6;
+}
+.top-filter-btns {
+  display: flex;
+  height: 100rpx;
+  align-items: center;
+}
+.top-filter-reset{
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100rpx;
+  height: 80rpx;
+  text-align: center;
+}
+.top-filter-comfirm{
+  flex: 4;
+  padding: 20rpx;
+  padding-left: 0;
+}
+.top-filter-comfirm .van-button--block {
+  height: 76rpx;
+}
+.top-filter-btns .van-button--default { 
+  border: none;
+  height: 76rpx;
+}
+.top-filter .van-tree-select__content {
+  flex: 4;
+}
+
+.top-filter .van-dropdown-item {
+  left: 20rpx;
+  right: 20rpx;
+}
+.container{
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  overflow: hidden;
+}

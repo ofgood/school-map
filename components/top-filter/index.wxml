@@ -1,0 +1,112 @@
+
+
+<view class="top-filter-warp">
+  <view class="top-search">
+    <view>
+      <view class="container">
+        <view class="tab-input" data-type = "onClickSearch"  bindtap="eventsHandle">
+              <van-icon name="search" style="margin-right:10px" size="20px"/>
+              请输入学校或小区名称
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="top-filter" class="{{showOverlay ? 'open top-filter' : 'top-filter'}}">
+      <van-dropdown-menu active-color="#0092B6" overlay="{{false}}">
+        <van-dropdown-item
+        id="distanceDropdown"
+        value="{{ distance }}"
+        title="{{areaTitle}}"
+        bind:change="onChangeDistanceDropdown"
+        bind:open="onOpenDropdown"
+        bind:close="onCloseDropdown">
+        <view class="dropdown-item-customer">
+          <van-tree-select
+            items="{{ area }}"
+            main-active-index="{{ areaActiveIndex }}"
+            active-id="{{ areaActiveId }}"
+            bind:click-nav="onClickNav"
+            bind:click-item="onClickItem"/>
+        </view>
+        <view class="top-filter-btns">
+          <view class="top-filter-reset" >
+            <van-button type="default" block>重置</van-button>
+          </view>
+          <view class="top-filter-comfirm">
+            <van-button color="#0092B6" block>确定</van-button>
+          </view>
+        </view>
+        </van-dropdown-item>
+      <van-dropdown-item
+        title="类型"
+        id="placeTypeDropdown" 
+        value="{{ queryPlaceType }}" 
+        options="{{ option2 }}"
+        bind:change="onChangePlaceTypeDropdown"
+        bind:open="onOpenDropdown"
+        bind:close="onCloseDropdown">
+        <view class="top-filter-btns">
+          <view class="top-filter-reset">
+            <van-button type="default" block>重置</van-button>
+          </view>
+          <view class="top-filter-comfirm">
+            <van-button color="#0092B6" block>确定</van-button>
+          </view>
+        </view>
+        </van-dropdown-item>
+        <van-dropdown-item
+        title="公民"
+        id="item3" 
+        value="{{ queryPlaceType }}" 
+        options="{{ option3 }}"
+        bind:change="onChangePlaceTypeDropdown"
+        bind:open="onOpenDropdown"
+        bind:close="onCloseDropdown">
+        <view class="top-filter-btns">
+          <view class="top-filter-reset">
+            <van-button type="default" block>重置</van-button>
+          </view>
+          <view class="top-filter-comfirm">
+            <van-button color="#0092B6" block>确定</van-button>
+          </view>
+        </view>
+        </van-dropdown-item>
+        <van-dropdown-item
+        title="重点"
+        id="item4" 
+        value="{{ queryPlaceType }}" 
+        options="{{ option4 }}"
+        bind:change="onChangePlaceTypeDropdown"
+        bind:open="onOpenDropdown"
+        bind:close="onCloseDropdown">
+        <view class="top-filter-btns">
+          <view class="top-filter-reset">
+            <van-button type="default" block>重置</van-button>
+          </view>
+          <view class="top-filter-comfirm">
+            <van-button color="#0092B6" block>确定</van-button>
+          </view>
+        </view>
+        </van-dropdown-item>
+        <van-dropdown-item
+        title="更多"
+        id="item5" 
+        bind:change="onChangePlaceTypeDropdown"
+        bind:open="onOpenDropdown"
+        bind:close="onCloseDropdown">
+        <view class="" style="height: 60px;text-align:center;">
+          更多
+        </view>
+        <view class="top-filter-btns">
+          <view class="top-filter-reset">
+            <van-button type="default" block>重置</van-button>
+          </view>
+          <view class="top-filter-comfirm">
+            <van-button color="#0092B6" block>确定</van-button>
+          </view>
+        </view>
+        </van-dropdown-item>
+      </van-dropdown-menu>
+    </view>
+    <van-overlay z-index="{{-1}}" show="{{ showOverlay }}" bind:click="onClickOverlay" />
+</view>
