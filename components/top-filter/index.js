@@ -3,7 +3,8 @@ Component({
     styleIsolation: 'shared'
   },
   data: {
-    showOverlay: false
+    showOverlay: false,
+    dropDownIdList: ['#areaDropdown', '#placeTypeDropdown', '#publicOrPrivteDropDown', '#levelDropDown', '#moreDropDown']
   },
   properties: {
     area: {
@@ -102,9 +103,11 @@ Component({
       this.triggerEvent('onClickItem')
     },
     onClickOverlay() {
+      // const { dropDownIdList } = this.data
+      // dropDownIdList.forEach(item =>
+      //   this.selectComponent(item).toggle(false)
+      // )
       this.triggerEvent('onClickOverlay')
-      ['#'].forEach(item =>  this.selectComponent(item).toggle(false))
-
     },
     onOpenDropdown() {
       this.triggerEvent('onOpenDropdown')

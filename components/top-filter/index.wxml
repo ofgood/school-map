@@ -11,10 +11,10 @@
       </view>
     </view>
   </view>
-  <view class="top-filter" class="{{showOverlay ? 'open top-filter' : 'top-filter'}}">
-      <van-dropdown-menu active-color="#0092B6" overlay="{{false}}">
+  <view class="{{showOverlay ? 'open top-filter' : 'top-filter'}}">
+      <van-dropdown-menu close-on-click-overlay="{{true}}" active-color="#0092B6" overlay="{{true}}">
         <van-dropdown-item
-        id="distanceDropdown"
+        id="areaDropdown"
         value="{{ distance }}"
         title="{{areaTitle}}"
         bind:change="onChangeDistanceDropdown"
@@ -39,8 +39,8 @@
         </van-dropdown-item>
       <van-dropdown-item
         title="类型"
-        id="placeTypeDropdown" 
-        value="{{ queryPlaceType }}" 
+        id="placeTypeDropdown"
+        value="{{ queryPlaceType }}"
         options="{{ option2 }}"
         bind:change="onChangePlaceTypeDropdown"
         bind:open="onOpenDropdown"
@@ -56,8 +56,8 @@
         </van-dropdown-item>
         <van-dropdown-item
         title="公民"
-        id="item3" 
-        value="{{ queryPlaceType }}" 
+        id="publicOrPrivteDropDown"
+        value="{{ queryPlaceType }}"
         options="{{ option3 }}"
         bind:change="onChangePlaceTypeDropdown"
         bind:open="onOpenDropdown"
@@ -73,8 +73,8 @@
         </van-dropdown-item>
         <van-dropdown-item
         title="重点"
-        id="item4" 
-        value="{{ queryPlaceType }}" 
+        id="levelDropDown"
+        value="{{ queryPlaceType }}"
         options="{{ option4 }}"
         bind:change="onChangePlaceTypeDropdown"
         bind:open="onOpenDropdown"
@@ -90,7 +90,7 @@
         </van-dropdown-item>
         <van-dropdown-item
         title="更多"
-        id="item5" 
+        id="moreDropDown"
         bind:change="onChangePlaceTypeDropdown"
         bind:open="onOpenDropdown"
         bind:close="onCloseDropdown">
@@ -108,5 +108,5 @@
         </van-dropdown-item>
       </van-dropdown-menu>
     </view>
-    <van-overlay z-index="{{-1}}" show="{{ showOverlay }}" bind:click="onClickOverlay" />
+  <van-overlay z-index="{{-1}}" show="{{ showOverlay }}" bind:click="onClickOverlay" />
 </view>

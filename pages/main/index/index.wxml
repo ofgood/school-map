@@ -49,54 +49,56 @@
   </view>
 
   <!-- 底部弹出卡片 -->
-  <van-popup
-    overlay="{{false}}"
-    show="{{ showPlaceCard }}"
-    closeable
-    close-icon-position="top-right"
-    position="bottom"
-    bind:close="onClosePlaceCard">
-    <view class="bottom-card">
-      <view class="card-img">
-        <view class="place-img" wx:if="{{placeInfo.hasImg}}">
-          <image class="card-pic" src="{{placeInfo.imgSrc}}" mode="aspectFill}" lazy-load="false"></image>
-        </view>
-        <view class="taking" wx:else selectable="false" space="false" decode="false">
-          <view class="taking-icon" hover-class="none" hover-stop-propagation="false">
-           <image src="{{placeInfo.takingIcon}}" mode="center" lazy-load="false"></image>
-            收集中
-          </view>
-          <view class="taking-bg" hover-class="none" hover-stop-propagation="false">
-             <image class="card-pic" src="{{placeInfo.takingBg}}" mode="aspectFill" lazy-load="false"></image>
-          </view>
-        </view>
-      </view>
-      <view class="card-right">
-        <view class="card-title">
-          {{placeInfo.title}}
-        </view>
-        <view class="" wx:if="{{placeInfo.placeType === 2}}">
-          <view class="card-price" wx:if="{{placeInfo.price}}">
-          {{placeInfo.price ?placeInfo.price + '元/m²' : '' }}
-        </view>
-        <view class="card-price-tip" wx:else>
-          房价更新中
-        </view>
-        </view>
-        <view class="card-time">
-          {{placeInfo.buildDate ? placeInfo.buildDate: ''}}
-          {{placeInfo.plate ? placeInfo.plate: ''}}
-        </view>
-        <view class="card-tags">
-          <view class="card-tag" wx:for="{{placeInfo.tags}}" wx:key="*this">
-            {{item}}
-          </view>
-        </view>
-      </view>
-    </view>
-  </van-popup>
+<!--  <van-popup-->
+<!--    overlay="{{false}}"-->
+<!--    show="{{ showPlaceCard }}"-->
+<!--    closeable-->
+<!--    close-icon-position="top-right"-->
+<!--    position="bottom"-->
+<!--    bind:close="onClosePlaceCard">-->
+<!--    <view class="bottom-card">-->
+<!--      <view class="card-img">-->
+<!--        <view class="place-img" wx:if="{{placeInfo.hasImg}}">-->
+<!--          <image class="card-pic" src="{{placeInfo.imgSrc}}" mode="aspectFill}" lazy-load="false"></image>-->
+<!--        </view>-->
+<!--        <view class="taking" wx:else selectable="false" space="false" decode="false">-->
+<!--          <view class="taking-icon" hover-class="none" hover-stop-propagation="false">-->
+<!--           <image src="{{placeInfo.takingIcon}}" mode="center" lazy-load="false"></image>-->
+<!--            收集中-->
+<!--          </view>-->
+<!--          <view class="taking-bg" hover-class="none" hover-stop-propagation="false">-->
+<!--             <image class="card-pic" src="{{placeInfo.takingBg}}" mode="aspectFill" lazy-load="false"></image>-->
+<!--          </view>-->
+<!--        </view>-->
+<!--      </view>-->
+<!--      <view class="card-right">-->
+<!--        <view class="card-title">-->
+<!--          {{placeInfo.title}}-->
+<!--        </view>-->
+<!--        <view class="" wx:if="{{placeInfo.placeType === 2}}">-->
+<!--          <view class="card-price" wx:if="{{placeInfo.price}}">-->
+<!--          {{placeInfo.price ?placeInfo.price + '元/m²' : '' }}-->
+<!--        </view>-->
+<!--        <view class="card-price-tip" wx:else>-->
+<!--          房价更新中-->
+<!--        </view>-->
+<!--        </view>-->
+<!--        <view class="card-time">-->
+<!--          {{placeInfo.buildDate ? placeInfo.buildDate: ''}}-->
+<!--          {{placeInfo.plate ? placeInfo.plate: ''}}-->
+<!--        </view>-->
+<!--        <view class="card-tags">-->
+<!--          <view class="card-tag" wx:for="{{placeInfo.tags}}" wx:key="*this">-->
+<!--            {{item}}-->
+<!--          </view>-->
+<!--        </view>-->
+<!--      </view>-->
+<!--    </view>-->
+<!--  </van-popup>-->
 
-    <custom-bottom-card bottomDistance="{{200}}">
-        12312312
+    <custom-bottom-card bottomDistance="{{0}}">
+        <view>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, fugiat.
+        </view>
     </custom-bottom-card>
 </view>
