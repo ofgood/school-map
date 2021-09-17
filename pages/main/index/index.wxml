@@ -14,11 +14,11 @@
   </map>
  <!-- <image wx:if="{{showNearBy}}" class="img-map" src="../image/pin.png"></image> -->
  <view class="top-filter-wrap">
-    <top-filter
+    <custom-top-filter
       bind:onClickSearch="onClickTopSearch"
       bind:onClickItem="onClickItem"
       bind:onClickNav="onClickNav">
-    </top-filter>
+    </custom-top-filter>
  </view>
 
 

@@ -92,9 +92,8 @@ Component({
     }
   },
   methods: {
-    eventsHandle(e) {
-      const { type } = e.target.dataset
-      this.triggerEvent(type)
+    onClickSearch() {
+      this.triggerEvent('onClickSearch')
     },
     onClickNav(data) {
       this.triggerEvent('onClickNav')

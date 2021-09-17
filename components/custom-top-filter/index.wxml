@@ -1,16 +1,7 @@
 
 
 <view class="top-filter-warp">
-  <view class="top-search">
-    <view>
-      <view class="container">
-        <view class="tab-input" data-type = "onClickSearch"  bindtap="eventsHandle">
-              <van-icon name="search" style="margin-right:10px" size="20px"/>
-              请输入学校或小区名称
-        </view>
-      </view>
-    </view>
-  </view>
+  <custom-search-bar bind:onClick="onClickSearch"></custom-search-bar>
   <view class="{{showOverlay ? 'open top-filter' : 'top-filter'}}">
       <van-dropdown-menu close-on-click-overlay="{{true}}" active-color="#0092B6" overlay="{{true}}">
         <van-dropdown-item

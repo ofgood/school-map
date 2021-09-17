@@ -6,7 +6,7 @@
     "van-overlay": "@vant/weapp/overlay/index",
     "van-tree-select": "@vant/weapp/tree-select/index",
     "van-button": "@vant/weapp/button/index",
-    "top-filter": "../../../components/top-filter/index",
+    "custom-top-filter": "../../../components/custom-top-filter/index",
     "custom-bottom-card": "../../../components/custom-bottom-card/index"
   }
 }
