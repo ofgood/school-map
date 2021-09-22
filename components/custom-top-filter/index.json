@@ -5,6 +5,7 @@
       "van-overlay": "@vant/weapp/overlay/index",
       "van-tree-select": "@vant/weapp/tree-select/index",
       "van-button": "@vant/weapp/button/index",
-      "custom-search-bar": "../custom-search-bar/index"
+      "custom-search-bar": "../custom-search-bar/index",
+      "van-cell": "@vant/weapp/cell/index"
     }
   }

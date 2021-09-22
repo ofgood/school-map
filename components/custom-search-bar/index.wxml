@@ -1,0 +1,10 @@
+<view class="top-search">
+    <view>
+        <view class="container">
+            <view class="tab-input" bindtap="onClickSearch">
+                <van-icon name="search" style="margin-right:10px" size="20px"/>
+                请输入学校或小区名称
+            </view>
+        </view>
+    </view>
+</view>

@@ -59,3 +59,8 @@
   border-top-right-radius: 4px;
   overflow: hidden;
 }
+.dropdown-custom-item{
+  height: 40rpx;
+  line-height: 40rpx;
+  padding-left: 12px;
+}

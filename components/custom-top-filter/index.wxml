@@ -11,7 +11,7 @@
         bind:change="onChangeDistanceDropdown"
         bind:open="onOpenDropdown"
         bind:close="onCloseDropdown">
-        <view class="dropdown-item-customer">
+        <view class="dropdown-custom-wrap">
           <van-tree-select
             items="{{ area }}"
             main-active-index="{{ areaActiveIndex }}"
@@ -32,10 +32,12 @@
         title="类型"
         id="placeTypeDropdown"
         value="{{ queryPlaceType }}"
-        options="{{ option2 }}"
         bind:change="onChangePlaceTypeDropdown"
         bind:open="onOpenDropdown"
         bind:close="onCloseDropdown">
+        <view class="dropdown-custom-wrap">
+          <van-cell title="{{item.name}}" wx:key="type" wx:for="{{types}}" icon="{{schoolType === item.type ? '' : ''}}"/>
+        </view>
         <view class="top-filter-btns">
           <view class="top-filter-reset">
             <van-button type="default" block>重置</van-button>
@@ -46,7 +48,7 @@
         </view>
         </van-dropdown-item>
         <van-dropdown-item
-        title="公民"
+        title="性质"
         id="publicOrPrivteDropDown"
         value="{{ queryPlaceType }}"
         options="{{ option3 }}"

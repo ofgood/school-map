@@ -70,10 +70,24 @@ Component({
       type: Number,
       value: 101
     },
-    types: {
+    schoolTypes: {
       type: Array,
-      value: []
+      value: [
+        {
+          type: 'nursery',
+          name: '幼儿园'
+        },
+        {
+          type: 'primary',
+          name: '小学'
+        },
+        {
+          type: 'junior',
+          name: '初中'
+        }
+      ]
     },
+    schoolType: 'primary',
     publicOrPrivte: {
       type: Array,
       value: []
