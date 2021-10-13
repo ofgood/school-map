@@ -1,5 +1,3 @@
-
-
 <view class="top-filter-warp">
   <custom-search-bar bind:onClick="onClickSearch"></custom-search-bar>
   <view class="{{showOverlay ? 'open top-filter' : 'top-filter'}}">
@@ -21,10 +19,10 @@
         </view>
         <view class="top-filter-btns">
           <view class="top-filter-reset" >
-            <van-button type="default" block>重置</van-button>
+            <van-button type="default" block bind:click="onClickReset">重置</van-button>
           </view>
           <view class="top-filter-comfirm">
-            <van-button color="#0092B6" block>确定</van-button>
+            <van-button color="#0092B6" block bind:click="onClickConfirm">确定</van-button>
           </view>
         </view>
         </van-dropdown-item>
@@ -36,14 +34,16 @@
         bind:open="onOpenDropdown"
         bind:close="onCloseDropdown">
         <view class="dropdown-custom-wrap">
-          <van-cell title="{{item.name}}" wx:key="type" wx:for="{{types}}" icon="{{schoolType === item.type ? '' : ''}}"/>
+          <van-cell title="{{item.name}}" wx:key="type" wx:for="{{schoolTypes}}" data-type="schoolType" data-value="{{item.type}}" bind:click="onclickCustomDropdownItem">
+            <van-icon slot="right-icon" color="#0092B6" name="{{schoolType === item.type ? 'success' : ''}}" class="custom-icon" />
+          </van-cell>
         </view>
         <view class="top-filter-btns">
           <view class="top-filter-reset">
-            <van-button type="default" block>重置</van-button>
+            <van-button type="default" block bind:click="onClickReset">重置</van-button>
           </view>
           <view class="top-filter-comfirm">
-            <van-button color="#0092B6" block>确定</van-button>
+            <van-button color="#0092B6" block bind:click="onClickConfirm">确定</van-button>
           </view>
         </view>
         </van-dropdown-item>
@@ -51,16 +51,20 @@
         title="性质"
         id="publicOrPrivteDropDown"
         value="{{ queryPlaceType }}"
-        options="{{ option3 }}"
         bind:change="onChangePlaceTypeDropdown"
         bind:open="onOpenDropdown"
         bind:close="onCloseDropdown">
+        <view class="dropdown-custom-wrap">
+          <van-cell title="{{item.name}}" wx:key="type" wx:for="{{publicOrPrivte}}" data-type="nature" data-value="{{item.type}}" bind:click="onclickCustomDropdownItem">
+            <van-icon color="#0092B6" slot="right-icon" name="{{nature === item.type ? 'success' : ''}}" class="custom-icon" />
+          </van-cell>
+        </view>
         <view class="top-filter-btns">
           <view class="top-filter-reset">
-            <van-button type="default" block>重置</van-button>
+            <van-button type="default" block bind:click="onClickReset">重置</van-button>
           </view>
           <view class="top-filter-comfirm">
-            <van-button color="#0092B6" block>确定</van-button>
+            <van-button color="#0092B6" block bind:click="onClickConfirm">确定</van-button>
           </view>
         </view>
         </van-dropdown-item>
@@ -72,12 +76,17 @@
         bind:change="onChangePlaceTypeDropdown"
         bind:open="onOpenDropdown"
         bind:close="onCloseDropdown">
+        <view class="dropdown-custom-wrap">
+          <van-cell title="{{item.name}}" wx:key="type" wx:for="{{levels}}" data-type="level" data-value="{{item.type}}" bind:click="onclickCustomDropdownItem">
+            <van-icon slot="right-icon" color="#0092B6" name="{{level === item.type ? 'success' : ''}}" class="custom-icon" />
+          </van-cell>
+        </view>
         <view class="top-filter-btns">
           <view class="top-filter-reset">
-            <van-button type="default" block>重置</van-button>
+            <van-button type="default" block bind:click="onClickReset">重置</van-button>
           </view>
           <view class="top-filter-comfirm">
-            <van-button color="#0092B6" block>确定</van-button>
+            <van-button color="#0092B6" block bind:click="onClickConfirm">确定</van-button>
           </view>
         </view>
         </van-dropdown-item>
@@ -87,15 +96,15 @@
         bind:change="onChangePlaceTypeDropdown"
         bind:open="onOpenDropdown"
         bind:close="onCloseDropdown">
-        <view class="" style="height: 60px;text-align:center;">
-          更多
+        <view class=""  style="height: 100px;line-height:100px;text-align:center;">
+          敬请期待!
         </view>
         <view class="top-filter-btns">
           <view class="top-filter-reset">
-            <van-button type="default" block>重置</van-button>
+            <van-button type="default" block bind:click="onClickReset">重置</van-button>
           </view>
           <view class="top-filter-comfirm">
-            <van-button color="#0092B6" block>确定</van-button>
+            <van-button color="#0092B6" block bind:click="onClickConfirm">确定</van-button>
           </view>
         </view>
         </van-dropdown-item>

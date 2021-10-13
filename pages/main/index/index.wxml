@@ -2,7 +2,7 @@
   <!-- 地图 -->
   <map id="myMap" class="index-map" bindregionchange="regionchange" bindmarkertap="bindmarkertap" bindcallouttap="bindcallouttap" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" show-location>
     <cover-view slot="callout">
-      <block wx:for="{{customCalloutMarker}}" wx:key="*this">
+      <block wx:for="{{customCalloutMarker}}" wx:key="id">
         <cover-view class="customCallout" marker-id="{{item.id}}">
           <cover-view style="width: 30px;height:30px;border-radius:30px;color:#fff;background-color: #0092B6;line-height:30px;">学</cover-view>
           <cover-view style="margin-top: 4px;width:100%;text-align:center;position:absolute;bottom:-10px;color:#000;">

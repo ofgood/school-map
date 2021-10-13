@@ -1,3 +1,5 @@
+import '../../utils/lodash-fix'
+import _ from 'lodash'
 Component({
   options: {
     styleIsolation: 'shared'
@@ -34,7 +36,7 @@ Component({
             },
             {
               text: '闵行',
-              id: 103,
+              id: 104,
               disabled: true
             }
           ]
@@ -87,14 +89,43 @@ Component({
         }
       ]
     },
-    schoolType: 'primary',
+    schoolType: {
+      type: String,
+      value: 'primary'
+    },
     publicOrPrivte: {
       type: Array,
-      value: []
+      value: [
+        {
+          type: 'public',
+          name: '公办'
+        },
+        {
+          type: 'privte',
+          name: '民办'
+        }
+      ]
+    },
+    nature: {
+      type: String,
+      value: 'public'
     },
     levels: {
       type: Array,
-      value: []
+      value: [
+        {
+          type: '1',
+          name: '重点'
+        },
+        {
+          type: '2',
+          name: '普通'
+        }
+      ]
+    },
+    level: {
+      type: String,
+      value: '1'
     },
     more: {
       type: String,
@@ -105,21 +136,24 @@ Component({
       value: 1
     }
   },
+  ready() {
+    const data = { a: 1 }
+    console.log(_.cloneDeep(data))
+  },
   methods: {
     onClickSearch() {
       this.triggerEvent('onClickSearch')
     },
-    onClickNav(data) {
-      this.triggerEvent('onClickNav')
+    onClickNav({ detail }) {
+      this.setData({
+        areaActiveIndex: detail.index || 0
+      });
     },
-    onClickItem() {
-      this.triggerEvent('onClickItem')
+    onClickItem({ detail }) {
+      const activeId = this.data.areaActiveId === detail.id ? null : detail.id
+      this.setData({ areaActiveId: activeId })
     },
     onClickOverlay() {
-      // const { dropDownIdList } = this.data
-      // dropDownIdList.forEach(item =>
-      //   this.selectComponent(item).toggle(false)
-      // )
       this.triggerEvent('onClickOverlay')
     },
     onOpenDropdown() {
@@ -133,6 +167,26 @@ Component({
       this.setData({
         showOverlay: false
       })
+    },
+    onclickCustomDropdownItem({ target }) {
+      const { dataset } = target
+      const { type, value } = dataset
+      this.setData({
+        [type]: value
+      })
+    },
+    onClickConfirm() {
+      this.triggerEvent('onClickConfirm', {
+        ...this.data
+      })
+    },
+    onClickReset() {
+      console.log(this)
+      this.triggerEvent('onClickReset')
+    },
+    resetData({ target }) {
+      const { dataset } = target
+      console.log(this)
     }
   }
 })
