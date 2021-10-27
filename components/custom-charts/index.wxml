@@ -1,4 +1,4 @@
-<view class="chart-content">
+<view class="chart-content" bindtap="onClickChartContent">
         <view class="chart-left">
             <view class="chart-left-item">
                 <view>在校人数</view>
@@ -11,7 +11,7 @@
         </view>
         <view class="chart-right">
             <view class="chart-box">
-                <view class="chart-item {{item.type}} {{idx === activeIndex ? 'active': ''}}" data-index="{{ idx }}" wx:for="{{areaData}}" wx:for-index="idx" bindtap="onClickChartItem">
+                <view class="chart-item {{item.type}} {{idx === activeIndex ? 'active': ''}}" style="z-index:{{idx === activeIndex ? 9999: 1}}" data-index="{{ idx }}" wx:for="{{areaData}}" wx:for-index="idx" catchtap="onClickChartItem">
                     <view class="top-chart" style="height:{{item.studentCount*30/500000}}px;">
                         <view class="chart-text">{{item.studentCount/10000}}w</view>
                     </view>
@@ -24,7 +24,21 @@
                     </view>
                     <view class="chart-mask">
                     </view>
-                    <view class="chart-tooltips bottom">
+                    <view class="chart-tooltips bottom {{item.type === 'high' ? 'right': ''}}">
+                        <view class="chart-info">
+                            <view class="chart-info-item">
+                                <view class="chart-info-title">学校数量:</view>
+                                <view class="chart-info-detail">{{item.schoolCount}}所</view>
+                            </view>
+                            <view class="chart-info-item">
+                                <view class="chart-info-title">在校人数:</view>
+                                <view class="chart-info-detail">{{item.studentCount/10000}}万人</view>
+                            </view>
+                            <view class="chart-info-item">
+                                <view class="chart-info-title">在校生年度增减比:</view>
+                                <view class="chart-info-detail tip-color">-0.02%</view>
+                            </view>
+                        </view>
                     </view>
                 </view>
                 <view class="chart-line-top chart-line">

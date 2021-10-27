@@ -26,7 +26,7 @@ Page({
     longitude: 121.592369,
     tabsShow: true,
     showTopFilter: true,
-    bottomDistance: 220,
+    bottomDistance: 230,
     isScrollY: false,
     scrollHeight: '',
 

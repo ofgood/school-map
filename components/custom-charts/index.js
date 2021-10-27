@@ -27,9 +27,15 @@ Component({
   },
   methods: {
     onClickChartItem (data) {
+      console.log('data1', data)
       const { index: activeIndex } = data.currentTarget.dataset
       this.setData({
         activeIndex
+      })
+    },
+    onClickChartContent(data) {
+      this.setData({
+        activeIndex: -1
       })
     }
   }
