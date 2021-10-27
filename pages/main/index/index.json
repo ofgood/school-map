@@ -7,6 +7,7 @@
     "van-tree-select": "@vant/weapp/tree-select/index",
     "van-button": "@vant/weapp/button/index",
     "custom-top-filter": "../../../components/custom-top-filter/index",
-    "custom-bottom-card": "../../../components/custom-bottom-card/index"
+    "custom-bottom-card": "../../../components/custom-bottom-card/index",
+    "custom-charts": "../../../components/custom-charts/index"
   }
 }

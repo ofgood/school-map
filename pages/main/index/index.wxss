@@ -190,3 +190,33 @@ page .title {
   left: 20rpx;
   z-index: 9999;
 }
+.bottom-card-top{
+  display: flex;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 10px 10px;
+  box-shadow: inset 0 -3px 5px 1px rgba(0,0,0,.04);
+}
+.card-top-left{
+  display: flex;
+  align-items: center;
+}
+.card-top-right{
+  display: flex;
+  font-size: 20px;
+}
+.card-top-btn{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  margin-right: 10px;
+}
+.card-top-icon{
+  margin-bottom: 4px;
+  width: 20px;
+  height: 20px;
+}

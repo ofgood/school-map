@@ -1,5 +1,6 @@
 <view class="content {{animate ? 'animate' : ''}}"
       bindtouchstart="handleTouchStart"
+      bindtouchend="handleTouchEnd"
       catch:touchmove="handleTouchMove"
       style="transform: translateY({{translateY}}px); top:{{winHeight}}px; height:{{wrapHeight}}px"
 >

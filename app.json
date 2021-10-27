@@ -6,7 +6,7 @@
   ],
   "window":{
     "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "地图",
+    "navigationBarTitleText": "小鸡上学",
     "navigationBarTextStyle":"black"
   },
   "sitemapLocation": "sitemap.json",

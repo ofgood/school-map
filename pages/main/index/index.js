@@ -25,6 +25,10 @@ Page({
     latitude: 32.079337,
     longitude: 121.592369,
     tabsShow: true,
+    showTopFilter: true,
+    bottomDistance: 220,
+    isScrollY: false,
+    scrollHeight: '',
 
     duration: 300,
     position: 'center',
@@ -152,9 +156,9 @@ Page({
   onShow() {
   },
   async onReady() {
+    this.setScrollViewHeight()
     // 创建地图实例
     this.mapCtx = wx.createMapContext('myMap')
-
     // 初始化中心点
     await this.initCenter()
     const initPos = await this.getCurPos()
@@ -167,6 +171,12 @@ Page({
     //   queryPlaceType
     // })
     // 设置窗口高度
+  },
+  setScrollViewHeight() {
+    const customBottomCard = this.selectComponent('#customBottomCard');
+    this.setData({
+      scrollHeight: customBottomCard.__data__.wrapHeight + 'px'
+    })
   },
   // 获取当前位置
   getCurPos() {
@@ -391,18 +401,19 @@ Page({
     this.setData({ showOverlay: false })
   },
   async bindcallouttap(e) {
-    const { markerId } = e.detail
-    this.setData({
-      showNearBy: false
-    })
-    if (markerId === 9999999) {
-      this.setData({ customCalloutMarker: [], markers: this.data.markers2 })
-      return
-    }
-    const activeMarker = this.getActiveMarkerById(markerId)
-    const { type } = activeMarker
-    await this.renderMap(markerId, type, true)
-    this.showPlaceCard()
+    // const { markerId } = e.detail
+    // this.setData({
+    //   showNearBy: false
+    // })
+    // if (markerId === 9999999) {
+    //   this.setData({ customCalloutMarker: [], markers: this.data.markers2 })
+    //   return
+    // }
+    // const activeMarker = this.getActiveMarkerById(markerId)
+    // const { type } = activeMarker
+    // await this.renderMap(markerId, type, true)
+    // this.showPlaceCard()
+    this.onOpenCard()
   },
   getActiveMarkerById(markerId) {
     let result = {}
@@ -415,6 +426,7 @@ Page({
   },
   bindmarkertap(e) {
     console.log(e)
+    // this.onOpenCard()
   },
   regionchange(e) {
     if (this.data.showNearBy && (e.type === 'end')) {
@@ -498,7 +510,7 @@ Page({
         buildDate,
         placeType: placeType,
         hasImg,
-        takingBg: '../image/bg.png',
+        takingBg: '',
         takingIcon: '../image/camera.png'
       }
     })
@@ -620,5 +632,21 @@ Page({
   onClickItem({ detail = {}}) {
     const activeId = this.data.activeId === detail.id ? null : detail.id
     this.setData({ activeId })
+  },
+  onReachTop() {
+    this.setData({ showTopFilter: false, isScrollY: true })
+  },
+  onReachBottom() {
+    this.setData({ showTopFilter: true, isScrollY: false })
+  },
+  onCloseCard() {
+    const customBottomCard = this.selectComponent('#customBottomCard');
+    customBottomCard.setTranslate(0)
+    this.setData({ isScrollY: false })
+  },
+  onOpenCard() {
+    const customBottomCard = this.selectComponent('#customBottomCard');
+    customBottomCard.setTranslate(-this.data.bottomDistance)
+    this.setData({ isScrollY: false })
   }
 })

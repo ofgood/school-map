@@ -97,7 +97,7 @@
         bind:open="onOpenDropdown"
         bind:close="onCloseDropdown">
         <view class=""  style="height: 100px;line-height:100px;text-align:center;">
-          敬请期待!
+          待开放~~
         </view>
         <view class="top-filter-btns">
           <view class="top-filter-reset">

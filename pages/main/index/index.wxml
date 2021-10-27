@@ -12,18 +12,16 @@
       </block>
     </cover-view>
   </map>
- <!-- <image wx:if="{{showNearBy}}" class="img-map" src="../image/pin.png"></image> -->
- <view class="top-filter-wrap">
+ <!--顶部筛选-->
+  <view class="top-filter-wrap" wx:if="{{showTopFilter}}">
     <custom-top-filter
-      bind:onClickSearch="onClickTopSearch"
-      bind:onClickItem="onClickItem"
-      bind:onClickNav="onClickNav">
+            bind:onClickSearch="onClickTopSearch"
+            bind:onClickItem="onClickItem"
+            bind:onClickNav="onClickNav">
     </custom-top-filter>
- </view>
+  </view>
 
-
-
-  <!-- 右侧工具栏-->
+    <!-- 右侧工具栏-->
   <view class="right-btns-wrap" hover-class="none" hover-stop-propagation="false">
     <view class="list-btn right-btn" wx:if="{{houses.length}}" bindtap="showList" hover-class="none" hover-stop-propagation="false">
       <image class="bgImg" src="../image/list.png"></image>
@@ -31,10 +29,7 @@
         列表
       </view>
     </view>
-    <!-- <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="showRightPopup" hover-class="none" hover-stop-propagation="false">
-      <image class="bgImg" src="../image/filter.png"></image>
-    </view> -->
-     <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="showNearByPlace" hover-class="none" hover-stop-propagation="false">
+      <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="showNearByPlace" hover-class="none" hover-stop-propagation="false">
       <image class="bgImg" src="../image/nearby.png"></image>
       <view class="ctrl-text">
         附近
@@ -47,58 +42,41 @@
       </view>
     </view>
   </view>
-
-  <!-- 底部弹出卡片 -->
-<!--  <van-popup-->
-<!--    overlay="{{false}}"-->
-<!--    show="{{ showPlaceCard }}"-->
-<!--    closeable-->
-<!--    close-icon-position="top-right"-->
-<!--    position="bottom"-->
-<!--    bind:close="onClosePlaceCard">-->
-<!--    <view class="bottom-card">-->
-<!--      <view class="card-img">-->
-<!--        <view class="place-img" wx:if="{{placeInfo.hasImg}}">-->
-<!--          <image class="card-pic" src="{{placeInfo.imgSrc}}" mode="aspectFill}" lazy-load="false"></image>-->
-<!--        </view>-->
-<!--        <view class="taking" wx:else selectable="false" space="false" decode="false">-->
-<!--          <view class="taking-icon" hover-class="none" hover-stop-propagation="false">-->
-<!--           <image src="{{placeInfo.takingIcon}}" mode="center" lazy-load="false"></image>-->
-<!--            收集中-->
-<!--          </view>-->
-<!--          <view class="taking-bg" hover-class="none" hover-stop-propagation="false">-->
-<!--             <image class="card-pic" src="{{placeInfo.takingBg}}" mode="aspectFill" lazy-load="false"></image>-->
-<!--          </view>-->
-<!--        </view>-->
-<!--      </view>-->
-<!--      <view class="card-right">-->
-<!--        <view class="card-title">-->
-<!--          {{placeInfo.title}}-->
-<!--        </view>-->
-<!--        <view class="" wx:if="{{placeInfo.placeType === 2}}">-->
-<!--          <view class="card-price" wx:if="{{placeInfo.price}}">-->
-<!--          {{placeInfo.price ?placeInfo.price + '元/m²' : '' }}-->
-<!--        </view>-->
-<!--        <view class="card-price-tip" wx:else>-->
-<!--          房价更新中-->
-<!--        </view>-->
-<!--        </view>-->
-<!--        <view class="card-time">-->
-<!--          {{placeInfo.buildDate ? placeInfo.buildDate: ''}}-->
-<!--          {{placeInfo.plate ? placeInfo.plate: ''}}-->
-<!--        </view>-->
-<!--        <view class="card-tags">-->
-<!--          <view class="card-tag" wx:for="{{placeInfo.tags}}" wx:key="*this">-->
-<!--            {{item}}-->
-<!--          </view>-->
-<!--        </view>-->
-<!--      </view>-->
-<!--    </view>-->
-<!--  </van-popup>-->
-
-    <custom-bottom-card bottomDistance="{{0}}">
+    <custom-bottom-card bottomDistance="{{bottomDistance}}" bind:onReachTop="onReachTop" bind:onReachBottom="onReachBottom" id="customBottomCard">
         <view>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, fugiat.
+            <view class="bottom-card-top">
+                <view class="card-top-left">
+                    <view class="card-top-icon" style="margin-right: 6px">
+                        <image  style="width: 100%; height: 100%;" mode="aspectFit" src="../image/location1.svg"></image>
+                    </view>
+                    <view>上海市</view>
+                </view>
+                <view class="card-top-right">
+                    <view class="card-top-btn">
+                        <view class="card-top-icon">
+                            <image  style="width: 100%; height: 100%;" mode="aspectFit" src="../image/pliocy.svg"></image>
+                        </view>
+                        <view>政策</view>
+                    </view>
+                    <view class="card-top-btn">
+                        <view class="card-top-icon">
+                            <image  style="width: 100%; height: 100%;" mode="aspectFit" src="../image/calendar.svg"></image>
+                        </view>
+                        <view>日历</view>
+                    </view>
+                    <view class="card-top-btn" bindtap="onCloseCard">
+                        <view class="card-top-icon">
+                            <image  style="width: 100%; height: 100%;" mode="aspectFit" src="../image/close.svg"></image>
+                        </view>
+                        <view>关闭</view>
+                    </view>
+                </view>
+            </view>
         </view>
+        <scroll-view scroll-y="{{isScrollY}}" style="{{'width: 100%;height:' + scrollHeight + ';'}}">
+            <view style="padding-bottom: 40px">
+                <custom-charts></custom-charts>
+            </view>
+        </scroll-view>
     </custom-bottom-card>
 </view>
