@@ -29,6 +29,10 @@ Component({
     triggerDistance: {
       type: Number,
       value: 50
+    },
+    stopUp:{
+      type: Boolean,
+      value: false
     }
   },
 
@@ -68,6 +72,9 @@ Component({
      * 处理touchmove事件
      */
     handleTouchMove: function(e) {
+      if(this.data.stopUp) {
+        return
+      }
       const { bottomDistance } = this.data
       this.touchMoveX = e.touches[0].pageX
       this.touchMoveY = e.touches[0].pageY

@@ -1,5 +1,17 @@
-import '../../utils/lodash-fix'
-import _ from 'lodash'
+const { areaMarkerData } = require('../../dict/areaData')
+function _getAreaData (data){
+  const result = []
+  data.forEach(item => {
+    const { id, title: text } = item
+    result.push({
+      id,
+      text,
+      disabled: id === 101 ? false : true
+    })
+  })
+  return result
+}
+const areaData = _getAreaData(areaMarkerData)
 Component({
   options: {
     styleIsolation: 'shared'
@@ -23,22 +35,9 @@ Component({
               // 名称
               text: '不限',
               // id，作为匹配选中状态的标识
-              id: 101
+              id: 0
             },
-            {
-              text: '浦东',
-              id: 102
-            },
-            {
-              text: '虹口',
-              id: 103,
-              disabled: true
-            },
-            {
-              text: '闵行',
-              id: 104,
-              disabled: true
-            }
+            ...areaData
           ]
         },
         {
@@ -70,7 +69,7 @@ Component({
     },
     areaActiveId: {
       type: Number,
-      value: 101
+      value: 0
     },
     schoolTypes: {
       type: Array,
@@ -137,8 +136,6 @@ Component({
     }
   },
   ready() {
-    const data = { a: 1 }
-    console.log(_.cloneDeep(data))
   },
   methods: {
     onClickSearch() {

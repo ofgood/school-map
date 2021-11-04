@@ -76,12 +76,20 @@ page .title {
 .customCallout {
   box-sizing: border-box;
   border:none;
-  height: 50px;
-  width: 100px;
-  padding: 6px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 1000px;
+  width: 40px;
   font-size: 12px;
   color: #fff;
   text-align: center;
+  background-color: rgba(0, 146, 182, 1);
+}
+.customCallout.active{
+  background-color: #F7BD1D;
+  height: 42px;
+  width: 42px;
+  line-height: 42px;
 }
 .img-map{
   width: 54rpx;

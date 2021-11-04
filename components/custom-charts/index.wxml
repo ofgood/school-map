@@ -11,7 +11,7 @@
         </view>
         <view class="chart-right">
             <view class="chart-box">
-                <view class="chart-item {{item.type}} {{idx === activeIndex ? 'active': ''}}" style="z-index:{{idx === activeIndex ? 9999: 1}}" data-index="{{ idx }}" wx:for="{{areaData}}" wx:for-index="idx" catchtap="onClickChartItem">
+                <view class="chart-item {{item.type}} {{idx === activeIndex ? 'active': ''}}" style="z-index:{{idx === activeIndex ? 9999: 1}}" data-index="{{ idx }}" wx:key="type" wx:for="{{areaData}}" wx:for-index="idx" catchtap="onClickChartItem">
                     <view class="top-chart" style="height:{{item.studentCount*30/500000}}px;">
                         <view class="chart-text">{{item.studentCount/10000}}w</view>
                     </view>
