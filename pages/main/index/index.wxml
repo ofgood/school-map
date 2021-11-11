@@ -2,7 +2,7 @@
   <!-- 地图 -->
   <map id="myMap" class="index-map" bindregionchange="onRegionchange" bindmarkertap="onTapMarker" bindcallouttap="onTapCallout" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" show-location>
       <cover-view slot="callout">
-          <cover-view class="customCallout {{activeCoverId === item.id ? 'active': ''}}" marker-id="{{item.id}}" wx:for="{{markers}}">{{item.title}}</cover-view>
+          <cover-view class="customCallout {{activeCoverId === item.id ? 'active': ''}}" marker-id="{{item.id}}" wx:for="{{markers}}" wx:key="id">{{item.title}}</cover-view>
       </cover-view>
   </map>
  <!--顶部筛选-->
@@ -46,8 +46,11 @@
             </view>
         </view>
         <scroll-view scroll-y="{{isScrollY}}" style="{{'width: 100%;height:' + scrollHeight + ';'}}">
-            <view style="padding-bottom: 40px">
+            <view>
                 <custom-charts></custom-charts>
+            </view>
+            <view class="bottom-list-wrap">
+                <custom-list-item bind:onClickItem="onClickListItem"></custom-list-item>
             </view>
         </scroll-view>
     </custom-bottom-card>

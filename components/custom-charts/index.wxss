@@ -1,6 +1,6 @@
 .chart-content{
     display: flex;
-    padding: 20px 40px 20px 6px;
+    padding: 20px 40px 10px 6px;
     margin-top: 16px;
 }
 .chart-left{

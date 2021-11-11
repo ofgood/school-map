@@ -27,7 +27,7 @@ Page({
     bottomDistance: 230,
     isScrollY: false,
     scrollHeight: '',
-    stopUp: true,
+    stopUp: false,
 
     duration: 300,
     position: 'center',
@@ -213,4 +213,9 @@ Page({
     })
     this.onReady()
   },
+  onClickListItem() {
+    wx.navigateTo({
+      url: '/pages/main/detail/index'
+    })
+  }
 })

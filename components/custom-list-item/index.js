@@ -1,5 +1,11 @@
 Component({
   properties: {},
   data: {},
-  methods: {}
+  methods: {
+    onClickItem () {
+      this.triggerEvent('onClickItem', {
+        ...this.data
+      })
+    }
+  }
 })

@@ -1,29 +1,40 @@
 <view class="list-wrap">
-    <view class="list-item">
+    <view class="list-item" bind:tap="onClickItem">
         <view class="list-item-top">
-               <view class="item-top-left">'
+               <view class="item-top-left">
                    <view class="item-top-title">
-                       <view>百合花园幼儿园</view>
-                       <view>距离您的位置2.33km</view>
+                       <view class="item-top-name">百合花园幼儿园</view>
+                       <view class="item-top-distance">
+                           <view class="distance-icon">
+                               <image  style="width: 100%; height: 100%;" mode="aspectFit" src="../images/loc.svg"></image>
+                           </view>
+                           <view>
+                               距离您的位置2.33km
+                           </view>
+                       </view>
                    </view>
                    <view class="item-top-tip">公</view>
                </view>
                 <view class="item-top-right">
-                    <view class="top-right-icon"></view>
+                    <view class="top-right-icon">
+                        <image  style="width: 100%; height: 100%;" mode="aspectFit" src="../images/dk.svg"></image>
+                    </view>
                     <view>查对口</view>
                 </view>
         </view>
-        <view class="">
+        <view class="list-item-bottom">
             <view class="list-icon">
+                <image style=" width: 80px;height: 80px;" mode="scaleToFill" src="../images/school.jpg"></image>
             </view>
             <view class="tags-box">
-                <view class="tags-cell">一级园</view>
-                <view class="tags-cell">九年一贯</view>
-                <view class="tags-cell">五年一户</view>
-                <view class="tags-cell">幼儿园</view>
+                <view class="tags-cell color1">一级园</view>
+                <view class="tags-cell color2">九年一贯</view>
+                <view class="tags-cell color3">五年一户</view>
+                <view class="tags-cell color4">幼儿园</view>
+                <view class="tags-cell color5">幼儿园</view>
+                <view class="tags-cell color6">幼儿园</view>
             </view>
             </view>
-        </view>
         <view>
             <view></view>
         </view>
