@@ -1,9 +1,9 @@
 {
   "pages":[
-    "pages/main/detail/index",
     "pages/main/index/index",
     "pages/main/search/index",
-    "pages/main/list/index"
+    "pages/main/list/index",
+    "pages/main/detail/index"
   ],
   "window":{
     "navigationBarBackgroundColor": "#ffffff",

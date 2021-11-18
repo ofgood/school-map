@@ -1,6 +1,16 @@
+.list-wrap{
+    padding-bottom: 80px;
+}
 .list-item{
     border-bottom: 1px solid #DDDDDD;
     padding: 12px 10px;
+}
+.list-item:last-child{
+    border-bottom: none;
+}
+.list-item.list-item-hover{
+    opacity: 0.7;
+    background: #f7f7f7;
 }
 .list-item-top{
     display: flex;
@@ -43,6 +53,9 @@
     font-size: 12px;
     color: #666666;
     align-items: center;
+}
+.item-top-right.suited-hover{
+    opacity: 0.7;
 }
 .item-top-right .top-right-icon{
     width: 20px;

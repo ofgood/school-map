@@ -28,6 +28,9 @@
     color: #666;
     margin-left: 10px;
 }
+.section-btn.hover-section{
+    background-color: #f7f7f7;
+}
 .section-icon{
     width: 20px;
     height: 20px;

@@ -13,7 +13,7 @@
                 </block>
             </swiper>
             <view class="swiper-section-btns">
-                <view class="section-btn">
+                <view class="section-btn" hover-class="hover-section">
                     <view class="section-icon">
                         <image style="width: 100%; height: 100%;" mode="aspectFill" src="../image/pliocy.svg"></image>
                     </view>
@@ -21,7 +21,7 @@
                         政策
                     </view>
                 </view>
-                <view class="section-btn">
+                <view class="section-btn" hover-class="hover-section" hover-stop-propagation="true">
                     <view class="section-icon">
                         <image style="width: 100%; height: 100%;" mode="aspectFill" src="../image/zsjz.svg"></image>
                     </view>
@@ -61,7 +61,7 @@
                     学校简介
                 </view>
                 <view class="brief-text">
-                    <custom-paragraph text="赢，观众和解说仍然都屏住呼应过来真的赢了，这感，所以也会有更多人庆祝。"></custom-paragraph>
+                    <custom-paragraph text="因为这个冠军意想不到 从edg进决赛那天到夺冠 一个星期的时间 网上无数的人在帮edg想办法 一个大v公众号做了无数次模拟bp后得出的结论是edg在蓝色方可能有一丝机会 赛前所有的分析 甚至到盘口赔率没有人看好（赛前开出这个盘口最后赢了的 在我印象中只有s8的g2）edg 网上的言论也都是赢一局完成任务赢两局=冠军 出门看比赛之前我已经做好了被dk3:0的准备 这也就是为什么今年有这么多离谱的flag的原因  edg这么多年的s赛旅程 8强总是主旋律 恐怕所有人心中对edg总是留有疑虑  这一次不破不立对edg就是最好的总结 两个bo5打满十局连斩lck1 2号种子 其中dk从开赛起就展现出统治地位 小组赛全胜 在决赛之前只被faker的t1赢下两把 这就是为什么edg的夺冠会让人们如此疯狂吧"></custom-paragraph>
                 </view>
             </view>
             <view class="brief-box">

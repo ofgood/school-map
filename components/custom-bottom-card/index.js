@@ -55,8 +55,6 @@ Component({
      * 处理touchstart事件
      */
     handleTouchStart(e) {
-      console.log('touchStartY', e.touches[0].pageY)
-      console.log('winHeight', this.data.winHeight)
       // touch事件初始时，组件禁掉transition动画
       this.setData({
         animate: false
@@ -86,8 +84,6 @@ Component({
         return
       }
       this.direction = 'Y'
-      console.log(this.data.translateY)
-      console.log(this.touchMoveY)
       // 以下两种情况不进行移动：1. 在最下面边时向下滑动; 2. 在最上面边时向上滑动
       if ((this.startY === -bottomDistance && this.moveY > 0) || (Math.abs(this.data.translateY) >= this.data.wrapHeight && this.moveY < 0)) {
         return
@@ -115,7 +111,6 @@ Component({
         translateY = -bottomDistance
         this.triggerEvent('onReachBottom')
       }
-      console.log('translateY', translateY)
       this.setData({
         animate: true
       }, () => {

@@ -22,9 +22,7 @@ Component({
       }).exec( (res) => {
         const lineHeight = 26
         const result = res[0][0]
-        console.log(result)
-        if(result.height/lineHeight > 3) {
-          console.log(true)
+        if(result.height/lineHeight > 5) {
          _this.setData({
            seeMore: true
          })
