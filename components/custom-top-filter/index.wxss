@@ -64,3 +64,20 @@
   line-height: 40rpx;
   padding-left: 12px;
 }
+.more-title{
+  margin-top: 10px;
+  padding-bottom: 10px;
+}
+.more-wrap{
+  padding:10px;
+}
+.more-item{
+  padding-top: 10px;
+}
+.more-title{
+  font-size: 14px;
+  color: #333;
+  width: 720rpx;
+  margin: 0 auto;
+  border-bottom: 1px solid #ddd;
+}

@@ -1,12 +1,10 @@
 const {
   qqMapTranslate,
-  getSchoolDetailById,
-  getHouseDetailById,
-  getHouseNearby,
-  getSchoolNearby,
-  baiduMapTranslate
+  baiduMapTranslate,
+  placeList
 } = require('../../../api/school-map')
 const {
+  formatRecordsToMarkers,
   translateQQLocation
 } = require('../../../utils/index')
 const {
@@ -14,8 +12,7 @@ const {
   schoolNatrue,
   schoolType
 } = require('../../../dict/index')
-const { areaMarkerData } = require('../../../dict/areaData')
-
+const { areaMarkerData, areaMap } = require('../../../dict/areaData')
 Page({
   data: {
     cardOffsetTop: wx.getSystemInfoSync().windowHeight - 300,
@@ -40,7 +37,14 @@ Page({
     mainActiveIndex: 0,
     activeId: 101,
 
-    markers: areaMarkerData,
+    markers: [{
+      id: 101,
+      latitude: 31.221522,
+      longitude: 121.544374,
+      title: '浦东',
+      iconPath: '../../../images/empty.png'
+    }],
+    nativeMarkers: [],
     activeCoverId: '',
     mapScale: 11,
     activeName: '',
@@ -80,7 +84,7 @@ Page({
     this._initCenter()
   },
   _setScrollViewHeight() {
-    const customBottomCard = this.selectComponent('#customBottomCard');
+    const customBottomCard = this.selectComponent('#customBottomCard')
     this.setData({
       scrollHeight: customBottomCard.__data__.wrapHeight + 'px'
     })
@@ -122,8 +126,8 @@ Page({
     return points
   },
   _includePoints(points = [], padding = [100, 20, 300, 20]) {
-    let _this = this
-    _this.mapCtx.includePoints({padding, points})
+    const _this = this
+    _this.mapCtx.includePoints({ padding, points })
   },
   // 设置中心点
   _setCenter(longitude, latitude) {
@@ -145,16 +149,27 @@ Page({
       longitude: translateRes.locations[0].lng
     }
   },
-  onTapCallout(e) {
-    const { detail: { markerId } } = e
+  _getAreaNameById(id) {
+    return areaMap[id + '']
+  },
+  async onTapCallout(e) {
+    console.log(e)
+    const { detail: { markerId }} = e
     this.setData({
       activeCoverId: markerId
     })
-    setTimeout(() => {
-      this.setData({
-        activeCoverId: ''
-      })
-    },200)
+    // 获取区的学校
+    const res = await placeList({
+      area: this._getAreaNameById(markerId)
+    })
+    console.log(formatRecordsToMarkers(res.records))
+    if (res.success) {
+      this.setData(
+        {
+          markers: formatRecordsToMarkers(res.result.records)
+        }
+      )
+    }
   },
   onTapMarker(e) {
     console.log(e)
@@ -197,12 +212,12 @@ Page({
     this.setData({ showTopFilter: true, isScrollY: false })
   },
   onCloseCard() {
-    const customBottomCard = this.selectComponent('#customBottomCard');
+    const customBottomCard = this.selectComponent('#customBottomCard')
     customBottomCard.setTranslate(0)
     this.setData({ isScrollY: false })
   },
   onOpenCard() {
-    const customBottomCard = this.selectComponent('#customBottomCard');
+    const customBottomCard = this.selectComponent('#customBottomCard')
     customBottomCard.setTranslate(-this.data.bottomDistance)
     this.setData({ isScrollY: false })
   },
@@ -217,5 +232,8 @@ Page({
     wx.navigateTo({
       url: '/pages/main/detail/index'
     })
+  },
+  onClickComfirm(data) {
+    console.log(data)
   }
 })

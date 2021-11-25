@@ -18,6 +18,7 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
     "useApiHostProcess": true,
@@ -32,7 +33,10 @@
     "packNpmManually": false,
     "packNpmRelationList": [],
     "minifyWXSS": true,
-    "showES6CompileOption": false
+    "disableUseStrict": false,
+    "showES6CompileOption": false,
+    "useCompilerPlugins": false,
+    "minifyWXML": true
   },
   "compileType": "miniprogram",
   "libVersion": "2.16.1",

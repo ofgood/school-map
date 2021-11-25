@@ -1,78 +1,103 @@
 <view class='main-box'>
-  <!-- 地图 -->
-  <map id="myMap" class="index-map" bindregionchange="onRegionchange" bindmarkertap="onTapMarker" bindcallouttap="onTapCallout" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" show-location>
-      <cover-view slot="callout">
-          <cover-view class="customCallout {{activeCoverId === item.id ? 'active': ''}}" marker-id="{{item.id}}" wx:for="{{markers}}" wx:key="id">{{item.title}}</cover-view>
-      </cover-view>
-  </map>
- <!--顶部筛选-->
-  <view class="top-filter-wrap" wx:if="{{showTopFilter}}">
-    <custom-top-filter
-            bind:onClickSearch="onClickTopSearch"
-            bind:onClickItem="onClickItem"
-            bind:onClickNav="onClickNav">
-    </custom-top-filter>
-  </view>
-  <!--底部卡片-->
-    <custom-bottom-card stopUp="{{stopUp}}" bottomDistance="{{bottomDistance}}" bind:onReachTop="onReachTop" bind:onReachBottom="onReachBottom" id="customBottomCard">
-        <view>
-            <view class="bottom-card-top">
-                <view class="card-top-left">
-                    <view class="card-top-icon" style="margin-right: 6px">
-                        <image  style="width: 100%; height: 100%;" mode="aspectFit" src="../image/location1.svg"></image>
-                    </view>
-                    <view>上海市</view>
-                </view>
-                <view class="card-top-right">
-                    <view class="card-top-btn">
-                        <view class="card-top-icon">
-                            <image  style="width: 100%; height: 100%;" mode="aspectFit" src="../image/pliocy.svg"></image>
-                        </view>
-                        <view>政策</view>
-                    </view>
-                    <view class="card-top-btn">
-                        <view class="card-top-icon">
-                            <image  style="width: 100%; height: 100%;" mode="aspectFit" src="../image/calendar.svg"></image>
-                        </view>
-                        <view>日历</view>
-                    </view>
-                    <view class="card-top-btn" bindtap="onCloseCard">
-                        <view class="card-top-icon">
-                            <image  style="width: 100%; height: 100%;" mode="aspectFit" src="../image/close.svg"></image>
-                        </view>
-                        <view>关闭</view>
-                    </view>
-                </view>
-            </view>
-        </view>
-        <scroll-view scroll-y="{{isScrollY}}" style="{{'width: 100%;height:' + scrollHeight + ';'}}">
-            <view>
-                <custom-charts></custom-charts>
-            </view>
-            <view class="bottom-list-wrap">
-                <custom-list-item bind:onClickItem="onClickListItem"></custom-list-item>
-            </view>
-        </scroll-view>
-    </custom-bottom-card>
-    <!-- 右侧工具栏-->
-    <!--  <view class="right-btns-wrap" hover-class="none" hover-stop-propagation="false">-->
-    <!--    <view class="list-btn right-btn" wx:if="{{houses.length}}" bindtap="showList" hover-class="none" hover-stop-propagation="false">-->
-    <!--      <image class="bgImg" src="../image/list.png"></image>-->
-    <!--      <view class="ctrl-text">-->
-    <!--        列表-->
-    <!--      </view>-->
-    <!--    </view>-->
-    <!--      <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="showNearByPlace" hover-class="none" hover-stop-propagation="false">-->
-    <!--      <image class="bgImg" src="../image/nearby.png"></image>-->
-    <!--      <view class="ctrl-text">-->
-    <!--        附近-->
-    <!--      </view>-->
-    <!--    </view>-->
-    <!--     <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="onTapBackToOrigin" hover-class="none" hover-stop-propagation="false">-->
-    <!--      <image class="bgImg" src="../image/loc.png"></image>-->
-    <!--      <view class="ctrl-text">-->
-    <!--        定位-->
-    <!--      </view>-->
-    <!--    </view>-->
-    <!--  </view>-->
+	<!-- 地图 -->
+	<map
+	 id="myMap"
+	 class="index-map"
+	 bindregionchange="onRegionchange"
+	 bindmarkertap="onTapMarker"
+	 bindcallouttap="onTapCallout"
+	 scale="{{mapScale}}"
+	 latitude="{{latitude}}"
+	 longitude="{{longitude}}"
+	 markers="{{markers}}"
+	 show-location
+	>
+		<!-- <cover-view slot="callout">
+			<cover-view
+			 class="customCallout {{activeCoverId === item.id ? 'active': ''}}"
+			 marker-id="{{item.id}}"
+			 wx:for="{{markers}}"
+			 wx:key="id"
+			>{{item.title}}
+			</cover-view>
+		</cover-view> -->
+	</map>
+	<!--顶部筛选-->
+	<view class="top-filter-wrap" wx:if="{{showTopFilter}}">
+		<custom-top-filter
+		 bind:onClickConfirm="onClickComfirm"
+		 bind:onClickSearch="onClickTopSearch"
+		 bind:onClickItem="onClickItem"
+		 bind:onClickNav="onClickNav"
+		/>
+	</view>
+	<!--底部卡片-->
+	<custom-bottom-card
+	 stopUp="{{stopUp}}"
+	 bottomDistance="{{bottomDistance}}"
+	 bind:onReachTop="onReachTop"
+	 bind:onReachBottom="onReachBottom"
+	 id="customBottomCard"
+	>
+		<view>
+			<view class="bottom-card-top">
+				<view class="card-top-left">
+					<view class="card-top-icon" style="margin-right: 6px">
+						<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/location1.svg" />
+					</view>
+					<view>上海市</view>
+				</view>
+				<view class="card-top-right">
+					<view class="card-top-btn">
+						<view class="card-top-icon">
+							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/pliocy.svg" />
+						</view>
+						<view>政策</view>
+					</view>
+					<view class="card-top-btn">
+						<view class="card-top-icon">
+							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/calendar.svg" />
+						</view>
+						<view>日历</view>
+					</view>
+					<view class="card-top-btn" bindtap="onCloseCard">
+						<view class="card-top-icon">
+							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/close.svg" />
+						</view>
+						<view>关闭</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<scroll-view scroll-y="{{isScrollY}}" style="{{'width: 100%;height:' + scrollHeight + ';'}}">
+			<view>
+				<custom-charts/>
+			</view>
+			<view class="bottom-list-wrap">
+				<custom-list-item bind:onClickItem="onClickListItem" />
+			</view>
+		</scroll-view>
+	</custom-bottom-card>
+	<!-- 右侧工具栏-->
+	<!--  <view class="right-btns-wrap" hover-class="none" hover-stop-propagation="false">-->
+	<!--    <view class="list-btn right-btn" wx:if="{{houses.length}}" bindtap="showList" hover-class="none" hover-stop-propagation="false">-->
+	<!--      <image class="bgImg" src="../image/list.png"></image>-->
+	<!--      <view class="ctrl-text">-->
+	<!--        列表-->
+	<!--      </view>-->
+	<!--    </view>-->
+	<!--      <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="showNearByPlace" hover-class="none" hover-stop-propagation="false">-->
+	<!--      <image class="bgImg" src="../image/nearby.png"></image>-->
+	<!--      <view class="ctrl-text">-->
+	<!--        附近-->
+	<!--      </view>-->
+	<!--    </view>-->
+	<!--     <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="onTapBackToOrigin" hover-class="none" hover-stop-propagation="false">-->
+	<!--      <image class="bgImg" src="../image/loc.png"></image>-->
+	<!--      <view class="ctrl-text">-->
+	<!--        定位-->
+	<!--      </view>-->
+	<!--    </view>-->
+	<!--  </view>-->
 </view>
+

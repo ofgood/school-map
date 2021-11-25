@@ -168,3 +168,24 @@ export function setNavigationBarTitle(titleText) {
     title: titleText
   })
 }
+
+/**
+ * 设置页面标题
+ * @param {*} titleText
+ */
+export function formatRecordsToMarkers(records) {
+  const res = []
+
+  Array.isArray(records) && records.forEach(item => {
+    const { name, placeId, qqLocation } = item
+    const [latitude, longitude] = qqLocation.split(',')
+    res.push({
+      id: placeId,
+      latitude,
+      longitude,
+      title: name,
+      iconPath: '../image/pin1.png'
+    })
+  })
+  return res
+}

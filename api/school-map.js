@@ -10,11 +10,17 @@ const baiduMapBaseUrl = 'http://api.map.baidu.com'
 const baiduMapAk = 'R9XKzinYoZLt4UTZA9Rd7BkfGBGLf5qj'
 
 const api = {
-  getSchoolDetail: '/baos/school/detail',
-  getHouseDetail: '/baos/house/detail',
-  getPlaceList: '/baos/place/list', // 整合学校和小区的接口
-  getHouseNearby: '/baos/house/nearby', // 附近的小区
-  getSchoolNearby: '/baos/school/nearby', // 附近的学校
+  areaInfoList: '/baos/applets/areaInfo/list', // 图标数据
+  houseDetail: '/baos/applets/house/detail', // 小区详情
+  houseSchools: '/baos/applets/house/schools', // 小区对应学校/baos/applets/house/schools/{houseId}
+  placeList: '/baos/applets/place/list', // 地图地点查询
+  schoolDetail: '/baos/applets/school/detail', // 学校详情
+  schoolHouses: '/baos/applets/school/houses', // 学校对应小区/baos/applets/school/houses/{schoolId}
+  schoolNearby: '/baos/applets/school/nearby', // 附近学校
+  scheduleList: '/baos/applets/schedule/list', // 日程
+  scheduleAllEvent: '/baos/applets/schedule/allEvent', // 日程事件
+  newsDetail: '/baos/applets/news/detail', // 文章详情
+  policyLis: '/baos/applets/policy/list', // 政策列表
 
   // 腾讯地图转换 经纬度api
   qqMapTranslate: '/ws/coord/v1/translate',
@@ -22,6 +28,7 @@ const api = {
   baiduMapTranslate: '/geoconv/v1/'
 }
 
+/** 腾讯地图转换 */
 export function qqMapTranslate(data) {
   return request.axios({
     baseUrl: qqMapBaseUrl,
@@ -34,6 +41,8 @@ export function qqMapTranslate(data) {
     }
   })
 }
+
+/** 百度地图转换 */
 export function baiduMapTranslate(data) {
   return request.axios({
     baseUrl: baiduMapBaseUrl,
@@ -47,43 +56,92 @@ export function baiduMapTranslate(data) {
     }
   })
 }
-
-export function getSchoolDetailById(data) {
+/** 图标数据 */
+export function areaInfoList(data) {
   return request.axios({
     method: 'GET',
-    url: api.getSchoolDetail,
+    url: api.areaInfoList,
     data
   })
 }
 
-export function getHouseDetailById(data) {
+/** 小区对应学校/baos/applets/house/schools/{houseId} */
+export function houseSchools(data) {
   return request.axios({
     method: 'GET',
-    url: api.getHouseDetail,
+    url: api.houseSchools,
     data
   })
 }
 
-export function getPlaceList(data) {
+/** 小区详情/baos/applets/house/detail*/
+export function houseDetail(data) {
   return request.axios({
     method: 'GET',
-    url: api.getPlaceList,
+    url: api.houseDetail,
     data
   })
 }
 
-export function getHouseNearby(data) {
+/** 地图地点查询 GET /baos/applets/place/list*/
+export function placeList(data) {
   return request.axios({
     method: 'GET',
-    url: api.getHouseNearby,
+    url: api.placeList,
     data
   })
 }
 
-export function getSchoolNearby(data) {
+/** 学校详情 GET /baos/applets/school/detail*/
+export function schoolDetail(data) {
   return request.axios({
     method: 'GET',
-    url: api.getSchoolNearby,
+    url: api.schoolDetail,
+    data
+  })
+}
+
+/** 学校对应小区 GET /baos/applets/school/houses/{schoolId}*/
+export function schoolHouses(data) {
+  return request.axios({
+    method: 'GET',
+    url: api.schoolHouses,
+    data
+  })
+}
+
+/** 日程 GET /baos/applets/schedule/list*/
+export function scheduleList(data) {
+  return request.axios({
+    method: 'GET',
+    url: api.scheduleList,
+    data
+  })
+}
+
+/** 日程事件 GET /baos/applets/schedule/allEvent*/
+export function scheduleAllEvent(data) {
+  return request.axios({
+    method: 'GET',
+    url: api.scheduleAllEvent,
+    data
+  })
+}
+
+/** 文章详情 GET /baos/applets/news/detail*/
+export function newsDetail(data) {
+  return request.axios({
+    method: 'GET',
+    url: api.newsDetail,
+    data
+  })
+}
+
+/** 政策列表 GET /baos/applets/policy/list*/
+export function policyLis(data) {
+  return request.axios({
+    method: 'GET',
+    url: api.policyLis,
     data
   })
 }
