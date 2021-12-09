@@ -170,21 +170,56 @@ export function setNavigationBarTitle(titleText) {
 }
 
 /**
- * 设置页面标题
- * @param {*} titleText
+ * 格式化列表转化为markers
+ * @param {*} records
  */
 export function formatRecordsToMarkers(records) {
   const res = []
+  if (Array.isArray(records)) {
+    for (let i = 0; i < records.length; i++) {
+      const { name, placeId, qqLocation } = records[i]
+      if (!qqLocation) {
+        console.log(name)
+        continue
+      }
+      const [latitude, longitude] = qqLocation.split(',')
+      latitude && longitude && res.push({
+        id: placeId,
+        latitude,
+        longitude,
+        width: 1,
+        height: 1,
+        title: name,
+        iconPath: '../images/transparent.png',
+        callout: {
+          content: name,
+          color: '#0092B6',
+          bgColor: '#fff',
+          fontSize: 12,
+          borderWidth: 1,
+          borderRadius: 100,
+          borderColor: '#0092B6',
+          display: 'ALWAYS',
+          padding: 6
+        }
+      })
+    }
+  }
+  return res
+}
 
-  Array.isArray(records) && records.forEach(item => {
-    const { name, placeId, qqLocation } = item
-    const [latitude, longitude] = qqLocation.split(',')
+/**
+ * 从marker中取出需要include的marker
+ * @param {*} markers
+ */
+
+export function getIncludePointsFromMarkers(markers) {
+  const res = []
+  markers.forEach(item => {
+    const { latitude, longitude } = item
     res.push({
-      id: placeId,
       latitude,
-      longitude,
-      title: name,
-      iconPath: '../image/pin1.png'
+      longitude
     })
   })
   return res

@@ -2,14 +2,14 @@ export const areaMarkerData = [{
   id: 101,
   latitude: 31.221522,
   longitude: 121.544374,
-  width: 1,
-  height: 1,
+  width: 0,
+  height: 0,
   count: 2,
   title: '浦东',
-  iconPath: '',
+  iconPath: '../images/transparent.png',
   customCallout: {
-    display: 'ALWAYS',
-    anchorY: 10
+    display: 'ALWAYS'
+    // anchorY: 10
   },
   callout: {
     content: '浦东',
@@ -27,7 +27,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '黄浦',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -48,7 +48,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '徐汇',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -69,7 +69,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '长宁',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -90,7 +90,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '黄浦',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -111,7 +111,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '静安',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -132,7 +132,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '普陀',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -154,7 +154,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '崇明',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -175,7 +175,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '虹口',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -196,7 +196,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '杨浦',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -217,7 +217,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '闵行',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -238,7 +238,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '宝山',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -259,7 +259,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '嘉定',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -280,7 +280,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '金山',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -301,7 +301,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '奉贤',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -322,7 +322,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '松江',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },
@@ -343,7 +343,7 @@ export const areaMarkerData = [{
   height: 1,
   count: 2,
   title: '青浦',
-  iconPath: '../image/pin1.png',
+  iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
   },

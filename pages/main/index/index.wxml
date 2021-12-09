@@ -10,9 +10,8 @@
 	 latitude="{{latitude}}"
 	 longitude="{{longitude}}"
 	 markers="{{markers}}"
-	 show-location
 	>
-		<!-- <cover-view slot="callout">
+		<cover-view slot="callout">
 			<cover-view
 			 class="customCallout {{activeCoverId === item.id ? 'active': ''}}"
 			 marker-id="{{item.id}}"
@@ -20,7 +19,7 @@
 			 wx:key="id"
 			>{{item.title}}
 			</cover-view>
-		</cover-view> -->
+		</cover-view>
 	</map>
 	<!--顶部筛选-->
 	<view class="top-filter-wrap" wx:if="{{showTopFilter}}">

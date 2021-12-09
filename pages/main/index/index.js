@@ -1,24 +1,25 @@
+/** API */
 const {
-  qqMapTranslate,
-  baiduMapTranslate,
   placeList
 } = require('../../../api/school-map')
+
+/** 工具函数 */
 const {
   formatRecordsToMarkers,
-  translateQQLocation
+  getIncludePointsFromMarkers
 } = require('../../../utils/index')
+
+/** 本地数据 */
 const {
-  houseNatrue,
-  schoolNatrue,
-  schoolType
-} = require('../../../dict/index')
-const { areaMarkerData, areaMap } = require('../../../dict/areaData')
+  areaMarkerData,
+  areaMap
+} = require('../../../dict/areaData')
+
+/** ----------------Page----------------- */
 Page({
   data: {
     cardOffsetTop: wx.getSystemInfoSync().windowHeight - 300,
     cardHeight: '300px',
-    latitude: 32.079337,
-    longitude: 121.592369,
     tabsShow: true,
     showTopFilter: true,
     bottomDistance: 230,
@@ -37,13 +38,8 @@ Page({
     mainActiveIndex: 0,
     activeId: 101,
 
-    markers: [{
-      id: 101,
-      latitude: 31.221522,
-      longitude: 121.544374,
-      title: '浦东',
-      iconPath: '../../../images/empty.png'
-    }],
+    markers: areaMarkerData,
+
     nativeMarkers: [],
     activeCoverId: '',
     mapScale: 11,
@@ -82,6 +78,8 @@ Page({
     this.mapCtx = wx.createMapContext('myMap')
     // 初始化中心点
     this._initCenter()
+    // 各个区展示出来
+    this._includePoints(this._getPoints(areaMarkerData))
   },
   _setScrollViewHeight() {
     const customBottomCard = this.selectComponent('#customBottomCard')
@@ -136,39 +134,26 @@ Page({
       latitude: latitude
     })
   },
-  // 百度转qq坐标
-  async _getQqLocationByBaidu(lat, lng) {
-    const translateRes = await qqMapTranslate({
-      locations: `${lat},${lng}`
-    })
-    if (!translateRes.locations && translateRes.message) {
-      return
-    }
-    return {
-      latitude: translateRes.locations[0].lat,
-      longitude: translateRes.locations[0].lng
-    }
-  },
   _getAreaNameById(id) {
     return areaMap[id + '']
   },
   async onTapCallout(e) {
-    console.log(e)
     const { detail: { markerId }} = e
     this.setData({
       activeCoverId: markerId
     })
     // 获取区的学校
     const res = await placeList({
-      area: this._getAreaNameById(markerId)
+      area: this._getAreaNameById(markerId),
+      type: 1,
+      pageSize: 1000000,
+      placeNature: 0,
+      placeType: 0
     })
-    console.log(formatRecordsToMarkers(res.records))
     if (res.success) {
-      this.setData(
-        {
-          markers: formatRecordsToMarkers(res.result.records)
-        }
-      )
+      this.setData({
+        markers: formatRecordsToMarkers(res.result.records)
+      })
     }
   },
   onTapMarker(e) {
@@ -191,10 +176,6 @@ Page({
     wx.navigateTo({
       url: '/pages/main/search/index'
     })
-  },
-  onSelectItem(e) {
-    const locId = e.currentTarget.id
-    const { type } = e.currentTarget.dataset.place // type--2 对应小区,type--1 对应学校
   },
   onClickNav({ detail = {}}) {
     this.setData({
@@ -226,7 +207,6 @@ Page({
     this.setData({
       showNearBy: true
     })
-    this.onReady()
   },
   onClickListItem() {
     wx.navigateTo({

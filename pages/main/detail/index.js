@@ -38,7 +38,7 @@ Page({
       duration: e.detail.value
     })
   },
-  
+
   scroll() {
 
   }
