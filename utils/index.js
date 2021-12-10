@@ -177,7 +177,7 @@ export function formatRecordsToMarkers(records) {
   const res = []
   if (Array.isArray(records)) {
     for (let i = 0; i < records.length; i++) {
-      const { name, placeId, qqLocation } = records[i]
+      const { name, placeId, qqLocation, type } = records[i]
       if (!qqLocation) {
         console.log(name)
         continue
@@ -191,7 +191,7 @@ export function formatRecordsToMarkers(records) {
         height: 1,
         title: name,
         iconPath: '../images/transparent.png',
-        callout: {
+        callout: type === 'school' ? {
           content: name,
           color: '#0092B6',
           bgColor: '#fff',
@@ -199,6 +199,16 @@ export function formatRecordsToMarkers(records) {
           borderWidth: 1,
           borderRadius: 100,
           borderColor: '#0092B6',
+          display: 'ALWAYS',
+          padding: 6
+        } : {
+          content: name,
+          color: '#333',
+          bgColor: '#fff',
+          fontSize: 12,
+          borderWidth: 0,
+          borderRadius: 3,
+          borderColor: '#fff',
           display: 'ALWAYS',
           padding: 6
         }

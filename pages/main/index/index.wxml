@@ -15,6 +15,7 @@
 			<cover-view
 			 class="customCallout {{activeCoverId === item.id ? 'active': ''}}"
 			 marker-id="{{item.id}}"
+			 marker-item="{{item}}"
 			 wx:for="{{markers}}"
 			 wx:key="id"
 			>{{item.title}}
@@ -44,16 +45,16 @@
 					<view class="card-top-icon" style="margin-right: 6px">
 						<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/location1.svg" />
 					</view>
-					<view>上海市</view>
+					<view>{{areaName}}</view>
 				</view>
 				<view class="card-top-right">
-					<view class="card-top-btn">
+					<view class="card-top-btn" bind:tap="onTapPolicy">
 						<view class="card-top-icon">
 							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/pliocy.svg" />
 						</view>
 						<view>政策</view>
 					</view>
-					<view class="card-top-btn">
+					<view class="card-top-btn" bind:tap="onTapCalendar">
 						<view class="card-top-icon">
 							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/calendar.svg" />
 						</view>
@@ -73,7 +74,7 @@
 				<custom-charts/>
 			</view>
 			<view class="bottom-list-wrap">
-				<custom-list-item bind:onClickItem="onClickListItem" />
+				<custom-list-item bind:onClickItem="onClickListItem" list="{{areaPlaceList}}" />
 			</view>
 		</scroll-view>
 	</custom-bottom-card>

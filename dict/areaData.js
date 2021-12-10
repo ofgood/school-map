@@ -1,15 +1,15 @@
+
 export const areaMarkerData = [{
-  id: 101,
-  latitude: 31.221522,
-  longitude: 121.544374,
-  width: 0,
-  height: 0,
+  id: 0-1,
+  latitude: 31.221521,
+  longitude: 121.544373,
+  width: 1,
+  height: 1,
   count: 2,
   title: '浦东',
   iconPath: '../images/transparent.png',
   customCallout: {
     display: 'ALWAYS'
-    // anchorY: 10
   },
   callout: {
     content: '浦东',

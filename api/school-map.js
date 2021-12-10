@@ -65,15 +65,6 @@ export function areaInfoList(data) {
   })
 }
 
-/** 小区对应学校/baos/applets/house/schools/{houseId} */
-export function houseSchools(data) {
-  return request.axios({
-    method: 'GET',
-    url: api.houseSchools,
-    data
-  })
-}
-
 /** 小区详情/baos/applets/house/detail*/
 export function houseDetail(data) {
   return request.axios({
@@ -102,11 +93,18 @@ export function schoolDetail(data) {
 }
 
 /** 学校对应小区 GET /baos/applets/school/houses/{schoolId}*/
-export function schoolHouses(data) {
+export function schoolHouses(schoolId) {
   return request.axios({
     method: 'GET',
-    url: api.schoolHouses,
-    data
+    url: api.schoolHouses + '/' + schoolId
+  })
+}
+
+/** 小区对应学校/baos/applets/house/schools/{houseId} */
+export function houseSchools(houseId) {
+  return request.axios({
+    method: 'GET',
+    url: api.houseSchools + '/' + houseId
   })
 }
 
@@ -145,3 +143,13 @@ export function policyLis(data) {
     data
   })
 }
+
+/** 附近学校 GET /baos/applets/school/nearby*/
+export function schoolNearby(data) {
+  return request.axios({
+    method: 'GET',
+    url: api.schoolNearby,
+    data
+  })
+}
+

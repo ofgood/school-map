@@ -9,6 +9,7 @@
     "custom-top-filter": "../../../components/custom-top-filter/index",
     "custom-bottom-card": "../../../components/custom-bottom-card/index",
     "custom-charts": "../../../components/custom-charts/index",
-    "custom-list-item": "../../../components/custom-list-item"
+    "custom-list-item": "../../../components/custom-list-item",
+    "van-toast": "@vant/weapp/toast/index"
   }
 }

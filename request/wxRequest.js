@@ -1,8 +1,10 @@
 export default function wxRequest(config) {
-  wx.showLoading({
-    title: '加载中',
-    mask: true
-  })
+  if (config.showLoading) {
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+  }
   return new Promise((resolve, reject) => {
     wx.request({
       ...config,
