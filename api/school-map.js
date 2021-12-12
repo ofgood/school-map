@@ -21,6 +21,7 @@ const api = {
   scheduleAllEvent: '/baos/applets/schedule/allEvent', // 日程事件
   newsDetail: '/baos/applets/news/detail', // 文章详情
   policyLis: '/baos/applets/policy/list', // 政策列表
+  getByType: '/baos/dictData/getByType', // 字典数据查询 /baos/dictData/getByType/{type}
 
   // 腾讯地图转换 经纬度api
   qqMapTranslate: '/ws/coord/v1/translate',
@@ -56,6 +57,15 @@ export function baiduMapTranslate(data) {
     }
   })
 }
+
+/** 字典数据 GET /baos/dictData/getByType/{type}*/
+export function getByType(type) {
+  return request.axios({
+    method: 'GET',
+    url: api.getByType + '/' + type
+  })
+}
+
 /** 图标数据 */
 export function areaInfoList(data) {
   return request.axios({

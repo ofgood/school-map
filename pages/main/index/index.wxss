@@ -231,3 +231,17 @@ page .title {
 .bottom-list-wrap{
   /*padding: 10px*/
 }
+.van-enter-active-class,
+.van-leave-active-class {
+  transition-property: 'opacity';
+}
+
+.van-enter-class {
+  opacity: 1;
+}
+.van-leave-to-class {
+  opacity: 0;
+}
+.block-top-filter{
+  opacity: 0;
+}

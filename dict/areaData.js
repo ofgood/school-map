@@ -1,6 +1,6 @@
 
 export const areaMarkerData = [{
-  id: 0-1,
+  id: 101,
   latitude: 31.221521,
   longitude: 121.544373,
   width: 1,

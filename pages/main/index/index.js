@@ -18,10 +18,19 @@ const {
   areaMap
 } = require('../../../dict/areaData')
 
-/** 组件 */
+import { storeBindingsBehavior } from 'mobx-miniprogram-bindings'
+import { dicStore } from '../../../store/dic'
+
 // import Toast from 'path/to/@vant/weapp/dist/toast/toast'
 /** ----------------Page----------------- */
 Page({
+  behaviors: [storeBindingsBehavior],
+  storeBindings: {
+    store: dicStore,
+    fields: ['dicMap'],
+    // 需要调用的action
+    actions: ['getDic', 'fetchAllDic']
+  },
   data: {
     cardOffsetTop: wx.getSystemInfoSync().windowHeight - 300,
     cardHeight: '300px',
@@ -74,6 +83,16 @@ Page({
     areaPlaceList: []
   },
   onLoad() {
+    // this.getDic('school_type')
+    // this.getDic('school_nature')
+    // this.getDic('school_tag')
+    // this.getDic('school_echelon')
+    // this.getDic('shcool_level')
+    // this.getDic('school_range')
+    // this.getDic('house_type')
+    // this.getDic('house_tag')
+    // this.getDic('house_nature')
+    this.fetchAllDic()
   },
   onUnload() {
   },
@@ -212,6 +231,7 @@ Page({
     if (markerId === this.data.activeCoverId && this.data.markerType !== 'MARKER_AREA') {
       return
     }
+    console.log(markerId)
     if (this.data.markerType === 'MARKER_AREA') {
       if (markerId !== 101 && tapMark.id) {
         wx.showToast({ title: '该区暂未开放', icon: 'none' })
@@ -356,7 +376,9 @@ Page({
           } else {
             _this._backtoArea()
             _this._setMarkerType('MARKER_AREA')
-            this._includePoints(this._getPoints(areaMarkerData))
+            // _this._includePoints(_this._getPoints(areaMarkerData))
+            console.log(_this.selectComponent('#customTopFilter'))
+            _this.selectComponent('#customTopFilter').resetAll()
           }
         }
       })
@@ -413,6 +435,8 @@ Page({
     console.log(res)
   },
   onTapCalendar() {
-
+  },
+  onSelectItem(data) {
+    console.log(data)
   }
 })

@@ -148,7 +148,7 @@ export function translateQQLocation(location) {
 }
 
 /**
- * 计算区域高度
+ * 计算区域高度 px 转 rpx
  * @param {string} height
  * @returns
  */
@@ -190,7 +190,7 @@ export function formatRecordsToMarkers(records) {
         width: 1,
         height: 1,
         title: name,
-        iconPath: '../images/transparent.png',
+        iconPath: '../image/transparent.png',
         callout: type === 'school' ? {
           content: name,
           color: '#0092B6',
@@ -233,4 +233,30 @@ export function getIncludePointsFromMarkers(markers) {
     })
   })
   return res
+}
+
+/**
+ * 格式化字典数据
+ * @param {[{[key]: any}]} dicList
+ */
+
+export function formatDic(dicList) {
+  const res = dicList.map(({ value, title, status }) => {
+    return {
+      value,
+      label: title,
+      status
+    }
+  })
+  return res
+}
+
+/**
+ * 处理promise.all 防止其中一个调用失败而导致结果不能返回
+ * @param {[{key:string,promise:promise}]} promiseList
+ */
+export function handlePromiseAll(promiseList) {
+  return promiseList.map(({ key, promise }) =>
+    promise.then((res) => ({ success: true, key, res, status: 'ok' }), (err) => ({ success: false, key, res: err, status: 'not ok' }))
+  )
 }

@@ -23,14 +23,27 @@
 		</cover-view>
 	</map>
 	<!--顶部筛选-->
-	<view class="top-filter-wrap" wx:if="{{showTopFilter}}">
-		<custom-top-filter
-		 bind:onClickConfirm="onClickComfirm"
-		 bind:onClickSearch="onClickTopSearch"
-		 bind:onClickItem="onClickItem"
-		 bind:onClickNav="onClickNav"
-		/>
-	</view>
+
+	<van-transition
+	 show="{{ showTopFilter }}"
+	 duration="{{ { enter: 500, leave: 500 } }}"
+	 enter-class="van-enter-class"
+	 enter-active-class="van-enter-active-class"
+	 leave-active-class="van-leave-active-class"
+	 leave-to-class="van-leave-to-class"
+	 custom-class="block-top-filter"
+	>
+		<view class="top-filter-wrap">
+			<custom-top-filter
+			 id="customTopFilter"
+			 bind:onClickConfirm="onClickComfirm"
+			 bind:onClickSearch="onClickTopSearch"
+			 bind:onClickItem="onClickItem"
+			 bind:onClickNav="onClickNav"
+			/>
+		</view>
+	</van-transition>
+
 	<!--底部卡片-->
 	<custom-bottom-card
 	 stopUp="{{stopUp}}"

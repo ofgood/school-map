@@ -1,9 +1,5 @@
 const {
-  areaMarkerData,
-  communityNatures,
-  schoolNatures,
-  communityTypes,
-  schoolTypes
+  areaMarkerData
 } = require('../../dict/areaData')
 function _getAreaData(data) {
   const result = []
@@ -12,7 +8,7 @@ function _getAreaData(data) {
     result.push({
       id,
       text,
-      disabled: id !== 101
+      disabled: false
     })
   })
   return result
@@ -31,6 +27,7 @@ const areas = [
   },
   {
     text: '附近',
+    disabled: true,
     children: [
       {
         text: '1km',
@@ -47,6 +44,8 @@ const areas = [
     ]
   }
 ]
+import { storeBindingsBehavior } from 'mobx-miniprogram-bindings'
+import { dicStore } from '../../store/dic'
 Component({
   options: {
     styleIsolation: 'shared'
@@ -62,22 +61,22 @@ Component({
     typeTitle: '学校',
     types: [
       {
-        type: '1',
-        name: '学校'
+        value: '1',
+        label: '学校'
       },
       {
-        type: '2',
-        name: '小区'
+        value: '2',
+        label: '小区'
       }
     ],
 
     placeNature: '',
     placeNatureTitle: '性质',
-    placeNatures: [...schoolNatures],
+    placeNatures: [],
 
     placeTypeTitle: '分类',
     placeType: '',
-    placeTypes: [...schoolTypes],
+    placeTypes: [],
 
     grade: '',
     grades: [
@@ -94,16 +93,32 @@ Component({
     more: '',
     confirmCacheData: {}
   },
+  behaviors: [storeBindingsBehavior],
+  storeBindings: {
+    store: dicStore,
+    fields: [
+      'dicMap'
+    ]
+  },
   observers: {
+    dicMap(val) {
+      if (Object.keys(val).length) {
+        const { school_nature, school_type } = val
+        console.log(school_type)
+        this.data.placeNatures = school_nature
+        this.data.placeTypes = school_type
+      }
+      console.log(val)
+    },
     type(val) {
-      const { type } = this.data.confirmCacheData
+      const { house_nature, school_nature, school_type, house_type } = this.data.dicMap
       const natrueMap = {
-        '1': [...schoolNatures],
-        '2': [...communityNatures]
+        '1': [...school_nature],
+        '2': [...house_nature]
       }
       const typeMap = {
-        '1': [...schoolTypes],
-        '2': [...communityTypes]
+        '1': [...school_type],
+        '2': [...house_type]
       }
       this.setData({
         placeNatures: natrueMap[val],
@@ -144,7 +159,7 @@ Component({
       if (!Object.keys(this.data.confirmCacheData).length) {
         this._resetData(type)
       } else {
-        this.__resetPreData(type)
+        this._resetPreData(type)
       }
       this.triggerEvent('onCloseDropdown')
       this.setData({
@@ -169,8 +184,12 @@ Component({
           ...this.data
         }
       })
+      const { areaTitle, placeType, placeNature } = this.data
       this.triggerEvent('onClickConfirm', {
-        ...this.data
+        area: areaTitle,
+        placeType,
+        placeNature,
+        type: this.data.type
       })
       this.setData({
         showOverlay: false
@@ -219,16 +238,7 @@ Component({
           this.setData({
             type: '1',
             typeTitle: '学校',
-            types: [
-              {
-                type: '1',
-                name: '学校'
-              },
-              {
-                type: '2',
-                name: '小区'
-              }
-            ]
+            types: this.data.types
           })
           break
         case 'placeNature':
@@ -250,7 +260,23 @@ Component({
           break
       }
     },
-    __resetPreData(type) {
+    resetAll() {
+      this.setData({
+        areaTitle: '区域',
+        area: areas,
+        areaActiveIndex: 0,
+        areaActiveId: 0,
+        type: '1',
+        typeTitle: '学校',
+        types: this.data.types,
+        placeNature: '',
+        placeNatureTitle: '性质',
+        placeTypeTitle: '分类',
+        placeType: '',
+        grade: ''
+      })
+    },
+    _resetPreData(type) {
       switch (type) {
         case 'area' : {
           const { areaTitle, areaActiveIndex, areaActiveId } = this.data.confirmCacheData

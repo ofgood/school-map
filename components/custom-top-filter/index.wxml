@@ -52,18 +52,18 @@
 			>
 				<view class="dropdown-custom-wrap">
 					<van-cell
-					 title="{{item.name}}"
+					 title="{{item.label}}"
 					 wx:key="type"
 					 wx:for="{{types}}"
 					 data-type="type"
-					 data-title="{{item.name}}"
-					 data-value="{{item.type}}"
+					 data-title="{{item.label}}"
+					 data-value="{{item.value}}"
 					 bind:click="onclickCustomDropdownItem"
 					>
 						<van-icon
 						 slot="right-icon"
 						 color="#0092B6"
-						 name="{{type === item.type ? 'success' : ''}}"
+						 name="{{type === item.value ? 'success' : ''}}"
 						 class="custom-icon"
 						/>
 					</van-cell>
@@ -100,18 +100,18 @@
 			>
 				<view class="dropdown-custom-wrap">
 					<van-cell
-					 title="{{item.name}}"
+					 title="{{item.label}}"
 					 wx:key="type"
 					 wx:for="{{placeNatures}}"
 					 data-type="placeNature"
-					 data-title="{{item.name}}"
-					 data-value="{{item.type}}"
+					 data-title="{{item.label}}"
+					 data-value="{{item.value}}"
 					 bind:click="onclickCustomDropdownItem"
 					>
 						<van-icon
 						 color="#0092B6"
 						 slot="right-icon"
-						 name="{{placeNature === item.type ? 'success' : ''}}"
+						 name="{{placeNature === item.value ? 'success' : ''}}"
 						 class="custom-icon"
 						/>
 					</van-cell>
@@ -149,18 +149,18 @@
 			>
 				<view class="dropdown-custom-wrap">
 					<van-cell
-					 title="{{item.name}}"
+					 title="{{item.label}}"
 					 wx:key="type"
 					 wx:for="{{placeTypes}}"
 					 data-type="placeType"
-					 data-title="{{item.name}}"
-					 data-value="{{item.type}}"
+					 data-title="{{item.label}}"
+					 data-value="{{item.value}}"
 					 bind:click="onclickCustomDropdownItem"
 					>
 						<van-icon
 						 slot="right-icon"
 						 color="#0092B6"
-						 name="{{placeType === item.type ? 'success' : ''}}"
+						 name="{{placeType === item.value ? 'success' : ''}}"
 						 class="custom-icon"
 						/>
 					</van-cell>

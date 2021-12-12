@@ -10,6 +10,7 @@
     "custom-bottom-card": "../../../components/custom-bottom-card/index",
     "custom-charts": "../../../components/custom-charts/index",
     "custom-list-item": "../../../components/custom-list-item",
-    "van-toast": "@vant/weapp/toast/index"
+    "van-toast": "@vant/weapp/toast/index",
+    "van-transition": "@vant/weapp/transition/index"
   }
 }

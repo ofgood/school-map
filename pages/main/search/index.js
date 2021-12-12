@@ -1,5 +1,5 @@
 const { getViewHeight } = require('../../../utils/index')
-const { getPlaceList } = require('../../../api/school-map')
+const { placeList } = require('../../../api/school-map')
 const searchParams = {
   pageNo: 1,
   pageSize: 15,
@@ -10,7 +10,7 @@ const searchParams = {
   loadError: false
 }
 const area = {
-  area: '浦东新区',
+  area: '',
   city: '上海市',
   province: '上海市'
 }
@@ -43,6 +43,7 @@ Page({
       this.setData({
         pageNo
       })
+      this._loadList()
       this._loadList()
     }, 300)
   },
@@ -126,7 +127,7 @@ Page({
     this.setData({
       searchLoading: true
     })
-    const res = await getPlaceList({
+    const res = await placeList({
       name: searchValue,
       area,
       city,
