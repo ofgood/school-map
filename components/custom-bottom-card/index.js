@@ -24,13 +24,13 @@ Component({
     },
     bottomDistance: {
       type: Number,
-      value: -100
+      value: -200
     },
     triggerDistance: {
       type: Number,
       value: 50
     },
-    stopUp:{
+    stopUp: {
       type: Boolean,
       value: false
     }
@@ -70,7 +70,7 @@ Component({
      * 处理touchmove事件
      */
     handleTouchMove: function(e) {
-      if(this.data.stopUp) {
+      if (this.data.stopUp) {
         return
       }
       const { bottomDistance } = this.data

@@ -15,7 +15,7 @@
 							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../images/loc.svg" />
 						</view>
 						<view>
-							距离您的位置2.33km
+							距离您的位置{{'--'}}km
 						</view>
 					</view>
 				</view>

@@ -44,14 +44,27 @@ Page({
         pageNo
       })
       this._loadList()
-      this._loadList()
     }, 300)
   },
+  // * 区域类型->MARKER_AREA
+  // * 学校类型->MARKER_SCHOOL
+  // * 小区类型->MARKER_HOUSE
+  // * 小区对应学校类型->MARKER_HOUSE_SCHOOL
+  // * 学校对应小区类型->MARKER_SCHOOL_HOUSE
   onClickListItem(e) {
     this._saveHistory()
     const prePage = this._getPrePage()
+    const typeMap = {
+      1: 'MARKER_SCHOOL',
+      2: 'MARKER_HOUSE'
+    }
+    const { currentTarget: { dataset: { place }}} = e
     this._backToPre(() => {
-      prePage.onSelectItem(e)
+      prePage.setData({
+        mapScale: 14
+      })
+      prePage._setMarkerType(typeMap[place.type])
+      prePage._renderPlace(place.placeId, place)
     })
   },
   onClickHistoryItem(e) {

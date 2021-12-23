@@ -82,12 +82,12 @@
 				</view>
 			</view>
 		</view>
-		<scroll-view scroll-y="{{isScrollY}}" style="{{'width: 100%;height:' + scrollHeight + ';'}}">
+		<scroll-view scroll-y="{{isScrollY}}" bind:scrolltolower="onLoadMore" style="{{'width: 100%;height:' + scrollHeight + ';'}}">
 			<view>
 				<custom-charts/>
 			</view>
 			<view class="bottom-list-wrap">
-				<custom-list-item bind:onClickItem="onClickListItem" list="{{areaPlaceList}}" />
+				<custom-list-item bind:onClickItem="onClickListItem" markerType="{{markerType}}" list="{{areaPlaceList}}" />
 			</view>
 		</scroll-view>
 	</custom-bottom-card>

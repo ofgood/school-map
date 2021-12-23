@@ -1,6 +1,6 @@
 .chart-content{
     display: flex;
-    padding: 20px 40px 10px 6px;
+    padding: 20px 40px 5px 6px;
     margin-top: 16px;
 }
 .chart-left{
@@ -45,7 +45,7 @@
     position: absolute;
     width: 78rpx;
     height: 110px;
-    background-color: rgba(0,0,0,.2);
+    background-color: rgba(0,0,0,.07);
 }
 .chart-item .top-chart{
     position: absolute;

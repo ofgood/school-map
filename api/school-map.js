@@ -13,6 +13,7 @@ const api = {
   areaInfoList: '/baos/applets/areaInfo/list', // 图标数据
   houseDetail: '/baos/applets/house/detail', // 小区详情
   houseSchools: '/baos/applets/house/schools', // 小区对应学校/baos/applets/house/schools/{houseId}
+  houseNearby: '/baos/applets/house/nearby', // 附近小区/baos/applets/house/nearby
   placeList: '/baos/applets/place/list', // 地图地点查询
   schoolDetail: '/baos/applets/school/detail', // 学校详情
   schoolHouses: '/baos/applets/school/houses', // 学校对应小区/baos/applets/school/houses/{schoolId}
@@ -159,6 +160,15 @@ export function schoolNearby(data) {
   return request.axios({
     method: 'GET',
     url: api.schoolNearby,
+    data
+  })
+}
+
+/** 附近小区 GET /baos/applets/house/nearby*/
+export function houseNearby(data) {
+  return request.axios({
+    method: 'GET',
+    url: api.houseNearby,
     data
   })
 }

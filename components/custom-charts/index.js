@@ -22,11 +22,11 @@ Component({
         schoolCount: 4000,
         studentCount: 723000
       }
-    ],
-    activeIndex: 0
+    ]
+    // activeIndex: 0
   },
   methods: {
-    onClickChartItem (data) {
+    onClickChartItem(data) {
       console.log('data1', data)
       const { index: activeIndex } = data.currentTarget.dataset
       this.setData({

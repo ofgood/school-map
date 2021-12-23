@@ -3,7 +3,7 @@
 }
 .list-item{
     border-bottom: 1px solid #DDDDDD;
-    padding: 12px 10px;
+    padding: 5px 10px 12px;
 }
 .list-item:last-child{
     border-bottom: none;

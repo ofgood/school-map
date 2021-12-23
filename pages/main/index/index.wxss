@@ -242,6 +242,3 @@ page .title {
 .van-leave-to-class {
   opacity: 0;
 }
-.block-top-filter{
-  opacity: 0;
-}

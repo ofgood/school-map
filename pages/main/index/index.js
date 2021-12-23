@@ -2,6 +2,7 @@
 const {
   placeList,
   schoolNearby,
+  houseNearby,
   schoolHouses,
   houseSchools,
   policyLis
@@ -36,7 +37,7 @@ Page({
     cardHeight: '300px',
     tabsShow: true,
     showTopFilter: true,
-    bottomDistance: 230,
+    bottomDistance: 260,
     isScrollY: false,
     scrollHeight: '',
     stopUp: true,
@@ -59,39 +60,21 @@ Page({
     mapScale: 11,
     activeName: '',
 
-    option1: [
-      { text: '附近1km', value: 1 },
-      { text: '附近2km', value: 2 },
-      { text: '附近3km', value: 3 }
-    ],
-    option2: [
-      { text: '学校', value: 'school' },
-      { text: '小区', value: 'house' }
-    ],
-    option3: [
-      { text: '公办', value: 'a' },
-      { text: '民办', value: 'b' }
-    ],
-    option4: [
-      { text: '重点', value: 'a' },
-      { text: '一般', value: 'b' }
-    ],
     currentLatitude: '',
     currentLongitude: '',
     markerType: 'MARKER_AREA', // 默认区域类型
     areaName: '上海市',
-    areaPlaceList: []
+    areaPlaceList: [],
+
+    // 分页
+    pageNo: 1,
+    pageSize: 10,
+    placeNature: '',
+    type: '',
+    placeType: '',
+    area: ''
   },
   onLoad() {
-    // this.getDic('school_type')
-    // this.getDic('school_nature')
-    // this.getDic('school_tag')
-    // this.getDic('school_echelon')
-    // this.getDic('shcool_level')
-    // this.getDic('school_range')
-    // this.getDic('house_type')
-    // this.getDic('house_tag')
-    // this.getDic('house_nature')
     this.fetchAllDic()
   },
   onUnload() {
@@ -180,40 +163,68 @@ Page({
   _getAreaNameById(id) {
     return areaMap[id + '']
   },
-  _renderMarkers(markers, activeMarker) {
-    console.log(activeMarker)
-    const markersRes = activeMarker ? [activeMarker, ...formatRecordsToMarkers(markers)] : formatRecordsToMarkers(markers)
+  _renderMarkers(markers, activeMarker, isInclude) {
+    const markersRes = activeMarker ? [...formatRecordsToMarkers(markers), activeMarker.id ? activeMarker : formatRecordsToMarkers([activeMarker])[0]] : formatRecordsToMarkers(markers)
     this.setData({
       markers: markersRes
     })
+    if (isInclude) {
+      this._includePoints(this._getPoints(markersRes))
+    }
   },
   _isAreaMark() {
     return !!this.data.markers.find(item => item.id === 101)
   },
   _activeMarker(markerId) {
-    console.log(this.data.markers.find(item => item.id === markerId))
     return this.data.markers.find(item => item.id === markerId)
   },
   async _renderNearPlace({ latitude, longitude, distance = 2 }) {
-    const res = await schoolNearby({
-      distance,
-      latitude,
-      longitude
-    })
-    if (res.success) {
-      if (res.result && res.result.length) {
-        const markers = res.result.map(item => {
-          return {
-            ...item,
-            type: 'school'
-          }
-        })
-        this._renderMarkers(markers)
-      } else {
-        wx.showToast({
-          title: '附近没有学校',
-          icon: 'none'
-        })
+    const { markerType } = this.data
+    console.log(markerType)
+    if (markerType === 'MARKER_SCHOOL') {
+      const res = await schoolNearby({
+        distance,
+        latitude,
+        longitude
+      })
+      if (res.success) {
+        if (res.result && res.result.length) {
+          const markers = res.result.map(item => {
+            return {
+              ...item,
+              type: 'school'
+            }
+          })
+          this._renderMarkers(markers)
+        } else {
+          wx.showToast({
+            title: '附近没有学校',
+            icon: 'none'
+          })
+        }
+      }
+    }
+    if (markerType === 'MARKER_HOUSE') {
+      const res = await houseNearby({
+        distance,
+        latitude,
+        longitude
+      })
+      if (res.success) {
+        if (res.result && res.result.length) {
+          const markers = res.result.map(item => {
+            return {
+              ...item,
+              type: 'house'
+            }
+          })
+          this._renderMarkers(markers)
+        } else {
+          wx.showToast({
+            title: '附近没有小区',
+            icon: 'none'
+          })
+        }
       }
     }
   },
@@ -222,16 +233,21 @@ Page({
       markers: areaMarkerData
     })
   },
-  async onTapCallout(e) {
-    const { detail: { markerId }} = e
+  /**
+   * 渲染地点
+   * @param {*} markerId
+   * @param {*} place
+   * @param {*} type //1 学校 // 2小区
+   * @returns
+   */
+  async _renderPlace(markerId, place, type) {
     const tapMark = this.data.markers.find(item => item.id === markerId) || {}
-    console.log(markerId === this.data.activeCoverId)
-    console.log(this.data.markerType !== 'MARKER_AREA')
-    console.log(this.data.markerType)
+    if (place) {
+      tapMark.id = place.placeId
+    }
     if (markerId === this.data.activeCoverId && this.data.markerType !== 'MARKER_AREA') {
       return
     }
-    console.log(markerId)
     if (this.data.markerType === 'MARKER_AREA') {
       if (markerId !== 101 && tapMark.id) {
         wx.showToast({ title: '该区暂未开放', icon: 'none' })
@@ -247,37 +263,46 @@ Page({
       if (tapMark.id) {
         const { latitude, longitude } = tapMark
         this._setCenter(longitude, latitude)
-        const nearRes = await schoolNearby({
-          distance: 2,
-          latitude,
-          longitude
-        })
+        let nearRes = []
+        if (type === 2) {
+          nearRes = await houseNearby({
+            distance: 2,
+            latitude,
+            longitude
+          })
+          this._setMarkerType('MARKER_HOUSE')
+        } else {
+          nearRes = await schoolNearby({
+            distance: 2,
+            latitude,
+            longitude
+          })
+          this._setMarkerType('MARKER_SCHOOL')
+        }
         if (nearRes.success && nearRes.result && nearRes.result.length) {
           const markers = nearRes.result.map(item => {
             return {
               ...item,
-              type: 'school'
+              type: type === 2 ? 'house' : 'school'
             }
           })
+          this._renderMarkers(markers)
           this.setData({
             mapScale: 14
           })
-          this._setMarkerType('MARKER_SCHOOL')
-          this._renderMarkers(markers)
         } else {
-          wx.showToast({ title: '该区暂无学校', icon: 'none' })
+          wx.showToast({ title: type === 1 ? '该区暂无学校' : '暂无小区', icon: 'none' })
           return
         }
         // 设置地区名称
         this.setData({
           areaName: this._getAreaNameById(tapMark.id)
         })
-        // 默认查找学校
         const areaRes = await placeList({
           area: this._getAreaNameById(tapMark.id),
           pageNo: 1,
           pageSize: 10,
-          type: 1
+          type
         })
         if (areaRes.success && areaRes.result.records && areaRes.result.records.length) {
           console.log(areaRes.result.records)
@@ -294,7 +319,7 @@ Page({
       const res = await schoolHouses(markerId)
       if (res.success) {
         if (res.result && res.result.length) {
-          const activeSchoolMarker = this._activeMarker(markerId)
+          const activeSchoolMarker = this._activeMarker(markerId) || place
           activeSchoolMarker.type = 'school'
           const houseMarkers = res.result.map(item => {
             return {
@@ -302,7 +327,7 @@ Page({
               type: 'house'
             }
           })
-          this._renderMarkers([...houseMarkers], activeSchoolMarker)
+          this._renderMarkers([...houseMarkers], activeSchoolMarker, !!place)
           this.setData({
             activeCoverId: markerId
           })
@@ -317,11 +342,11 @@ Page({
       return
     }
     // 点击小区,把当前小学和查出来的学校合并在一起
-    if ((this.data.markerType === 'MARKER_SCHOOL_HOUSE' || this.data.markerType === 'MARKER_SCHOOL_HOUSE') && tapMark.id) {
+    if ((this.data.markerType === 'MARKER_HOUSE' || this.data.markerType === 'MARKER_SCHOOL_HOUSE') && tapMark.id) {
       const res = await houseSchools(markerId)
       if (res.success) {
         if (res.result && res.result.length) {
-          const activeHouseMarker = this._activeMarker(markerId)
+          const activeHouseMarker = this._activeMarker(markerId) || place
           activeHouseMarker.type = 'house'
           const schoolMarkers = res.result.map(item => {
             return {
@@ -329,7 +354,7 @@ Page({
               type: 'school'
             }
           })
-          this._renderMarkers([...schoolMarkers], activeHouseMarker)
+          this._renderMarkers([...schoolMarkers], activeHouseMarker, !!place)
           this.setData({ activeCoverId: markerId })
           this._setMarkerType('MARKER_HOUSE_SCHOOL')
         } else {
@@ -340,6 +365,10 @@ Page({
         }
       }
     }
+  },
+  async onTapCallout(e) {
+    const { detail: { markerId }} = e
+    this._renderPlace(markerId, '', 1)
   },
   onTapMarker(e) {
     console.log(e)
@@ -373,11 +402,10 @@ Page({
               latitude,
               longitude
             })
-          } else {
+          }
+          if (scale < 12) {
             _this._backtoArea()
             _this._setMarkerType('MARKER_AREA')
-            // _this._includePoints(_this._getPoints(areaMarkerData))
-            console.log(_this.selectComponent('#customTopFilter'))
             _this.selectComponent('#customTopFilter').resetAll()
           }
         }
@@ -425,8 +453,34 @@ Page({
       url: '/pages/main/detail/index'
     })
   },
+  // 点击顶部筛选工具
   onClickComfirm(data) {
     console.log(data)
+    const { detail: { type, area, placeNature, placeType, areaActiveId }} = data
+
+    // 重置了区域,回到各个区的界面
+    if (areaActiveId === 0) {
+      this._setMarkerType('MARKER_AREA')
+      this._backtoArea()
+      this._includePoints(this.data.markers)
+      return
+    }
+    if (areaActiveId !== 101) {
+      wx.showToast({ title: '该区暂未开放', icon: 'none' })
+      return
+    }
+    // 设置地区名称
+    this.setData({
+      areaName: this._getAreaNameById(areaActiveId),
+      type,
+      area,
+      placeNature,
+      placeType,
+      areaActiveId
+    })
+    this._backtoArea()
+    this._setMarkerType('MARKER_AREA')
+    this._renderPlace(areaActiveId, '', Number(type))
   },
   async onTapPolicy() {
     const res = await policyLis({
@@ -436,7 +490,57 @@ Page({
   },
   onTapCalendar() {
   },
-  onSelectItem(data) {
-    console.log(data)
+  async onLoadMore(e) {
+    // 显示加载
+    wx.showToast({
+      title: '加载中...',
+      duration: 100,
+      icon: 'loading'
+    })
+    await this._loadList('loadMore')
+    wx.hideToast()
+  },
+  async _loadList(loadType) {
+    // 设置地区名称
+    if (loadType === 'init') {
+      this.setData({
+        pageNo: 1
+      }, () => {
+        this.getPlaceList()
+      })
+    }
+    if (loadType === 'loadMore') {
+      const pageNo = this.data.pageNo + 1
+      this.setData({
+        pageNo
+      }, async() => {
+        this.getPlaceList()
+      })
+    }
+    // if (areaRes.success && areaRes.result.records && areaRes.result.records.length) {
+    //   console.log(areaRes.result.records)
+    //   this.setData({
+    //     areaPlaceList: areaRes.result.records
+    //   })
+    // }
+  },
+  async getPlaceList() {
+    const { areaName, type, placeNature, placeType, pageNo } = this.data
+    const res = await placeList({
+      area: areaName,
+      pageNo,
+      pageSize: 10,
+      type,
+      placeNature,
+      placeType
+    })
+    if (res.success) {
+      const { areaPlaceList } = this.data
+      const { result: { records }} = res
+      this.setData({
+        areaPlaceList: [...areaPlaceList, ...records]
+      })
+    }
   }
+
 })

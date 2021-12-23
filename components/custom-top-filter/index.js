@@ -8,7 +8,7 @@ function _getAreaData(data) {
     result.push({
       id,
       text,
-      disabled: false
+      disabled: id !== 101
     })
   })
   return result
@@ -184,12 +184,13 @@ Component({
           ...this.data
         }
       })
-      const { areaTitle, placeType, placeNature } = this.data
+      const { areaTitle, placeType, placeNature, areaActiveId } = this.data
       this.triggerEvent('onClickConfirm', {
         area: areaTitle,
         placeType,
         placeNature,
-        type: this.data.type
+        type: this.data.type,
+        areaActiveId
       })
       this.setData({
         showOverlay: false
