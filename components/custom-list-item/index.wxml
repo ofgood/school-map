@@ -1,54 +1,81 @@
 <view class="list-wrap">
-	<view
-	 class="list-item"
-	 hover-class="list-item-hover"
-	 wx:for="{{list}}"
-	 wx:key="*this"
-	 bind:tap="onClickItem"
+	<list
+	 loading="{{loading}}"
+	 empty="{{list.length === 0}}"
+	 finished="{{loadFinished}}"
+	 error="{{loadError}}"
 	>
-		<view class="list-item-top">
-			<view class="item-top-left">
-				<view class="item-top-title">
-					<view class="item-top-name">{{item.name}}</view>
-					<view class="item-top-distance">
-						<view class="distance-icon">
-							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../images/loc.svg" />
+		<view
+		 class="list-item"
+		 hover-class="list-item-hover"
+		 wx:for="{{list}}"
+		 wx:key="*this"
+		 data-value="{{item}}"
+		 bind:tap="onClickItem"
+		>
+			<view class="list-item-top">
+				<view class="item-top-left">
+					<view class="item-top-title">
+						<view class="item-top-name">
+							<view class="" hover-class="none" hover-stop-propagation="false">
+								{{item.name}}
+							</view>
+							<view class="" hover-class="none" hover-stop-propagation="false">
+								<view class="item-top-tip" wx:if="{{ item.placeNature !== null && item.type == 1 }}">
+									{{item.placeNature + '' === '0'? '公': '民'}}
+								</view>
+								<view class="item-top-tip" wx:if="{{ item.placeNature !== null && item.type == 2 }}">
+									{{item.placeNature + '' === '0'? '商': '迁'}}
+								</view>
+							</view>
 						</view>
-						<view>
-							距离您的位置{{'--'}}km
+						<view class="item-top-distance">
+							<view class="distance-icon">
+								<image style="width: 100%; height: 100%;" mode="aspectFit" src="../images/loc.svg" />
+							</view>
+							<view>
+								距离您的位置{{'--'}}km
+							</view>
 						</view>
 					</view>
 				</view>
-				<view class="item-top-tip">公</view>
-			</view>
-			<view
-			 class="item-top-right"
-			 catchtap="onCatchTapSuited"
-			 hover-class="suited-hover"
-			 hover-stop-propagation="true"
-			>
-				<view class="top-right-icon">
-					<image style="width: 100%; height: 100%;" mode="aspectFit" src="../images/dk.svg" />
+				<view
+				 class="item-top-right"
+				 catchtap="onCatchTapSuited"
+				 hover-class="suited-hover"
+				 hover-stop-propagation="true"
+				>
+					<view class="top-right-icon">
+						<image style="width: 100%; height: 100%;" mode="aspectFit" src="../images/dk.svg" />
+					</view>
+					<view>查对口</view>
 				</view>
-				<view>查对口</view>
+			</view>
+			<view class="list-item-bottom">
+				<view class="list-icon">
+					<image style=" width: 80px;height: 80px;" mode="scaleToFill" src="../images/school.jpg" />
+				</view>
+				<view class="tags-box" wx:if="{{item.type == 1}}">
+					<view class="tags-cell color1">一级园</view>
+					<view class="tags-cell color2">九年一贯</view>
+					<view class="tags-cell color3">五年一户</view>
+					<view class="tags-cell color4">幼儿园</view>
+					<view class="tags-cell color5">幼儿园</view>
+					<view class="tags-cell color6">幼儿园</view>
+				</view>
+				<view class="tags-box" wx:if="{{item.type == 2}}">
+					<view class="tags-cell color1">一级园</view>
+					<view class="tags-cell color2">九年一贯</view>
+					<view class="tags-cell color3">五年一户</view>
+					<view class="tags-cell color4">幼儿园</view>
+					<view class="tags-cell color5">幼儿园</view>
+					<view class="tags-cell color6">幼儿园</view>
+				</view>
+			</view>
+			<view>
+				<view/>
 			</view>
 		</view>
-		<view class="list-item-bottom">
-			<view class="list-icon">
-				<image style=" width: 80px;height: 80px;" mode="scaleToFill" src="../images/school.jpg" />
-			</view>
-			<view class="tags-box">
-				<view class="tags-cell color1">一级园</view>
-				<view class="tags-cell color2">九年一贯</view>
-				<view class="tags-cell color3">五年一户</view>
-				<view class="tags-cell color4">幼儿园</view>
-				<view class="tags-cell color5">幼儿园</view>
-				<view class="tags-cell color6">幼儿园</view>
-			</view>
-		</view>
-		<view>
-			<view/>
-		</view>
-	</view>
+	</list>
 </view>
 

@@ -24,7 +24,8 @@
     flex-direction: column;
 }
 .item-top-name{
-    font-size: 20px;
+    font-size: 18px;
+    display: flex;
 }
 .item-top-distance{
     display: flex;
@@ -38,13 +39,13 @@
 }
 .item-top-tip{
     margin-left: 10px;
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     border-radius: 100px;
     background-color: #BEECF8;
     text-align: center;
-    line-height: 30px;
-    font-size: 20px;
+    line-height: 26px;
+    font-size: 18px;
     color: #0092B6;
 }
 .item-top-right{
@@ -105,4 +106,9 @@
 .tags-cell.color6{
     background-color: #DAFAEE;
 }
-
+.bottom-loading{
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

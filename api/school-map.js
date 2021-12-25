@@ -9,6 +9,8 @@ const qqMapKey = 'K5TBZ-OZCCJ-VSBFH-KZ24O-X4P2S-JEBIQ'
 const baiduMapBaseUrl = 'http://api.map.baidu.com'
 const baiduMapAk = 'R9XKzinYoZLt4UTZA9Rd7BkfGBGLf5qj'
 
+// 图片下载地址
+export const imgSrc = '/baos/upload/download/'
 const api = {
   areaInfoList: '/baos/applets/areaInfo/list', // 图标数据
   houseDetail: '/baos/applets/house/detail', // 小区详情

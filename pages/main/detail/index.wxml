@@ -1,230 +1,168 @@
 <view class="container">
-    <view class="detail-page-body">
-        <view class="page-section page-section-spacing swiper">
-            <swiper indicator-dots="{{indicatorDots}}"
-                    style="height: 260px"
-                    autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-                <block wx:for="{{background}}" wx:key="*this">
-                    <swiper-item>
-                        <view class="swiper-item">
-                            <image  style="width: 100%; height: 100%;" mode="aspectFill" src="{{item}}"></image>
-                        </view>
-                    </swiper-item>
-                </block>
-            </swiper>
-            <view class="swiper-section-btns">
-                <view class="section-btn" hover-class="hover-section">
-                    <view class="section-icon">
-                        <image style="width: 100%; height: 100%;" mode="aspectFill" src="../image/pliocy.svg"></image>
-                    </view>
-                    <view>
-                        政策
-                    </view>
-                </view>
-                <view class="section-btn" hover-class="hover-section" hover-stop-propagation="true">
-                    <view class="section-icon">
-                        <image style="width: 100%; height: 100%;" mode="aspectFill" src="../image/zsjz.svg"></image>
-                    </view>
-                    <view>
-                        招生简章
-                    </view>
-                </view>
-            </view>
-        </view>
-        <view class="brief-wrap">
-            <view class="top-brief">
-                <view class="top-brief-title">
-                    <view class="brief-name">
-                        上海市杨浦区复旦科技园小学
-                    </view>
-                    <view class="brief-distance">
-                        <view class="brief-distance-icon">
-                            <image style="width:100%;height:100%" mode="aspectFill" src="../image/loc.svg"></image>
-                        </view>
-                        <view>距离您的位置2.33km</view>
-                    </view>
-                </view>
-                <view class="biref-tip">公</view>
-            </view>
-            <view class="biref-tag-cells">
-                <view class="biref-tag-cell color1">一年级</view>
-                <view class="biref-tag-cell color2">一年级</view>
-                <view class="biref-tag-cell color3">一年级</view>
-                <view class="biref-tag-cell color4">一年级</view>
-                <view class="biref-tag-cell color5">一年级</view>
-                <view class="biref-tag-cell color6">一年级</view>
-            </view>
-        </view>
-        <view class="main-brief">
-            <view class="brief-box">
-                <view class="main-brief-title">
-                    学校简介
-                </view>
-                <view class="brief-text">
-                    <custom-paragraph text="因为这个冠军意想不到 从edg进决赛那天到夺冠 一个星期的时间 网上无数的人在帮edg想办法 一个大v公众号做了无数次模拟bp后得出的结论是edg在蓝色方可能有一丝机会 赛前所有的分析 甚至到盘口赔率没有人看好（赛前开出这个盘口最后赢了的 在我印象中只有s8的g2）edg 网上的言论也都是赢一局完成任务赢两局=冠军 出门看比赛之前我已经做好了被dk3:0的准备 这也就是为什么今年有这么多离谱的flag的原因  edg这么多年的s赛旅程 8强总是主旋律 恐怕所有人心中对edg总是留有疑虑  这一次不破不立对edg就是最好的总结 两个bo5打满十局连斩lck1 2号种子 其中dk从开赛起就展现出统治地位 小组赛全胜 在决赛之前只被faker的t1赢下两把 这就是为什么edg的夺冠会让人们如此疯狂吧"></custom-paragraph>
-                </view>
-            </view>
-            <view class="brief-box">
-                <view class="brief-title">
-                    办学特色
-                </view>
-                <view class="brief-text">
-                    <custom-paragraph text="赛前胜率不被看好，身处劣势而激战5局击溃大魔王的剧本，比在比赛前手握七成胜率的故事，自然是更加热血的。第五局直到最后上高地的时候，EDG仍然不好说稳赢，观众和解说仍然都屏住呼吸，直到看到拆基地拆到一大半时，突然切出来EDG的画面，才反应过来真的赢了，这种把胜负悬念留存到最后的比赛，更能让全程观赛的观众沉浸其中，获胜后也能获得更高的满足感，所以也会有更多人庆祝。"></custom-paragraph>
-                </view>
-            </view>
-            <view class="brief-box">
-                <view class="brief-title">
-                    领导背景
-                </view>
-                <view class="leadership">
-                    <scroll-view scroll-x="true" bindscroll="scroll" style="width: 100%;white-space: nowrap;">
-                        <view class="leadership-item">
-                            <view class="leadership-pic">
-                                <image style="width:100%;height:100%;" src="https://s3.bmp.ovh/imgs/2021/11/a1d5ef86256fbc3c.jpg" mode="aspectFill"></image>
-                            </view>
-                            <view class="leadership-des">
-                                <view class="leadership-role">校长</view>
-                                <view class="leadership-name">张三丰</view>
-                            </view>
-                        </view>
-                        <view class="leadership-item">
-                            <view class="leadership-pic">
-                                <image style="width:100%;height:100%;" src="https://s3.bmp.ovh/imgs/2021/11/a1d5ef86256fbc3c.jpg" mode="aspectFill"></image>
-                            </view>
-                            <view class="leadership-des">
-                                <view class="leadership-role">校长</view>
-                                <view class="leadership-name">张三丰</view>
-                            </view>
-                        </view>
-                        <view class="leadership-item">
-                            <view class="leadership-pic">
-                                <image style="width:100%;height:100%;" src="https://s3.bmp.ovh/imgs/2021/11/a1d5ef86256fbc3c.jpg" mode="aspectFill"></image>
-                            </view>
-                            <view class="leadership-des">
-                                <view class="leadership-role">校长</view>
-                                <view class="leadership-name">张三丰</view>
-                            </view>
-                        </view>
-                        <view class="leadership-item">
-                            <view class="leadership-pic">
-                                <image style="width:100%;height:100%;" src="https://s3.bmp.ovh/imgs/2021/11/a1d5ef86256fbc3c.jpg" mode="aspectFill"></image>
-                            </view>
-                            <view class="leadership-des">
-                                <view class="leadership-role">校长</view>
-                                <view class="leadership-name">张三丰</view>
-                            </view>
-                        </view>
-                        <view class="leadership-item">
-                            <view class="leadership-pic">
-                                <image style="width:100%;height:100%;" src="https://s3.bmp.ovh/imgs/2021/11/a1d5ef86256fbc3c.jpg" mode="aspectFill"></image>
-                            </view>
-                            <view class="leadership-des">
-                                <view class="leadership-role">校长</view>
-                                <view class="leadership-name">张三丰</view>
-                            </view>
-                        </view>
-                        <view class="leadership-item">
-                            <view class="leadership-pic">
-                                <image style="width:100%;height:100%;" src="https://s3.bmp.ovh/imgs/2021/11/a1d5ef86256fbc3c.jpg" mode="aspectFill"></image>
-                            </view>
-                            <view class="leadership-des">
-                                <view class="leadership-role">校长</view>
-                                <view class="leadership-name">张三丰</view>
-                            </view>
-                        </view>
-                        <view class="leadership-item">
-                            <view class="leadership-pic">
-                                <image style="width:100%;height:100%;" src="https://s3.bmp.ovh/imgs/2021/11/a1d5ef86256fbc3c.jpg" mode="aspectFill"></image>
-                            </view>
-                            <view class="leadership-des">
-                                <view class="leadership-role">校长</view>
-                                <view class="leadership-name">张三丰</view>
-                            </view>
-                        </view>
-                        <view class="leadership-item">
-                            <view class="leadership-pic">
-                                <image style="width:100%;height:100%;" src="https://s3.bmp.ovh/imgs/2021/11/a1d5ef86256fbc3c.jpg" mode="aspectFill"></image>
-                            </view>
-                            <view class="leadership-des">
-                                <view class="leadership-role">校长</view>
-                                <view class="leadership-name">张三丰</view>
-                            </view>
-                        </view>
-                        <view class="leadership-item">
-                            <view class="leadership-pic">
-                                <image style="width:100%;height:100%;" src="https://s3.bmp.ovh/imgs/2021/11/a1d5ef86256fbc3c.jpg" mode="aspectFill"></image>
-                            </view>
-                            <view class="leadership-des">
-                                <view class="leadership-role">校长</view>
-                                <view class="leadership-name">张三丰</view>
-                            </view>
-                        </view>
-                    </scroll-view>
-                </view>
-            </view>
-            <view class="brief-box">
-                <view class="brief-title">
-                    学生比例
-                </view>
-                <view class="brief-proportion">
-                    <view class="proportion-item">
-                        <view class="proportion-num">32/231</view>
-                        <view class="proportion-text">班级/学生</view>
-                    </view>
-                    <view class="proportion-item">
-                        <view class="proportion-num">32/2.3</view>
-                        <view class="proportion-text">专职教师/生师比</view>
-                    </view>
-                    <view class="proportion-item">
-                        <view class="proportion-num">32/231/23%</view>
-                        <view class="proportion-text">高职/中职/中高占比</view>
-                    </view>
-                </view>
-            </view>
-            <view class="brief-box">
-                <view class="brief-title">
-                    关键日程
-                </view>
-                <view class="brief-schedule">
-                    <scroll-view scroll-x="true" bindscroll="scroll" style="width: 100%;white-space: nowrap;height: 90px;">
-                       <view class="schedule-wrap" style="white-space:nowrap;height: 40px;">
-                           <view class="schedule-item">
-                               <view class="schedule-title">入学网上报名</view>
-                               <view class="schedule-time">6月15日-18日</view>
-                           </view>
-                           <view class="schedule-item">
-                               <view class="schedule-title">入学网上报名</view>
-                               <view class="schedule-time">6月15日-18日</view>
-                           </view>
-                           <view class="schedule-item">
-                               <view class="schedule-title">入学网上报名</view>
-                               <view class="schedule-time">6月15日-18日</view>
-                           </view>
-                           <view class="schedule-item">
-                               <view class="schedule-title">入学网上报名</view>
-                               <view class="schedule-time">6月15日-18日</view>
-                           </view>
-                           <view class="schedule-item">
-                               <view class="schedule-title">入学网上报名</view>
-                               <view class="schedule-time">6月15日-18日</view>
-                           </view>
-                           <view class="schedule-item">
-                               <view class="schedule-title">入学网上报名</view>
-                               <view class="schedule-time">6月15日-18日</view>
-                           </view>
-                       </view>
-                    </scroll-view>
-                </view>
-            </view>
-            <view class="brief-box">
-                <view class="brief-title">
-                    对口信息
-                </view>
-                <view class="brief-fit">
-                    <view class="brief-fit-item">上海市杨浦区复旦科技园初中</view>
-                    <view class="brief-fit-item">对口小区</view>
-                </view>
-            </view>
-        </view>
-    </view>
+	<view class="detail-page-body">
+		<view class="page-section page-section-spacing swiper">
+			<swiper
+			 indicator-dots="{{indicatorDots}}"
+			 style="height: 260px"
+			 autoplay="{{autoplay}}"
+			 interval="{{interval}}"
+			 duration="{{duration}}"
+			>
+				<block wx:for="{{background}}" wx:key="*this">
+					<swiper-item>
+						<view class="swiper-item">
+							<image style="width: 100%; height: 100%;" mode="aspectFill" src="{{item}}" />
+						</view>
+					</swiper-item>
+				</block>
+			</swiper>
+			<view class="swiper-section-btns">
+				<view class="section-btn" hover-class="hover-section">
+					<view class="section-icon">
+						<image style="width: 100%; height: 100%;" mode="aspectFill" src="../image/pliocy.svg" />
+					</view>
+					<view>
+						政策
+					</view>
+				</view>
+				<view class="section-btn" hover-class="hover-section" hover-stop-propagation="true">
+					<view class="section-icon">
+						<image style="width: 100%; height: 100%;" mode="aspectFill" src="../image/zsjz.svg" />
+					</view>
+					<view>
+						招生简章
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="brief-wrap">
+			<view class="top-brief">
+				<view class="top-brief-title">
+					<view class="brief-name">
+						{{detail.name}}
+					</view>
+					<view class="brief-distance">
+						<view class="brief-distance-icon">
+							<image style="width:100%;height:100%" mode="aspectFill" src="../image/loc.svg" />
+						</view>
+						<view>距离--km</view>
+					</view>
+				</view>
+				<view class="biref-tip" wx:if="{{ type === '1' }}">
+					{{detail.nature + '' === '0'? '公': '民'}}
+				</view>
+				<view class="biref-tip" wx:if="{{ type === '2' }}">
+					{{detail.nature + '' === '0'? '商': '迁'}}
+				</view>
+			</view>
+			<view class="biref-tag-cells">
+				<view class="biref-tag-cell color1">一年级</view>
+				<view class="biref-tag-cell color2">一年级</view>
+				<view class="biref-tag-cell color3">一年级</view>
+				<view class="biref-tag-cell color4">一年级</view>
+				<view class="biref-tag-cell color5">一年级</view>
+				<view class="biref-tag-cell color6">一年级</view>
+			</view>
+		</view>
+		<view class="main-brief">
+			<view class="brief-box">
+				<view class="main-brief-title">
+					学校简介
+				</view>
+				<view class="brief-text">
+					<custom-paragraph text="{{detail.description}}" />
+				</view>
+			</view>
+			<view class="brief-box">
+				<view class="brief-title">
+					办学特色
+				</view>
+				<view class="brief-text">
+					<custom-paragraph text="{{detail.feature}}" />
+				</view>
+			</view>
+			<!-- <view class="brief-box">
+				<view class="brief-title">
+					领导背景
+				</view>
+				<view class="leadership">
+					<scroll-view scroll-x="true" bindscroll="scroll" style="width: 100%;white-space: nowrap;">
+						<view class="leadership-item">
+							<view class="leadership-pic">
+								<image style="width:100%;height:100%;" src="https://s3.bmp.ovh/imgs/2021/11/a1d5ef86256fbc3c.jpg" mode="aspectFill" />
+							</view>
+							<view class="leadership-des">
+								<view class="leadership-role">校长</view>
+								<view class="leadership-name">张三丰</view>
+							</view>
+						</view>
+					</scroll-view>
+				</view>
+			</view> -->
+			<view class="brief-box">
+				<view class="brief-title">
+					学生比例
+				</view>
+				<view class="brief-proportion">
+					<view class="proportion-item">
+						<view class="proportion-num">32/231</view>
+						<view class="proportion-text">班级/学生</view>
+					</view>
+					<view class="proportion-item">
+						<view class="proportion-num">32/2.3</view>
+						<view class="proportion-text">专职教师/生师比</view>
+					</view>
+					<view class="proportion-item">
+						<view class="proportion-num">32/231/23%</view>
+						<view class="proportion-text">高职/中职/中高占比</view>
+					</view>
+				</view>
+			</view>
+			<view class="brief-box">
+				<view class="brief-title">
+					关键日程
+				</view>
+				<view class="brief-schedule">
+					<scroll-view scroll-x="true" bindscroll="scroll" style="width: 100%;white-space: nowrap;height: 90px;">
+						<view class="schedule-wrap" style="white-space:nowrap;height: 40px;">
+							<view class="schedule-item">
+								<view class="schedule-title">入学网上报名</view>
+								<view class="schedule-time">6月15日-18日</view>
+							</view>
+							<view class="schedule-item">
+								<view class="schedule-title">入学网上报名</view>
+								<view class="schedule-time">6月15日-18日</view>
+							</view>
+							<view class="schedule-item">
+								<view class="schedule-title">入学网上报名</view>
+								<view class="schedule-time">6月15日-18日</view>
+							</view>
+							<view class="schedule-item">
+								<view class="schedule-title">入学网上报名</view>
+								<view class="schedule-time">6月15日-18日</view>
+							</view>
+							<view class="schedule-item">
+								<view class="schedule-title">入学网上报名</view>
+								<view class="schedule-time">6月15日-18日</view>
+							</view>
+							<view class="schedule-item">
+								<view class="schedule-title">入学网上报名</view>
+								<view class="schedule-time">6月15日-18日</view>
+							</view>
+						</view>
+					</scroll-view>
+				</view>
+			</view>
+			<view class="brief-box">
+				<view class="brief-title">
+					对口信息
+				</view>
+				<view class="brief-fit">
+					<view class="brief-fit-item">上海市杨浦区复旦科技园初中</view>
+					<view class="brief-fit-item">对口小区</view>
+				</view>
+			</view>
+		</view>
+	</view>
 </view>
+

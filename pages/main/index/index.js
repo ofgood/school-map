@@ -72,7 +72,10 @@ Page({
     placeNature: '',
     type: '',
     placeType: '',
-    area: ''
+    area: '',
+    listLoading: false,
+    loadFinished: false,
+    loadError: false
   },
   onLoad() {
     this.fetchAllDic()
@@ -180,7 +183,6 @@ Page({
   },
   async _renderNearPlace({ latitude, longitude, distance = 2 }) {
     const { markerType } = this.data
-    console.log(markerType)
     if (markerType === 'MARKER_SCHOOL') {
       const res = await schoolNearby({
         distance,
@@ -258,7 +260,6 @@ Page({
       this.setData({
         stopUp: false
       })
-
       // 点击区
       if (tapMark.id) {
         const { latitude, longitude } = tapMark
@@ -271,6 +272,7 @@ Page({
             longitude
           })
           this._setMarkerType('MARKER_HOUSE')
+          this.setData({ type: 2 })
         } else {
           nearRes = await schoolNearby({
             distance: 2,
@@ -278,6 +280,7 @@ Page({
             longitude
           })
           this._setMarkerType('MARKER_SCHOOL')
+          this.setData({ type: 1 })
         }
         if (nearRes.success && nearRes.result && nearRes.result.length) {
           const markers = nearRes.result.map(item => {
@@ -448,9 +451,12 @@ Page({
       showNearBy: true
     })
   },
-  onClickListItem() {
+  // 跳转详情
+  onClickListItem(data) {
+    const { type, placeId } = data.detail
+    console.log(data.detail)
     wx.navigateTo({
-      url: '/pages/main/detail/index'
+      url: `/pages/main/detail/index?type=${type}&id=${placeId}`
     })
   },
   // 点击顶部筛选工具
@@ -476,11 +482,15 @@ Page({
       area,
       placeNature,
       placeType,
-      areaActiveId
+      areaActiveId,
+      pageNo: 1,
+      areaPlaceList: [],
+      loadFinished: false
     })
-    this._backtoArea()
+    // this._backtoArea()
     this._setMarkerType('MARKER_AREA')
     this._renderPlace(areaActiveId, '', Number(type))
+    this.getPlaceList()
   },
   async onTapPolicy() {
     const res = await policyLis({
@@ -490,56 +500,69 @@ Page({
   },
   onTapCalendar() {
   },
-  async onLoadMore(e) {
-    // 显示加载
-    wx.showToast({
-      title: '加载中...',
-      duration: 100,
-      icon: 'loading'
-    })
-    await this._loadList('loadMore')
-    wx.hideToast()
-  },
-  async _loadList(loadType) {
-    // 设置地区名称
-    if (loadType === 'init') {
-      this.setData({
-        pageNo: 1
-      }, () => {
-        this.getPlaceList()
-      })
+  onLoadMore(e) {
+    const { loadFinished } = this.data
+    if (loadFinished) {
+      return
     }
-    if (loadType === 'loadMore') {
-      const pageNo = this.data.pageNo + 1
+    setTimeout(() => {
+      let { pageNo } = this.data
+      pageNo++
       this.setData({
         pageNo
-      }, async() => {
-        this.getPlaceList()
       })
-    }
-    // if (areaRes.success && areaRes.result.records && areaRes.result.records.length) {
-    //   console.log(areaRes.result.records)
-    //   this.setData({
-    //     areaPlaceList: areaRes.result.records
-    //   })
-    // }
+      this.getPlaceList()
+    }, 300)
   },
   async getPlaceList() {
-    const { areaName, type, placeNature, placeType, pageNo } = this.data
-    const res = await placeList({
-      area: areaName,
-      pageNo,
-      pageSize: 10,
-      type,
-      placeNature,
-      placeType
+    const { areaName, type, placeNature, placeType, pageNo, pageSize } = this.data
+    console.log(type)
+    this.setData({
+      listLoading: true
     })
-    if (res.success) {
-      const { areaPlaceList } = this.data
-      const { result: { records }} = res
-      this.setData({
-        areaPlaceList: [...areaPlaceList, ...records]
+    try {
+      const list = []
+      const res = await placeList({
+        area: areaName,
+        pageNo,
+        pageSize: 10,
+        type,
+        placeNature,
+        placeType
       })
+      if (res.success) {
+        const { areaPlaceList } = this.data
+        const { result: { records = [] }} = res
+        this.setData({
+          areaPlaceList: [...areaPlaceList, ...records],
+          listLoading: false
+        })
+        if (records.length < pageSize) {
+          this.setData({
+            loadFinished: true
+          })
+        }
+      } else {
+        this.setData({
+          loadFinished: true,
+          listLoading: false
+        })
+        wx.showToast({
+          title: res.message,
+          icon: 'none'
+        })
+      }
+      return list
+    } catch (error) {
+      this.setData({
+        loadFinished: true,
+        searchLoading: false
+      })
+      wx.showToast({
+        title: '出错了~',
+        icon: 'none'
+      })
+      return []
     }
   }
 

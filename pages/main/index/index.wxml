@@ -87,7 +87,12 @@
 				<custom-charts/>
 			</view>
 			<view class="bottom-list-wrap">
-				<custom-list-item bind:onClickItem="onClickListItem" markerType="{{markerType}}" list="{{areaPlaceList}}" />
+				<custom-list-item
+				 bind:onClickItem="onClickListItem"
+				 loading="{{listLoading}}"
+				 markerType="{{markerType}}"
+				 list="{{areaPlaceList}}"
+				/>
 			</view>
 		</scroll-view>
 	</custom-bottom-card>
