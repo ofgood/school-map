@@ -29,14 +29,14 @@
 								</view>
 							</view>
 						</view>
-						<view class="item-top-distance">
+						<!-- <view class="item-top-distance">
 							<view class="distance-icon">
 								<image style="width: 100%; height: 100%;" mode="aspectFit" src="../images/loc.svg" />
 							</view>
 							<view>
 								距离您的位置{{'--'}}km
 							</view>
-						</view>
+						</view> -->
 					</view>
 				</view>
 				<view
@@ -55,21 +55,15 @@
 				<view class="list-icon">
 					<image style=" width: 80px;height: 80px;" mode="scaleToFill" src="../images/school.jpg" />
 				</view>
-				<view class="tags-box" wx:if="{{item.type == 1}}">
-					<view class="tags-cell color1">一级园</view>
-					<view class="tags-cell color2">九年一贯</view>
-					<view class="tags-cell color3">五年一户</view>
-					<view class="tags-cell color4">幼儿园</view>
-					<view class="tags-cell color5">幼儿园</view>
-					<view class="tags-cell color6">幼儿园</view>
-				</view>
-				<view class="tags-box" wx:if="{{item.type == 2}}">
-					<view class="tags-cell color1">一级园</view>
-					<view class="tags-cell color2">九年一贯</view>
-					<view class="tags-cell color3">五年一户</view>
-					<view class="tags-cell color4">幼儿园</view>
-					<view class="tags-cell color5">幼儿园</view>
-					<view class="tags-cell color6">幼儿园</view>
+				<view class="tags-box">
+					<view
+					 class="tags-cell color3"
+					 wx:for="{{item.tagList}}"
+					 wx:key="tag"
+					 wx:for-item="tag"
+					>
+						{{tag}}
+					</view>
 				</view>
 			</view>
 			<view>

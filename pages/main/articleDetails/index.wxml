@@ -1,0 +1,45 @@
+<view class="details-wrap">
+	<view class="details-title" hover-class="none" hover-stop-propagation="false">
+		{{details.title}}
+	</view>
+	<view class="details-summary" hover-class="none" hover-stop-propagation="false">
+		{{details.summary}}
+		<view class="publish-time" hover-class="none" hover-stop-propagation="false">
+			发布时间: {{details.publishDate}}
+		</view>
+	</view>
+	<view class="img-list" hover-class="none" hover-stop-propagation="false">
+		<image
+		 wx:for="{{imgList}}"
+		 class="img-item"
+		 wx:key="*this"
+		 src="{{item}}"
+		 mode="aspectFit|aspectFill|widthFix"
+		 lazy-load="false"
+		/>
+	</view>
+	<view class="details-main-content" hover-class="none" hover-stop-propagation="false">
+		<rich-text nodes="{{details.content}}" />
+	</view>
+	<view
+	 class="details-links"
+	 wx:if="{{details.link}}"
+	 data-link="{{details.link}}"
+	 bind:tap="onClickLink"
+	>
+		<view>链接:</view>
+		{{details.link}}
+	</view>
+	<view class="details-links" wx:if="{{details.fileList.length}}" data-link="{{details.fileList}}">
+		<view>附件:</view>
+		<view
+		 wx:for="{{details.fileList}}"
+		 wx:key="*this"
+		 data-file="{{item}}"
+		 bind:tap="onClickFileItem"
+		>
+			{{item.fileName}}
+		</view>
+	</view>
+</view>
+

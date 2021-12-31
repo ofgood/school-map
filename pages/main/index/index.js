@@ -4,8 +4,7 @@ const {
   schoolNearby,
   houseNearby,
   schoolHouses,
-  houseSchools,
-  policyLis
+  houseSchools
 } = require('../../../api/school-map')
 
 /** 工具函数 */
@@ -454,7 +453,6 @@ Page({
   // 跳转详情
   onClickListItem(data) {
     const { type, placeId } = data.detail
-    console.log(data.detail)
     wx.navigateTo({
       url: `/pages/main/detail/index?type=${type}&id=${placeId}`
     })
@@ -493,12 +491,16 @@ Page({
     this.getPlaceList()
   },
   async onTapPolicy() {
-    const res = await policyLis({
-      area: this.data.areaName
+    const { areaName } = this.data
+    wx.navigateTo({
+      url: `/pages/main/policyList/index?area=${areaName}&type=policy`
     })
-    console.log(res)
   },
   onTapCalendar() {
+    const { areaName } = this.data
+    wx.navigateTo({
+      url: `/pages/main/policyList/index?area=${areaName}&type=calendar`
+    })
   },
   onLoadMore(e) {
     const { loadFinished } = this.data
