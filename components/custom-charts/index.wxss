@@ -53,8 +53,6 @@
     left: 0;
     right: 0;
     height: 60px;
-    border-top-left-radius: 60px;
-    border-top-right-radius: 60px;
     background-color: lightsalmon;
     color: #ffffff;
     z-index: 2;
@@ -81,8 +79,6 @@
     top: 81px;
     height: 50px;
     background-color: lightcoral;
-    border-bottom-left-radius: 60px;
-    border-bottom-right-radius: 60px;
     color: #ffffff;
     z-index: 1;
 }
@@ -129,8 +125,11 @@
 .chart-line.chart-bottom-base-line{
     top: 80px;
 }
-.chart-line.chart-line-bottom{
+.chart-line.chart-line-bottom-middle{
     top: 110px;
+}
+.chart-line.chart-line-bottom{
+    top: 140px;
 }
 .chart-item .chart-tooltips{
     display: none;

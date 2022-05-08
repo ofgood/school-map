@@ -23,12 +23,12 @@
 	</view>
 	<view
 	 class="details-links"
-	 wx:if="{{details.link}}"
-	 data-link="{{details.link}}"
+	 wx:if="{{link}}"
+	 data-link="{{link}}"
 	 bind:tap="onClickLink"
 	>
 		<view>链接:</view>
-		{{details.link}}
+		{{link}}
 	</view>
 	<view class="details-links" wx:if="{{details.fileList.length}}" data-link="{{details.fileList}}">
 		<view>附件:</view>

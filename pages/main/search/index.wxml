@@ -20,7 +20,7 @@
 				 border
 				 id="{{item.placeId}}"
 				 data-place="{{item}}"
-				 title="{{item.name}}"
+				 title="{{item.name}}({{item.type === 1 ? '学校' : '小区'}})"
 				 label="{{item.address}}"
 				 bind:click="onClickListItem"
 				/>

@@ -174,6 +174,7 @@ export function setNavigationBarTitle(titleText) {
  * @param {*} records
  */
 export function formatRecordsToMarkers(records) {
+  console.log('records', records)
   const res = []
   if (Array.isArray(records)) {
     for (let i = 0; i < records.length; i++) {
@@ -190,6 +191,7 @@ export function formatRecordsToMarkers(records) {
         width: 1,
         height: 1,
         title: name,
+        ...records[i],
         iconPath: '../image/transparent.png',
         callout: type === 'school' ? {
           content: name,
@@ -206,9 +208,9 @@ export function formatRecordsToMarkers(records) {
           color: '#333',
           bgColor: '#fff',
           fontSize: 12,
-          borderWidth: 0,
+          borderWidth: 1,
           borderRadius: 3,
-          borderColor: '#fff',
+          borderColor: '#333333',
           display: 'ALWAYS',
           padding: 6
         }

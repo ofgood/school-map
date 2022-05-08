@@ -20,15 +20,15 @@
 			 wx:for-index="idx"
 			 catchtap="onClickChartItem"
 			>
-				<view class="top-chart" style="height:{{item.studentCount*30/500000}}px;">
-					<view class="chart-text">{{item.studentCount/10000}}w</view>
+				<view class="top-chart" style="height:{{item.studentCount*studentPercent}}px;">
+					<!-- <view class="chart-text">{{item.studentCount/10000}}w</view> -->
 				</view>
 				<view class="middle" wx:if="{{item.type === 'nursery'}}">幼</view>
 				<view class="middle" wx:if="{{item.type === 'primary'}}">小</view>
 				<view class="middle" wx:if="{{item.type === 'middle'}}">初</view>
 				<view class="middle" wx:if="{{item.type === 'high'}}">高</view>
-				<view class="bottom-chart" style="height:{{item.schoolCount*30/5000}}px">
-					<view class="chart-text">{{item.schoolCount/10000}}w</view>
+				<view class="bottom-chart" style="height:{{item.schoolCount*schoolPercent}}px">
+					<!-- <view class="chart-text">{{item.schoolCount/10000}}w</view> -->
 				</view>
 				<view class="chart-mask" />
 				<view class="chart-tooltips bottom {{item.type === 'high' ? 'right': ''}}">
@@ -43,16 +43,16 @@
 						</view>
 						<view class="chart-info-item">
 							<view class="chart-info-title">在校生年度增减比:</view>
-							<view class="chart-info-detail tip-color">-0.02%</view>
+							<view class="chart-info-detail tip-color">{{item.rate}}</view>
 						</view>
 					</view>
 				</view>
 			</view>
 			<view class="chart-line-top chart-line">
-				<view class="line-text">100w</view>
+				<view class="line-text">{{topCount}}</view>
 			</view>
 			<view class="chart-line-middle chart-line">
-				<view class="line-text">50w</view>
+				<view class="line-text">{{middleCount}}</view>
 			</view>
 			<view class="chart-top-base-line chart-line">
 				<view class="line-text">0</view>
@@ -60,8 +60,11 @@
 			<view class="chart-bottom-base-line chart-line">
 				<view class="line-text">0</view>
 			</view>
+			<view class="chart-line-bottom-middle chart-line">
+				<view class="line-text">{{bottomMiddleCount}}</view>
+			</view>
 			<view class="chart-line-bottom chart-line">
-				<view class="line-text">0.5w</view>
+				<view class="line-text">{{bottomCount}}</view>
 			</view>
 		</view>
 	</view>

@@ -8,7 +8,7 @@ function _getAreaData(data) {
     result.push({
       id,
       text,
-      disabled: id !== 101
+      disabled: false
     })
   })
   return result
@@ -51,6 +51,7 @@ Component({
     styleIsolation: 'shared'
   },
   data: {
+    activeType: '',
     areaTitle: '区域',
     area: '',
     areas: areas,
@@ -146,15 +147,17 @@ Component({
     onClickOverlay() {
       this.triggerEvent('onClickOverlay')
     },
-    onOpenDropdown() {
+    onOpenDropdown({ currentTarget }) {
+      const { dataset } = currentTarget
+      const { type } = dataset
       this.triggerEvent('onOpenDropdown')
       this.setData({
-        showOverlay: true
+        showOverlay: true,
+        activeType: type
       })
     },
     onCloseDropdown({ currentTarget }) {
       const { dataset } = currentTarget
-      console.log(currentTarget)
       const { type } = dataset
       if (!Object.keys(this.data.confirmCacheData).length) {
         this._resetData(type)
@@ -174,6 +177,10 @@ Component({
         [type]: value,
         [`${type}Title`]: title
       })
+    },
+    hideDropDown() {
+      const { activeType } = this.data
+      this.selectComponent(`#${activeType}`).toggle(false)
     },
     onClickConfirm({ currentTarget }) {
       const { dataset } = currentTarget
@@ -195,8 +202,8 @@ Component({
       this.setData({
         showOverlay: false
       })
+      console.log(type)
       this.selectComponent(`#${type}`).toggle(false)
-      console.log(this.data.confirmCacheData.type)
       if (Object.keys(this.data.confirmCacheData).length) {
         if (type === 'type' && typeValue !== this.data.confirmCacheData.type) {
           this.setData({
@@ -211,6 +218,9 @@ Component({
             }
           })
         }
+      }
+      if (areaTitle === '区域' && type === 'area') {
+        this.resetAll()
       }
     },
     onChangeGrade(event) {
@@ -275,6 +285,8 @@ Component({
         placeTypeTitle: '分类',
         placeType: '',
         grade: ''
+      })
+      this.triggerEvent('onResetAll', {
       })
     },
     _resetPreData(type) {

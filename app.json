@@ -6,7 +6,8 @@
     "pages/main/detail/index",
     "pages/main/policyList/index",
     "pages/main/articleDetails/index",
-    "pages/main/webview/index"
+    "pages/main/webview/index",
+    "pages/main/message/index"
   ],
   "window":{
     "navigationBarBackgroundColor": "#ffffff",

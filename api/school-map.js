@@ -25,6 +25,7 @@ const api = {
   newsDetail: '/baos/applets/news/detail', // 文章详情
   policyLis: '/baos/applets/policy/list', // 政策列表
   getByType: '/baos/dictData/getByType', // 字典数据查询 /baos/dictData/getByType/{type}
+  addMessage: '/baos/applets/user/message', // 留言
 
   // 腾讯地图转换 经纬度api
   qqMapTranslate: '/ws/coord/v1/translate',
@@ -72,7 +73,7 @@ export function getByType(type) {
 /** 图标数据 */
 export function areaInfoList(data) {
   return request.axios({
-    method: 'GET',
+    method: 'POST',
     url: api.areaInfoList,
     data
   })
@@ -175,3 +176,11 @@ export function houseNearby(data) {
   })
 }
 
+/** 附近小区 POST /baos/applets/user/message*/
+export function addMessage(data) {
+  return request.axios({
+    method: 'POST',
+    url: api.addMessage,
+    data
+  })
+}

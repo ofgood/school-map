@@ -55,19 +55,14 @@
 					{{detail.nature + '' === '0'? '商': '迁'}}
 				</view>
 			</view>
-			<view class="biref-tag-cells">
-				<view class="biref-tag-cell color1">一年级</view>
-				<view class="biref-tag-cell color2">一年级</view>
-				<view class="biref-tag-cell color3">一年级</view>
-				<view class="biref-tag-cell color4">一年级</view>
-				<view class="biref-tag-cell color5">一年级</view>
-				<view class="biref-tag-cell color6">一年级</view>
+			<view class="biref-tag-cells" wx:if="{{detail.tags}}">
+				<view wx:for="{{detail.tags}}" class="biref-tag-cell color1">{{item}}</view>
 			</view>
 		</view>
 		<view class="main-brief">
 			<view class="brief-box">
 				<view class="main-brief-title">
-					学校简介
+					{{type === '1' ? '学校简介' : '小区简介'}}
 				</view>
 				<view class="brief-text">
 					<custom-paragraph text="{{detail.description}}" />
@@ -75,7 +70,7 @@
 			</view>
 			<view class="brief-box">
 				<view class="brief-title">
-					办学特色
+					{{type === '1' ? '办学特色' : '小区特色'}}
 				</view>
 				<view class="brief-text">
 					<custom-paragraph text="{{detail.feature}}" />
@@ -99,26 +94,26 @@
 					</scroll-view>
 				</view>
 			</view> -->
-			<view class="brief-box">
+			<view class="brief-box" wx:if="{{type === '1'}}">
 				<view class="brief-title">
 					学生比例
 				</view>
 				<view class="brief-proportion">
 					<view class="proportion-item">
-						<view class="proportion-num">32/231</view>
+						<view class="proportion-num">{{detail.classNumber || '--'}}/{{detail.studentNumber || '--'}}</view>
 						<view class="proportion-text">班级/学生</view>
 					</view>
 					<view class="proportion-item">
-						<view class="proportion-num">32/2.3</view>
-						<view class="proportion-text">专职教师/生师比</view>
+						<view class="proportion-num">{{detail.teacherNumber || '--'}}</view>
+						<view class="proportion-text">专职教师</view>
 					</view>
 					<view class="proportion-item">
-						<view class="proportion-num">32/231/23%</view>
-						<view class="proportion-text">高职/中职/中高占比</view>
+						<view class="proportion-num">{{detail.seniorRate || '--'}}</view>
+						<view class="proportion-text">中高级教师占比</view>
 					</view>
 				</view>
 			</view>
-			<view class="brief-box">
+			<view class="brief-box" wx:if="{{type === '1'}}">
 				<view class="brief-title">
 					关键日程
 				</view>
@@ -126,28 +121,8 @@
 					<scroll-view scroll-x="true" bindscroll="scroll" style="width: 100%;white-space: nowrap;height: 90px;">
 						<view class="schedule-wrap" style="white-space:nowrap;height: 40px;">
 							<view class="schedule-item">
-								<view class="schedule-title">入学网上报名</view>
-								<view class="schedule-time">6月15日-18日</view>
-							</view>
-							<view class="schedule-item">
-								<view class="schedule-title">入学网上报名</view>
-								<view class="schedule-time">6月15日-18日</view>
-							</view>
-							<view class="schedule-item">
-								<view class="schedule-title">入学网上报名</view>
-								<view class="schedule-time">6月15日-18日</view>
-							</view>
-							<view class="schedule-item">
-								<view class="schedule-title">入学网上报名</view>
-								<view class="schedule-time">6月15日-18日</view>
-							</view>
-							<view class="schedule-item">
-								<view class="schedule-title">入学网上报名</view>
-								<view class="schedule-time">6月15日-18日</view>
-							</view>
-							<view class="schedule-item">
-								<view class="schedule-title">入学网上报名</view>
-								<view class="schedule-time">6月15日-18日</view>
+								<view class="schedule-title">--</view>
+								<view class="schedule-time">--</view>
 							</view>
 						</view>
 					</scroll-view>
@@ -156,10 +131,15 @@
 			<view class="brief-box">
 				<view class="brief-title">
 					对口信息
+					<view class="brief-title-tip">
+						(对口信息仅供参考)
+					</view>
 				</view>
-				<view class="brief-fit">
-					<view class="brief-fit-item">上海市杨浦区复旦科技园初中</view>
-					<view class="brief-fit-item">对口小区</view>
+				<view class="brief-fit" wx:if="{{type === '1'}}">
+					<view class="brief-fit-item" wx:for="{{detail.houses}}" key="*this">{{item.name}}</view>
+				</view>
+				<view class="brief-fit" wx:if="{{type === '2'}}">
+					<view class="brief-fit-item" wx:for="{{detail.schools}}" key="*this">{{item.name}}</view>
 				</view>
 			</view>
 		</view>

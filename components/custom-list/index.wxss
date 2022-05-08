@@ -5,10 +5,7 @@
     border-bottom: 1px solid #DDDDDD;
     padding: 5px 10px 12px;
 }
-.list-item.second-item {
-    padding-top: 20px;
-}
-.list-wrap .list-item:last-of-type{
+.list-item:last-child{
     border-bottom: none;
 }
 .list-item.list-item-hover{
@@ -27,7 +24,7 @@
     flex-direction: column;
 }
 .item-top-name{
-    font-size: 16px;
+    font-size: 18px;
     display: flex;
 }
 .item-top-distance{
@@ -114,20 +111,4 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.corresponding-box{
-    padding: 20px 0 0;
-}
-.corresponding-title{
-    display: flex;
-    align-items: baseline;
-    font-size: 16px;
-}
-.corresponding-tip{
-    margin-left: 4px;
-    font-size: 12px;
-    color: #666;
-}
-.bottom-card-wrap{
-    padding: 16rpx;
 }

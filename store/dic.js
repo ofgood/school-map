@@ -11,7 +11,8 @@ export const dicStore = observable({
     'school_range', // 招生范围
     'house_type', //  小区类型
     'house_tag', // 小区标签
-    'house_nature' // 小区性质,
+    'house_nature', // 小区性质,
+    'user_message_type' // 消息类型,
   ],
   'school_type': [], // 学校类型
   'school_nature': [], // 学校性质
@@ -23,6 +24,7 @@ export const dicStore = observable({
   'house_type': [], //  小区类型
   'house_tag': [], // 小区标签
   'house_nature': [], // 小区性质,
+  'user_message_type': [], // 消息类型,
   dicMap: {},
   get schoolType() {
     return formatDic(this.school_type)
@@ -47,6 +49,9 @@ export const dicStore = observable({
   },
   get houseNature() {
     return formatDic(this.house_nature)
+  },
+  get userMessageType() {
+    return formatDic(this.user_message_type)
   },
   // actions
   getDic: action(async function(key) {

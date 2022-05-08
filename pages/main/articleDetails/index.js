@@ -10,6 +10,7 @@ Page({
    */
   data: {
     details: {},
+    link: '',
     imgList: []
   },
 
@@ -87,6 +88,16 @@ Page({
       details: result,
       imgList: this._generateImgList(result.imageList)
     })
+    const { link } = result
+    if (link.includes('|')) {
+      const [first, second] = link.split('|')
+      console.log(first)
+      if (second) {
+        this.setData({
+          link: 'https://' + second
+        })
+      }
+    }
   },
   /**
    * 下载文件
@@ -123,10 +134,9 @@ Page({
     }
   },
   onClickLink() {
-    const { details } = this.data
-    console.log(details)
+    const { link } = this.data
     wx.navigateTo({
-      url: `/pages/main/webview/index?url=${details.link}`
+      url: `/pages/main/webview/index?url=${link}`
     })
   },
   onClickFileItem(data) {

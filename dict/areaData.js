@@ -1,6 +1,6 @@
 
 export const areaMarkerData = [{
-  id: 101,
+  id: -101,
   latitude: 31.221521,
   longitude: 121.544373,
   width: 1,
@@ -20,7 +20,7 @@ export const areaMarkerData = [{
     padding: 8
   }
 }, {
-  id: 102,
+  id: -102,
   latitude: 31.231641,
   longitude: 121.483979,
   width: 1,
@@ -41,7 +41,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 103,
+  id: -103,
   latitude: 31.188414,
   longitude: 121.436317,
   width: 1,
@@ -62,7 +62,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 104,
+  id: -104,
   latitude: 31.220352,
   longitude: 121.424793,
   width: 1,
@@ -83,28 +83,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 105,
-  latitude: 31.231641,
-  longitude: 121.483979,
-  width: 1,
-  height: 1,
-  count: 2,
-  title: '黄浦',
-  iconPath: '../images/transparent.png',
-  customCallout: {
-    display: 'ALWAYS'
-  },
-  callout: {
-    content: '黄浦',
-    bgColor: '#0092B6',
-    display: 'ALWAYS',
-    color: '#ffffff',
-    borderRadius: 300,
-    padding: 8
-  }
-},
-{
-  id: 106,
+  id: -105,
   latitude: 31.22774,
   longitude: 121.447403,
   width: 1,
@@ -125,7 +104,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 107,
+  id: -106,
   latitude: 31.249615,
   longitude: 121.395486,
   width: 1,
@@ -147,7 +126,7 @@ export const areaMarkerData = [{
 },
 
 {
-  id: 108,
+  id: -107,
   latitude: 31.623379,
   longitude: 121.397322,
   width: 1,
@@ -168,7 +147,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 109,
+  id: -108,
   latitude: 31.264674,
   longitude: 121.505742,
   width: 1,
@@ -189,7 +168,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 110,
+  id: -109,
   latitude: 31.259692,
   longitude: 121.525769,
   width: 1,
@@ -210,7 +189,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 111,
+  id: -110,
   latitude: 31.112788,
   longitude: 121.380942,
   width: 1,
@@ -231,7 +210,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 112,
+  id: -111,
   latitude: 31.405386,
   longitude: 121.489328,
   width: 1,
@@ -252,7 +231,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 113,
+  id: -112,
   latitude: 31.375901,
   longitude: 121.265401,
   width: 1,
@@ -273,7 +252,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 114,
+  id: -113,
   latitude: 30.740738,
   longitude: 121.340985,
   width: 1,
@@ -294,7 +273,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 115,
+  id: -114,
   latitude: 30.918365,
   longitude: 121.473967,
   width: 1,
@@ -315,7 +294,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 116,
+  id: -115,
   latitude: 31.032611,
   longitude: 121.227677,
   width: 1,
@@ -336,7 +315,7 @@ export const areaMarkerData = [{
   }
 },
 {
-  id: 117,
+  id: -116,
   latitude: 31.15072,
   longitude: 121.123806,
   width: 1,
@@ -401,5 +380,20 @@ export const schoolTypes = [
 ]
 
 export const areaMap = {
-  101: '浦东新区'
+  '-101': '浦东新区',
+  '-102': '黄浦区',
+  '-103': '徐汇区',
+  '-104': '长宁区',
+  '-105': '静安区',
+  '-106': '普陀区',
+  '-107': '崇明区',
+  '-108': '虹口区',
+  '-109': '杨浦区',
+  '-110': '闵行区',
+  '-111': '宝山区',
+  '-112': '嘉定区',
+  '-113': '金山区',
+  '-114': '奉贤区',
+  '-115': '松江区',
+  '-116': '青浦区'
 }

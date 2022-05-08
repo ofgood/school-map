@@ -3,6 +3,7 @@
 	<map
 	 id="myMap"
 	 class="index-map"
+	 show-location
 	 bindregionchange="onRegionchange"
 	 bindmarkertap="onTapMarker"
 	 bindcallouttap="onTapCallout"
@@ -22,8 +23,8 @@
 			</cover-view>
 		</cover-view>
 	</map>
-	<!--顶部筛选-->
 
+	<!--顶部筛选-->
 	<van-transition
 	 show="{{ showTopFilter }}"
 	 duration="{{ { enter: 500, leave: 500 } }}"
@@ -40,9 +41,14 @@
 			 bind:onClickSearch="onClickTopSearch"
 			 bind:onClickItem="onClickItem"
 			 bind:onClickNav="onClickNav"
+			 bind:onResetAll="onResetAll"
+			 bind:onCloseDropdown="onCloseDropdown"
 			/>
 		</view>
 	</van-transition>
+	<view class="info-tip" wx:if="{{showInfoTip}}">
+		学区对口信息仅供参考
+	</view>
 
 	<!--底部卡片-->
 	<custom-bottom-card
@@ -58,64 +64,93 @@
 					<view class="card-top-icon" style="margin-right: 6px">
 						<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/location1.svg" />
 					</view>
-					<view>{{areaName}}</view>
+					<view class="area-name">{{areaName}}</view>
 				</view>
 				<view class="card-top-right">
 					<view class="card-top-btn" bind:tap="onTapPolicy" wx:if="{{markerType !== 'MARKER_AREA'}}">
 						<view class="card-top-icon">
 							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/pliocy.svg" />
 						</view>
-						<view>政策</view>
+						<view class="card-top-text">政策</view>
 					</view>
 					<view class="card-top-btn" bind:tap="onTapCalendar" wx:if="{{markerType !== 'MARKER_AREA'}}">
 						<view class="card-top-icon">
 							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/calendar.svg" />
 						</view>
-						<view>日历</view>
+						<view class="card-top-text">日历</view>
 					</view>
 					<view class="card-top-btn" bindtap="onCloseCard">
 						<view class="card-top-icon">
 							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/close.svg" />
 						</view>
-						<view>关闭</view>
+						<view class="card-top-text">关闭</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<scroll-view scroll-y="{{isScrollY}}" bind:scrolltolower="onLoadMore" style="{{'width: 100%;height:' + scrollHeight + ';'}}">
-			<view>
-				<custom-charts/>
+			<view wx:if="{{markerType !== 'MARKER_HOUSE_SCHOOL' && markerType !== 'MARKER_SCHOOL_HOUSE' && showAreaData}}">
+				<custom-charts areaData="{{areaData}}" />
 			</view>
 			<view class="bottom-list-wrap">
 				<custom-list-item
 				 bind:onClickItem="onClickListItem"
 				 loading="{{listLoading}}"
 				 markerType="{{markerType}}"
+				 isSearchModel="{{isSearchModel}}"
 				 list="{{areaPlaceList}}"
 				/>
+				<!-- <custom-list
+				 wx:else
+				 bind:onClickItem="onClickListItem"
+				 markerType="{{markerType}}"
+				 list="{{matchPlaceList}}"
+				/> -->
 			</view>
 		</scroll-view>
 	</custom-bottom-card>
 	<!-- 右侧工具栏-->
-	<!--  <view class="right-btns-wrap" hover-class="none" hover-stop-propagation="false">-->
-	<!--    <view class="list-btn right-btn" wx:if="{{houses.length}}" bindtap="showList" hover-class="none" hover-stop-propagation="false">-->
-	<!--      <image class="bgImg" src="../image/list.png"></image>-->
-	<!--      <view class="ctrl-text">-->
-	<!--        列表-->
-	<!--      </view>-->
-	<!--    </view>-->
-	<!--      <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="showNearByPlace" hover-class="none" hover-stop-propagation="false">-->
-	<!--      <image class="bgImg" src="../image/nearby.png"></image>-->
-	<!--      <view class="ctrl-text">-->
-	<!--        附近-->
-	<!--      </view>-->
-	<!--    </view>-->
-	<!--     <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="onTapBackToOrigin" hover-class="none" hover-stop-propagation="false">-->
-	<!--      <image class="bgImg" src="../image/loc.png"></image>-->
-	<!--      <view class="ctrl-text">-->
-	<!--        定位-->
-	<!--      </view>-->
-	<!--    </view>-->
-	<!--  </view>-->
+	<view
+	 class="right-btns-wrap"
+	 hover-class="none"
+	 hover-stop-propagation="false"
+	 wx:if="{{markerType !== 'MARKER_AREA'}}"
+	>
+		<view
+		 class="ctrl-btn right-btn"
+		 wx:if="{{true}}"
+		 bindtap="showNearByPlace"
+		 hover-class="none"
+		 hover-stop-propagation="false"
+		>
+			<image class="bgImg" src="../image/nearby.png" />
+			<view class="ctrl-text">
+				附近
+			</view>
+		</view>
+		<view
+		 class="ctrl-btn right-btn"
+		 wx:if="{{true}}"
+		 bindtap="onTapBackToOrigin"
+		 hover-class="none"
+		 hover-stop-propagation="false"
+		>
+			<image class="bgImg" src="../image/loc.png" />
+			<view class="ctrl-text">
+				定位
+			</view>
+		</view>
+		<view
+		 class="list-btn right-btn"
+		 bindtap="toFeedback"
+		 hover-class="none"
+		 hover-stop-propagation="false"
+		>
+			<image class="bgImg" src="../image/feedback.png" />
+			<view class="ctrl-text">
+				反馈
+			</view>
+		</view>
+	</view>
 </view>
 

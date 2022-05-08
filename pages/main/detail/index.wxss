@@ -257,10 +257,14 @@
     -webkit-line-clamp: 3;	/*  行数*/
     -webkit-box-orient: vertical;
 }
-
-
-
-
+.brief-title{
+    display: flex;
+    align-items: baseline;
+}
+.brief-title-tip{
+    font-size: 12px;
+    color: #666;
+}
 
 
 

@@ -42,7 +42,7 @@ Component({
   data: {
     translateX: 0,
     animate: false,
-    wrapHeight: wx.getSystemInfoSync().windowHeight - 30,
+    wrapHeight: wx.getSystemInfoSync().windowHeight - 20,
     winHeight: wx.getSystemInfoSync().windowHeight,
     touchStartY: 0
   },
