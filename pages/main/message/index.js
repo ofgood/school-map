@@ -30,7 +30,7 @@ Page({
     hasUserInfo: false,
     userInfo: null
   },
-  onClickBack() {
+  goBack() {
     wx.navigateBack(
       {
         delta: 1
@@ -101,17 +101,18 @@ Page({
       nickName,
       type
     })
+    wx.hideLoading()
     const { success } = res
     if (success) {
       wx.showToast({
         title: '谢谢您宝贵的意见,我们会尽快处理!',
         icon: 'none',
-        duration: 2000,
-        mask: false,
-        success: () => {
-          this.onClickBack()
-        }
+        duration: 3500,
+        mask: false
       })
+      setTimeout(() => {
+        this.goBack()
+      }, 3500)
     } else {
       wx.showToast({
         title: res.message,
@@ -120,7 +121,6 @@ Page({
         mask: false
       })
     }
-    wx.hideLoading()
   },
   getUserProfile() {
     wx.getUserProfile({

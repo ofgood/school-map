@@ -23,10 +23,20 @@
 								</view>
 								<view class="" hover-class="none" hover-stop-propagation="false">
 									<view class="item-top-tip" wx:if="{{ item.placeNature !== null && item.type == 1 }}">
-										{{item.placeNature + '' === '0'? '公': '民'}}
+										<view wx:if="{{item.placeNature + '' === '0'}}">
+											公
+										</view>
+										<view wx:if="{{item.placeNature + '' === '1'}}">
+											民
+										</view>
 									</view>
 									<view class="item-top-tip" wx:if="{{ item.placeNature !== null && item.type == 2 }}">
-										{{item.placeNature + '' === '0'? '商': '迁'}}
+										<view wx:if="{{item.placeNature + '' === '0'}}">
+											商
+										</view>
+										<view wx:if="{{item.placeNature + '' === '1'}}">
+											迁
+										</view>
 									</view>
 								</view>
 							</view>
