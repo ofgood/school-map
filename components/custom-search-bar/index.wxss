@@ -1,0 +1,16 @@
+.top-search{
+    position: relative;
+    z-index: 13;
+}
+.tab-input{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    height: 80rpx;
+    padding-left: 20rpx;
+    line-height: 80rpx;
+    font-size: 13px;
+    color: #666;
+    text-align: left;
+    background-color: #fff;
+}

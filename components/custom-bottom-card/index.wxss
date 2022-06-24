@@ -1,0 +1,26 @@
+.content{
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+.content::before{
+    content: "";
+    background: #7F7F7F;
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    width: 26px;
+    height: 2px;
+    transform: translateX(-50%);
+    border-radius: 10px;
+}
+
+.content.animate {
+    transition: transform 0.3s;
+}

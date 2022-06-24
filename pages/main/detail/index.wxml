@@ -1,0 +1,148 @@
+<view class="container">
+	<view class="detail-page-body">
+		<view class="page-section page-section-spacing swiper">
+			<swiper
+			 indicator-dots="{{indicatorDots}}"
+			 style="height: 260px"
+			 autoplay="{{autoplay}}"
+			 interval="{{interval}}"
+			 duration="{{duration}}"
+			>
+				<block wx:for="{{background}}" wx:key="*this">
+					<swiper-item>
+						<view class="swiper-item">
+							<image style="width: 100%; height: 100%;" mode="aspectFill" src="{{item}}" />
+						</view>
+					</swiper-item>
+				</block>
+			</swiper>
+			<view class="swiper-section-btns">
+				<view class="section-btn" hover-class="hover-section">
+					<view class="section-icon">
+						<image style="width: 100%; height: 100%;" mode="aspectFill" src="../image/pliocy.svg" />
+					</view>
+					<view>
+						政策
+					</view>
+				</view>
+				<view class="section-btn" hover-class="hover-section" hover-stop-propagation="true">
+					<view class="section-icon">
+						<image style="width: 100%; height: 100%;" mode="aspectFill" src="../image/zsjz.svg" />
+					</view>
+					<view>
+						招生简章
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="brief-wrap">
+			<view class="top-brief">
+				<view class="top-brief-title">
+					<view class="brief-name">
+						{{detail.name}}
+					</view>
+					<view class="brief-distance">
+						<view class="brief-distance-icon">
+							<image style="width:100%;height:100%" mode="aspectFill" src="../image/loc.svg" />
+						</view>
+						<view>距离--km</view>
+					</view>
+				</view>
+				<view class="biref-tip" wx:if="{{ type === '1' }}">
+					{{detail.nature + '' === '0'? '公': '民'}}
+				</view>
+				<view class="biref-tip" wx:if="{{ type === '2' }}">
+					{{detail.nature + '' === '0'? '商': '迁'}}
+				</view>
+			</view>
+			<view class="biref-tag-cells" wx:if="{{detail.tags}}">
+				<view wx:for="{{detail.tags}}" class="biref-tag-cell color1">{{item}}</view>
+			</view>
+		</view>
+		<view class="main-brief">
+			<view class="brief-box">
+				<view class="main-brief-title">
+					{{type === '1' ? '学校简介' : '小区简介'}}
+				</view>
+				<view class="brief-text">
+					<custom-paragraph text="{{detail.description}}" />
+				</view>
+			</view>
+			<view class="brief-box">
+				<view class="brief-title">
+					{{type === '1' ? '办学特色' : '小区特色'}}
+				</view>
+				<view class="brief-text">
+					<custom-paragraph text="{{detail.feature}}" />
+				</view>
+			</view>
+			<!-- <view class="brief-box">
+				<view class="brief-title">
+					领导背景
+				</view>
+				<view class="leadership">
+					<scroll-view scroll-x="true" bindscroll="scroll" style="width: 100%;white-space: nowrap;">
+						<view class="leadership-item">
+							<view class="leadership-pic">
+								<image style="width:100%;height:100%;" src="https://s3.bmp.ovh/imgs/2021/11/a1d5ef86256fbc3c.jpg" mode="aspectFill" />
+							</view>
+							<view class="leadership-des">
+								<view class="leadership-role">校长</view>
+								<view class="leadership-name">张三丰</view>
+							</view>
+						</view>
+					</scroll-view>
+				</view>
+			</view> -->
+			<view class="brief-box" wx:if="{{type === '1'}}">
+				<view class="brief-title">
+					学生比例
+				</view>
+				<view class="brief-proportion">
+					<view class="proportion-item">
+						<view class="proportion-num">{{detail.classNumber || '--'}}/{{detail.studentNumber || '--'}}</view>
+						<view class="proportion-text">班级/学生</view>
+					</view>
+					<view class="proportion-item">
+						<view class="proportion-num">{{detail.teacherNumber || '--'}}</view>
+						<view class="proportion-text">专职教师</view>
+					</view>
+					<view class="proportion-item">
+						<view class="proportion-num">{{detail.seniorRate || '--'}}</view>
+						<view class="proportion-text">中高级教师占比</view>
+					</view>
+				</view>
+			</view>
+			<view class="brief-box" wx:if="{{type === '1'}}">
+				<view class="brief-title">
+					关键日程
+				</view>
+				<view class="brief-schedule">
+					<scroll-view scroll-x="true" bindscroll="scroll" style="width: 100%;white-space: nowrap;height: 90px;">
+						<view class="schedule-wrap" style="white-space:nowrap;height: 40px;">
+							<view class="schedule-item">
+								<view class="schedule-title">--</view>
+								<view class="schedule-time">--</view>
+							</view>
+						</view>
+					</scroll-view>
+				</view>
+			</view>
+			<view class="brief-box">
+				<view class="brief-title">
+					对口信息
+					<view class="brief-title-tip">
+						(对口信息仅供参考)
+					</view>
+				</view>
+				<view class="brief-fit" wx:if="{{type === '1'}}">
+					<view class="brief-fit-item" wx:for="{{detail.houses}}" key="*this">{{item.name}}</view>
+				</view>
+				<view class="brief-fit" wx:if="{{type === '2'}}">
+					<view class="brief-fit-item" wx:for="{{detail.schools}}" key="*this">{{item.name}}</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+

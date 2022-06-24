@@ -1,0 +1,52 @@
+page {
+  background-color: #eceef1;
+}
+.page-container{
+  padding: 16rpx;
+}
+.message-wrap {
+  padding: 10px 0 20px;
+  border-radius: 12px;
+  background-color: #fff;
+}
+.c-cell-title {
+  padding: 10px;
+  padding-left: 16px;
+  font-size: 14px;
+  color: #646566;
+  position: relative;
+}
+.repair-btn {
+  margin-top: 30px;
+  padding: 0 20px;
+}
+.c-cell-title::before{
+    position: absolute;
+    box-sizing: border-box;
+    -webkit-transform-origin: center;
+    transform-origin: center;
+    content: " ";
+    pointer-events: none;
+    right: 16px;
+    top: 0;
+    left: 16px;
+    border-bottom: 1px solid #ebedf0;
+    -webkit-transform: scaleY(.5);
+    transform: scaleY(.5);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(235, 237, 240);
+}
+.submit-btn{
+    color: #fff;
+    background: #0092b6;
+    border-color: #0092b6;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    border-radius: 100px;
+    text-align: center;
+    font-size: 14px;
+}

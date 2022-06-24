@@ -146,3 +146,119 @@ export function translateQQLocation(location) {
   }
   return locationObj
 }
+
+/**
+ * 计算区域高度 px 转 rpx
+ * @param {string} height
+ * @returns
+ */
+export function getViewHeight(height) {
+  const windowHeight = wx.getSystemInfoSync().windowHeight // 屏幕的高度
+  const windowWidth = wx.getSystemInfoSync().windowWidth // 屏幕的宽度
+  const ratio = 750 / windowWidth
+  return (windowHeight + height) * ratio
+}
+
+/**
+ * 设置页面标题
+ * @param {*} titleText
+ */
+export function setNavigationBarTitle(titleText) {
+  wx.setNavigationBarTitle({
+    title: titleText
+  })
+}
+
+/**
+ * 格式化列表转化为markers
+ * @param {*} records
+ */
+export function formatRecordsToMarkers(records) {
+  console.log('records', records)
+  const res = []
+  if (Array.isArray(records)) {
+    for (let i = 0; i < records.length; i++) {
+      const { name, placeId, qqLocation, type } = records[i]
+      if (!qqLocation) {
+        console.log(name)
+        continue
+      }
+      const [latitude, longitude] = qqLocation.split(',')
+      latitude && longitude && res.push({
+        id: placeId,
+        latitude,
+        longitude,
+        width: 1,
+        height: 1,
+        title: name,
+        ...records[i],
+        iconPath: '../image/transparent.png',
+        callout: type === 'school' ? {
+          content: name,
+          color: '#0092B6',
+          bgColor: '#fff',
+          fontSize: 12,
+          borderWidth: 1,
+          borderRadius: 100,
+          borderColor: '#0092B6',
+          display: 'ALWAYS',
+          padding: 6
+        } : {
+          content: name,
+          color: '#333',
+          bgColor: '#fff',
+          fontSize: 12,
+          borderWidth: 1,
+          borderRadius: 3,
+          borderColor: '#333333',
+          display: 'ALWAYS',
+          padding: 6
+        }
+      })
+    }
+  }
+  return res
+}
+
+/**
+ * 从marker中取出需要include的marker
+ * @param {*} markers
+ */
+
+export function getIncludePointsFromMarkers(markers) {
+  const res = []
+  markers.forEach(item => {
+    const { latitude, longitude } = item
+    res.push({
+      latitude,
+      longitude
+    })
+  })
+  return res
+}
+
+/**
+ * 格式化字典数据
+ * @param {[{[key]: any}]} dicList
+ */
+
+export function formatDic(dicList) {
+  const res = dicList.map(({ value, title, status }) => {
+    return {
+      value,
+      label: title,
+      status
+    }
+  })
+  return res
+}
+
+/**
+ * 处理promise.all 防止其中一个调用失败而导致结果不能返回
+ * @param {[{key:string,promise:promise}]} promiseList
+ */
+export function handlePromiseAll(promiseList) {
+  return promiseList.map(({ key, promise }) =>
+    promise.then((res) => ({ success: true, key, res, status: 'ok' }), (err) => ({ success: false, key, res: err, status: 'not ok' }))
+  )
+}

@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "custom-paragraph": "../../../components/custom-paragraph"
+  }
+}

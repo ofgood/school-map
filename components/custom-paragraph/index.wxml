@@ -1,0 +1,8 @@
+<view class="paragraph-box" id="textFour_box">
+    <view class="textFour_box {{ seeMore ?'three':''}}" >
+        {{text}}
+    </view>
+    <view class="text_toggle_box" wx:if='{{seeMore}}' catchtap='onCatchtap'>
+        <text class="text_toggle_text">查看详情</text>
+    </view>
+</view>

@@ -1,0 +1,257 @@
+<view class="top-filter-warp">
+	<custom-search-bar bind:onClick="onClickSearch" />
+	<view class="{{showOverlay ? 'open top-filter' : 'top-filter'}}">
+		<van-dropdown-menu close-on-click-overlay="{{true}}" active-color="#0092B6" overlay="{{true}}">
+			<!-- 距离和区域 -->
+			<van-dropdown-item
+			 id="area"
+			 title="{{areaTitle}}"
+			 value="{{area}}"
+			 data-type="area"
+			 bind:open="onOpenDropdown"
+			 bind:close="onCloseDropdown"
+			>
+				<view class="dropdown-custom-wrap">
+					<van-tree-select
+					 items="{{ areas }}"
+					 main-active-index="{{ areaActiveIndex }}"
+					 active-id="{{ areaActiveId }}"
+					 bind:click-nav="onClickNav"
+					 bind:click-item="onClickItem"
+					/>
+				</view>
+				<view class="top-filter-btns">
+					<view class="top-filter-reset">
+						<van-button
+						 type="default"
+						 data-type="area"
+						 block
+						 bind:click="onClickReset"
+						>重置
+						</van-button>
+					</view>
+					<view class="top-filter-comfirm">
+						<van-button
+						 color="#0092B6"
+						 block
+						 data-type="area"
+						 bind:click="onClickConfirm"
+						>确定
+						</van-button>
+					</view>
+				</view>
+			</van-dropdown-item>
+			<!-- 学校或小区 -->
+			<van-dropdown-item
+			 id="type"
+			 title="{{typeTitle}}"
+			 value="{{type}}"
+			 data-type="type"
+			 bind:open="onOpenDropdown"
+			 bind:close="onCloseDropdown"
+			>
+				<view class="dropdown-custom-wrap">
+					<van-cell
+					 title="{{item.label}}"
+					 wx:key="type"
+					 wx:for="{{types}}"
+					 data-type="type"
+					 data-title="{{item.label}}"
+					 data-value="{{item.value}}"
+					 bind:click="onclickCustomDropdownItem"
+					>
+						<van-icon
+						 slot="right-icon"
+						 color="#0092B6"
+						 name="{{type === item.value ? 'success' : ''}}"
+						 class="custom-icon"
+						/>
+					</van-cell>
+				</view>
+				<view class="top-filter-btns">
+					<view class="top-filter-reset">
+						<van-button
+						 type="default"
+						 block
+						 data-type="type"
+						 bind:click="onClickReset"
+						>重置
+						</van-button>
+					</view>
+					<view class="top-filter-comfirm">
+						<van-button
+						 color="#0092B6"
+						 block
+						 data-type="type"
+						 bind:click="onClickConfirm"
+						>确定
+						</van-button>
+					</view>
+				</view>
+			</van-dropdown-item>
+			<!-- 性质 学校:民办,公办 小区:商品房,回迁房 -->
+			<van-dropdown-item
+			 title="{{placeNatureTitle}}"
+			 value="{{placeNature}}"
+			 data-type="placeNature"
+			 id="placeNature"
+			 bind:open="onOpenDropdown"
+			 bind:close="onCloseDropdown"
+			>
+				<view class="dropdown-custom-wrap">
+					<van-cell
+					 title="{{item.label}}"
+					 wx:key="type"
+					 wx:for="{{placeNatures}}"
+					 data-type="placeNature"
+					 data-title="{{item.label}}"
+					 data-value="{{item.value}}"
+					 bind:click="onclickCustomDropdownItem"
+					>
+						<van-icon
+						 color="#0092B6"
+						 slot="right-icon"
+						 name="{{placeNature === item.value ? 'success' : ''}}"
+						 class="custom-icon"
+						/>
+					</van-cell>
+				</view>
+				<view class="top-filter-btns">
+					<view class="top-filter-reset">
+						<van-button
+						 type="default"
+						 data-type="placeNature"
+						 block
+						 bind:click="onClickReset"
+						>重置
+						</van-button>
+					</view>
+					<view class="top-filter-comfirm">
+						<van-button
+						 color="#0092B6"
+						 block
+						 data-type="placeNature"
+						 bind:click="onClickConfirm"
+						>确定
+						</van-button>
+					</view>
+				</view>
+			</van-dropdown-item>
+
+			<!-- 分类 学校: 幼小初,小区:住宅 -->
+			<van-dropdown-item
+			 title="{{placeTypeTitle}}"
+			 id="placeType"
+			 data-type="placeType"
+			 value="{{ placeType }}"
+			 bind:open="onOpenDropdown"
+			 bind:close="onCloseDropdown"
+			>
+				<view class="dropdown-custom-wrap">
+					<van-cell
+					 title="{{item.label}}"
+					 wx:key="type"
+					 wx:for="{{placeTypes}}"
+					 data-type="placeType"
+					 data-title="{{item.label}}"
+					 data-value="{{item.value}}"
+					 bind:click="onclickCustomDropdownItem"
+					>
+						<van-icon
+						 slot="right-icon"
+						 color="#0092B6"
+						 name="{{placeType === item.value ? 'success' : ''}}"
+						 class="custom-icon"
+						/>
+					</van-cell>
+				</view>
+				<view class="top-filter-btns">
+					<view class="top-filter-reset">
+						<van-button
+						 type="default"
+						 block
+						 data-type="placeType"
+						 bind:click="onClickReset"
+						>重置
+						</van-button>
+					</view>
+					<view class="top-filter-comfirm">
+						<van-button
+						 color="#0092B6"
+						 data-type="placeType"
+						 block
+						 bind:click="onClickConfirm"
+						>确定
+						</van-button>
+					</view>
+				</view>
+			</van-dropdown-item>
+
+			<!-- 更多 学校:(普通,重点) -->
+			<van-dropdown-item
+			 title="更多"
+			 id="more"
+			 data-type="more"
+			 bind:open="onOpenDropdown"
+			 bind:close="onCloseDropdown"
+			>
+				<view class="dropdown-custom-wrap">
+					<view class="more-wrap" wx:if="{{type === '1'}}">
+						<view class="more-title">
+							学校等级
+						</view>
+						<view class="more-item" hover-class="none" hover-stop-propagation="false">
+							<van-radio-group value="{{grade}}" bind:change="onChangeGrade" direction="horizontal">
+								<van-radio
+								 name="1"
+								 icon-size="14px"
+								 checked-color="#0092B6"
+								 shape="square"
+								>普通
+								</van-radio>
+								<van-radio
+								 name="2"
+								 icon-size="14px"
+								 checked-color="#0092B6"
+								 shape="square"
+								>重点
+								</van-radio>
+							</van-radio-group>
+						</view>
+					</view>
+					<view
+					 class=""
+					 style="text-align: center;padding:10px"
+					 hover-class="none"
+					 hover-stop-propagation="false"
+					 wx:else
+					>
+						建设中.......
+					</view>
+				</view>
+				<view class="top-filter-btns">
+					<view class="top-filter-reset">
+						<van-button
+						 type="default"
+						 data-type="more"
+						 block
+						 bind:click="onClickReset"
+						>重置
+						</van-button>
+					</view>
+					<view class="top-filter-comfirm">
+						<van-button
+						 color="#0092B6"
+						 data-type="more"
+						 block
+						 bind:click="onClickConfirm"
+						>确定
+						</van-button>
+					</view>
+				</view>
+			</van-dropdown-item>
+		</van-dropdown-menu>
+	</view>
+	<van-overlay z-index="{{-1}}" show="{{ showOverlay }}" bind:click="onClickOverlay" />
+</view>
+

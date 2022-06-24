@@ -1,0 +1,80 @@
+<view class="list-wrap">
+	<list
+	 loading="{{loading}}"
+	 empty="{{list.length === 0}}"
+	 finished="{{loadFinished}}"
+	 error="{{loadError}}"
+	>
+		<view class="bottom-card-wrap">
+			<view
+			 class="list-item {{(markerType === 'MARKER_HOUSE_SCHOOL' || markerType === 'MARKER_SCHOOL_HOUSE') && index === 1 ? 'second-item' : ''}}"
+			 hover-class="list-item-hover"
+			 wx:for="{{list}}"
+			 wx:key="index"
+			 data-value="{{item}}"
+			 bind:tap="onClickItem"
+			>
+				<view class="list-item-top">
+					<view class="item-top-left">
+						<view class="item-top-title">
+							<view class="item-top-name">
+								<view class="" hover-class="none" hover-stop-propagation="false">
+									{{item.name}}
+								</view>
+								<view class="" hover-class="none" hover-stop-propagation="false">
+									<view class="item-top-tip" wx:if="{{ item.placeNature !== null && item.type == 1 }}">
+										<view wx:if="{{item.placeNature + '' === '0'}}">
+											公
+										</view>
+										<view wx:if="{{item.placeNature + '' === '1'}}">
+											民
+										</view>
+									</view>
+									<view class="item-top-tip" wx:if="{{ item.placeNature !== null && item.type == 2 }}">
+										<view wx:if="{{item.placeNature + '' === '0'}}">
+											商
+										</view>
+										<view wx:if="{{item.placeNature + '' === '1'}}">
+											迁
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="list-item-bottom">
+					<view class="list-icon">
+						<image style=" width: 80px;height: 80px;" mode="scaleToFill" src="../images/school.jpg" />
+					</view>
+					<view class="tags-box">
+						<view
+						 class="tags-cell color3"
+						 wx:for="{{item.tagList}}"
+						 wx:key="tag"
+						 wx:for-item="tag"
+						>
+							{{tag}}
+						</view>
+					</view>
+				</view>
+				<view class="corresponding-box" wx:if="{{ (markerType === 'MARKER_HOUSE_SCHOOL' || markerType === 'MARKER_SCHOOL_HOUSE') && index === 0 && !isSearchModel}}">
+					<view class="corresponding-title" wx:if="{{markerType === 'MARKER_HOUSE_SCHOOL'}}">
+						以下为对口学校信息
+						<view class="corresponding-tip">
+							(对口信息仅供参考)
+						</view>
+					</view>
+					<view class="corresponding-title" wx:if="{{markerType === 'MARKER_SCHOOL_HOUSE'}}">
+						以下为对口小区信息
+						<view class="corresponding-tip">
+							(对口信息仅供参考)
+						</view>
+					</view>
+				</view>
+			</view>
+			<van-divider wx:if="{{ (markerType === 'MARKER_HOUSE_SCHOOL' || markerType === 'MARKER_SCHOOL_HOUSE' || markerType === 'MARKER_SCHOOL') && !isSearchModel}}" contentPosition="center">没有更多啦</van-divider>
+		</view>
+	</list>
+</view>
+
