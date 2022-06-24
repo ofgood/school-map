@@ -6,7 +6,7 @@ const api = process.argv[2] || '' // 不传任何参数则是默认接口
 
 // 生产环境接口base_url
 // const prodUrl = api ? `https://${api}-api.xxx/v1` : 'https://api.xxx.com/v1'
-const prodUrl = 'http://122.51.243.251:9000'
+const prodUrl = 'https://www.ohmyshcool.cn'
 const production = `
 // weapp prod base api
 export const WE_APP_BASE_API = "${prodUrl}" 

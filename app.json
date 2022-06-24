@@ -36,5 +36,6 @@
   },
   "networkTimeout": {
     "request": 6000
-  }
+  },
+  "lazyCodeLoading": "requiredComponents"
 }
