@@ -4,3 +4,4 @@ miniprogram_npm
 env.js
 package-lock.json
 .vscode
+workspace.xml
