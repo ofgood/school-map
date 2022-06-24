@@ -28,6 +28,9 @@ page {
   --tabs-default-color: #1989fa;
   --toast-max-width: 100px;
   --toast-background-color: pink; */
+  --dropdown-menu-height: 40px;
+  --dropdown-menu-title-font-size: 13px;
+  --dropdown-menu-title-active-text-color: '#07c160';
 }
 .common-hover {
   opacity: 0.98;

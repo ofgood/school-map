@@ -1,0 +1,30 @@
+.history-item{
+    float:left;
+    margin-left: 10rpx;
+    margin-bottom: 10rpx;
+    width:auto;
+    height:40rpx;
+    line-height: 40rpx;
+    background:rgba(246,246,246,1);
+    border-radius:30rpx;
+    padding: 5rpx 20rpx;
+    font-weight:300;
+    font-size: 12px;
+    color: #4A4A4A;
+  }
+  .history-list{
+    padding-left: 10rpx;
+    overflow:hidden;
+  }
+  .history-top{
+      display: flex;
+      justify-content: space-between;
+      padding: 20rpx;
+  }
+  .history-title{
+    font-size: 14px;
+  }
+  .history-del image{
+      width: 32rpx;
+      height: 32rpx;
+  }

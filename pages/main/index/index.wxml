@@ -1,142 +1,156 @@
 <view class='main-box'>
+	<!-- 地图 -->
+	<map
+	 id="myMap"
+	 class="index-map"
+	 show-location
+	 bindregionchange="onRegionchange"
+	 bindmarkertap="onTapMarker"
+	 bindcallouttap="onTapCallout"
+	 scale="{{mapScale}}"
+	 latitude="{{latitude}}"
+	 longitude="{{longitude}}"
+	 markers="{{markers}}"
+	>
+		<cover-view slot="callout">
+			<cover-view
+			 class="customCallout {{activeCoverId === item.id ? 'active': ''}}"
+			 marker-id="{{item.id}}"
+			 marker-item="{{item}}"
+			 wx:for="{{markers}}"
+			 wx:key="id"
+			>{{item.title}}
+			</cover-view>
+		</cover-view>
+	</map>
 
-  <!-- 提示 -->
-  <van-notify id="van-notify" />
+	<!--顶部筛选-->
+	<van-transition
+	 show="{{ showTopFilter }}"
+	 duration="{{ { enter: 500, leave: 500 } }}"
+	 enter-class="van-enter-class"
+	 enter-active-class="van-enter-active-class"
+	 leave-active-class="van-leave-active-class"
+	 leave-to-class="van-leave-to-class"
+	 custom-class="block-top-filter"
+	>
+		<view class="top-filter-wrap">
+			<custom-top-filter
+			 id="customTopFilter"
+			 bind:onClickConfirm="onClickComfirm"
+			 bind:onClickSearch="onClickTopSearch"
+			 bind:onClickItem="onClickItem"
+			 bind:onClickNav="onClickNav"
+			 bind:onResetAll="onResetAll"
+			 bind:onCloseDropdown="onCloseDropdown"
+			/>
+		</view>
+	</van-transition>
+	<view class="info-tip" wx:if="{{showInfoTip}}">
+		学区对口信息仅供参考
+	</view>
 
-  <!-- 地图 -->
-  <map id="myMap" class="index-map" bindregionchange="regionchange" bindmarkertap="bindmarkertap" bindcallouttap="bindcallouttap" scale="{{mapScale}}" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" show-location>
-    <cover-view slot="callout">
-      <block wx:for="{{customCalloutMarker}}" wx:key="*this">
-        <cover-view class="customCallout" marker-id="{{item.id}}">
-          <cover-view style="white-space:normal;margin-top: 20px;text-align:center;width:100%;min-height:40px">{{activeName}}</cover-view>
-          <cover-view style="margin-top: 4px;width:100%;text-align:center">
-            {{item.count}}
-          </cover-view>
-        </cover-view>
-      </block>
-    </cover-view>
-  </map>
- <image wx:if="{{showNearBy}}" class="img-map" src="../image/pin.png"></image>
-  <!-- 底部搜索框 -->
-  <view class="cover-view" hidden="{{!tabsShow}}" style="height: 130rpx">
-    <view class="container">
-       <view class="tab-input" data-type="SCHOOL" bindtap="showSearch" hover-class="common-hover" hover-stop-propagation="false">
-            <van-icon name="search" size="20px" />
-            请输入学校、小区
-          </view>
-    </view>
-  </view>
-
-  <!-- 右侧工具栏-->
-  <view class="right-btns-wrap" hover-class="none" hover-stop-propagation="false">
-    <view class="list-btn right-btn" wx:if="{{houses.length}}" bindtap="showHouses" hover-class="none" hover-stop-propagation="false">
-      <image class="bgImg" src="../image/list.png"></image>
-    </view>
-    <!-- <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="showRightPopup" hover-class="none" hover-stop-propagation="false">
-      <image class="bgImg" src="../image/filter.png"></image>
-    </view> -->
-     <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="showNearByPlace" hover-class="none" hover-stop-propagation="false">
-      <image class="bgImg" src="../image/nearby.png"></image>
-    </view>
-     <view class="ctrl-btn right-btn" wx:if="{{true}}" bindtap="backToOrigin" hover-class="none" hover-stop-propagation="false">
-      <image class="bgImg" src="../image/loc.png"></image>
-    </view>
-  </view>
-
-  <!-- 搜索界面 -->
-  <page-container class="search-page-container" show="{{searchShow}}" round="{{round}}" overlay="{{overlay}}" duration="{{duration}}" position="{{position}}" close-on-slide-down="{{false}}" bindafterleave="onAfterLeave" z-index="99999">
-    <view class="detail-page">
-      <van-search value="{{ searchValue }}" focus="{{searchFocus}}" placeholder="请输入搜索关键词" show-action bind:change="onChangeSearch" bind:search="onSearch" bind:cancel="onCancel" />
-      <scroll-view scroll-y="true" style="height: {{scroll_height}}rpx" bindscrolltolower="loadMore">
-        <list loading="{{searchLoading}}" empty="{{list.length === 0}}" finished="{{loadFinished}}" error="{{loadError}}">
-          <view wx:for="{{list}}" wx:key="id">
-            <van-cell bind:click="onSelectItem" id="{{item.placeId}}" data-place="{{item}}" title="{{item.name}}" label="{{item.address}}" border />
-          </view>
-          <view wx:if="{{!list.length}}" hover-class="none" hover-stop-propagation="false">
-            <view class='flex space_between align_center search_title'>
-              <view>
-                  搜索历史
-              </view>
-              <image src='../image/del.png' wx:if="{{hisList.length!=0}}"  catchtap='remove'></image>
-            </view>
-            <view class='list'>
-              <view class="key" wx:if="{{hisList.length==0}}">暂无搜索记录</view>
-              <view class="key" wx:for="{{hisList}}" wx:key="" bindtap='searchName' data-value='{{item}}'>{{item}}</view>
-            </view>
-          </view>
-        </list>
-      </scroll-view>
-    </view>
-  </page-container>
-
-<!-- 右侧popup -->
-  <!-- <van-popup
-    show="{{ showFilterPopup }}"
-    position="right"
-    z-index="{{9999}}"
-    custom-style="height: 100%;width: 60%"
-    bind:close="onCloseFilterPopup">
-    <view style="text-align:center;display:flex;align-items:center;flex-direction: column;padding-top:400rpx;" hover-class="none" hover-stop-propagation="false">
-       <image style="width: 120rpx; height: 120rpx" src="../image/construct.png"></image>
-       <view style="color:#ddd;padding-top:30rpx;padding-left:30rpx;" hover-class="none" hover-stop-propagation="false">
-         建设中.....
-       </view>
-    </view>
-  </van-popup> -->
-
-  <!-- 底部弹出卡片 -->
-  <van-popup
-  overlay="{{false}}"
-  show="{{ showPlaceCard }}"
-  closeable
-  close-icon-position="top-right"
-  position="bottom"
-  bind:close="onClosePlaceCard">
-    <view class="bottom-card">
-    <!-- <view class="tags" slot="tags" wx:if="{{placeInfo.tags.length}}">
-       <van-tag wx:for="{{placeInfo.tags}}" wx:key="*this" type="success"> {{item}}</van-tag>
-    </view> -->
-    <view class="card-img" hover-class="none" hover-stop-propagation="false">
-          <view class="{{placeInfo.hasImg ? 'place-img' : 'no-img'}}" hover-class="none" hover-stop-propagation="false">
-             <image class="card-pic" src="{{placeInfo.imgSrc}}" mode="{{ placeInfo.hasImg ? 'aspectFill' : 'center'}}" lazy-load="false"></image>
-          </view>
-          <view class="taking" wx:if="{{!placeInfo.hasImg}}" selectable="false" space="false" decode="false">
-            收集中
-          </view>
-    </view>
-    <view class="card-right">
-      <view class="card-title" hover-class="none" hover-stop-propagation="false">
-        {{placeInfo.title}}
-      </view>
-      <view class="" wx:if="{{placeInfo.placeType === 2}}" hover-class="none" hover-stop-propagation="false">
-         <view class="card-price" wx:if="{{placeInfo.price}}" hover-class="none" hover-stop-propagation="false">
-        {{placeInfo.price ?placeInfo.price + '元/m²' : '' }}
-      </view>
-      <view class="card-price-tip" wx:else>
-        房价更新中
-      </view>
-      </view>
-      <view class="card-time" hover-class="none" hover-stop-propagation="false">
-        {{placeInfo.buildDate ? placeInfo.buildDate: ''}}
-        {{placeInfo.plate ? placeInfo.plate: ''}}
-      </view>
-      <view class="card-tags" hover-class="none" hover-stop-propagation="false">
-         <view class="card-tag" wx:for="{{placeInfo.tags}}" wx:key="*this">
-           {{item}}
-         </view>
-      </view>
-    </view>
-    </view>
-  </van-popup>
-
-  <!-- 弹出列表 -->
-  <van-overlay show="{{ showOverlay }}" bind:click="hideHouses" z-index="9999">
-    <view class="house-wrapper" hover-class="none" hover-stop-propagation="true">
-      <view class="house-block" hover-class="none" hover-stop-propagation="true">
-        <scroll-view scroll-y="true" style="height: 760rpx">
-          <van-cell wx:for="{{houses}}" wx:key="id" catch:tap="onClickListItem" id="{{item.id}}" title="{{item.name}}" label="{{item.address}}" border />
-        </scroll-view>
-      </view>
-    </view>
-  </van-overlay>
+	<!--底部卡片-->
+	<custom-bottom-card
+	 stopUp="{{stopUp}}"
+	 bottomDistance="{{bottomDistance}}"
+	 bind:onReachTop="onReachTop"
+	 bind:onReachBottom="onReachBottom"
+	 id="customBottomCard"
+	>
+		<view>
+			<view class="bottom-card-top">
+				<view class="card-top-left">
+					<view class="card-top-icon" style="margin-right: 6px">
+						<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/location1.svg" />
+					</view>
+					<view class="area-name">{{areaName}}</view>
+				</view>
+				<view class="card-top-right">
+					<view class="card-top-btn" bind:tap="onTapPolicy" wx:if="{{markerType !== 'MARKER_AREA'}}">
+						<view class="card-top-icon">
+							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/pliocy.svg" />
+						</view>
+						<view class="card-top-text">政策</view>
+					</view>
+					<view class="card-top-btn" bind:tap="onTapCalendar" wx:if="{{markerType !== 'MARKER_AREA'}}">
+						<view class="card-top-icon">
+							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/calendar.svg" />
+						</view>
+						<view class="card-top-text">日历</view>
+					</view>
+					<view class="card-top-btn" bindtap="onCloseCard">
+						<view class="card-top-icon">
+							<image style="width: 100%; height: 100%;" mode="aspectFit" src="../image/close.svg" />
+						</view>
+						<view class="card-top-text">关闭</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<scroll-view scroll-y="{{isScrollY}}" bind:scrolltolower="onLoadMore" style="{{'width: 100%;height:' + scrollHeight + ';'}}">
+			<view wx:if="{{markerType !== 'MARKER_HOUSE_SCHOOL' && markerType !== 'MARKER_SCHOOL_HOUSE' && showAreaData}}">
+				<custom-charts areaData="{{areaData}}" />
+			</view>
+			<view class="bottom-list-wrap">
+				<custom-list-item
+				 bind:onClickItem="onClickListItem"
+				 loading="{{listLoading}}"
+				 markerType="{{markerType}}"
+				 isSearchModel="{{isSearchModel}}"
+				 list="{{areaPlaceList}}"
+				/>
+				<!-- <custom-list
+				 wx:else
+				 bind:onClickItem="onClickListItem"
+				 markerType="{{markerType}}"
+				 list="{{matchPlaceList}}"
+				/> -->
+			</view>
+		</scroll-view>
+	</custom-bottom-card>
+	<!-- 右侧工具栏-->
+	<view
+	 class="right-btns-wrap"
+	 hover-class="none"
+	 hover-stop-propagation="false"
+	 wx:if="{{markerType !== 'MARKER_AREA'}}"
+	>
+		<view
+		 class="ctrl-btn right-btn"
+		 wx:if="{{true}}"
+		 bindtap="showNearByPlace"
+		 hover-class="none"
+		 hover-stop-propagation="false"
+		>
+			<image class="bgImg" src="../image/nearby.png" />
+			<view class="ctrl-text">
+				附近
+			</view>
+		</view>
+		<view
+		 class="ctrl-btn right-btn"
+		 wx:if="{{true}}"
+		 bindtap="onTapBackToOrigin"
+		 hover-class="none"
+		 hover-stop-propagation="false"
+		>
+			<image class="bgImg" src="../image/loc.png" />
+			<view class="ctrl-text">
+				定位
+			</view>
+		</view>
+		<view
+		 class="list-btn right-btn"
+		 bindtap="toFeedback"
+		 hover-class="none"
+		 hover-stop-propagation="false"
+		>
+			<image class="bgImg" src="../image/feedback.png" />
+			<view class="ctrl-text">
+				反馈
+			</view>
+		</view>
+	</view>
 </view>
+

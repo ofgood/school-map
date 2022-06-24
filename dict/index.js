@@ -13,3 +13,12 @@ export const schoolType = {
   2: '小学,中学',
   3: '中学'
 }
+
+// 上海各区政府腾讯坐标
+
+export const areaLoc = {
+  PDXQ: {
+    latitude: '31.18942',
+    longitude: '121.703445'
+  }
+}

@@ -1,4 +1,10 @@
 export default function wxRequest(config) {
+  if (config.showLoading) {
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+  }
   return new Promise((resolve, reject) => {
     wx.request({
       ...config,
@@ -19,6 +25,9 @@ export default function wxRequest(config) {
       fail(res) {
         const { rejectWrap } = config
         reject(rejectWrap ? rejectWrap(res) : res)
+      },
+      complete() {
+        wx.hideLoading()
       }
     })
   })

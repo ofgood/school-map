@@ -1,0 +1,24 @@
+<view class="detail-page">
+	<scroll-view scroll-y="true" style="height: {{scrollHeight}}rpx" bindscrolltolower="onLoadMore">
+		<list
+		 loading="{{searchLoading}}"
+		 empty="{{list.length === 0}}"
+		 finished="{{loadFinished}}"
+		 error="{{loadError}}"
+		>
+			<view wx:for="{{list}}" wx:key="id">
+				<van-cell
+				 border
+				 id="{{item.placeId}}"
+				 data-place="{{item}}"
+				 title="{{item.title}}"
+				 use-label-slot
+				 bind:click="onClickListItem"
+				>
+					<view slot="label">{{item.summary}}</view>
+				</van-cell>
+			</view>
+		</list>
+	</scroll-view>
+</view>
+

@@ -50,5 +50,7 @@ export default {
   // {Any} _config.cacheLabel 缓存标志，请求前会对比该标志是否变化来决定是否使用缓存，可用useCache替代
   cacheLabel: undefined,
   // {Number} _config.cacheExpireTime 缓存时长，计算缓存过期时间，单位-秒
-  cacheExpireTime: undefined
+  cacheExpireTime: undefined,
+  // {Boolean} _config.showLoading 是否开启加载效果
+  showLoading: false
 }

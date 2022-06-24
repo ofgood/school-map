@@ -1,28 +1,22 @@
 {
   "pages":[
     "pages/main/index/index",
-    "pages/main/me/index",
-    "pages/placeList/index"
+    "pages/main/search/index",
+    "pages/main/list/index",
+    "pages/main/detail/index",
+    "pages/main/policyList/index",
+    "pages/main/articleDetails/index",
+    "pages/main/webview/index",
+    "pages/main/message/index"
   ],
   "window":{
     "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "地图",
+    "navigationBarTitleText": "小鸡上学",
     "navigationBarTextStyle":"black"
   },
   "sitemapLocation": "sitemap.json",
-  "subpackages": [
-    {
-      "root": "pages/activity",
-      "pages": [
-        "index/index"
-      ],
-      "independent": true
-    }
-  ],
   "usingComponents": {
-    "time": "/components/time/index",
     "svg-icon": "/components/svg-icon/index",
-    "unit": "/components/unit/index",
     "van-field": "@vant/weapp/field/index",
     "van-dialog": "@vant/weapp/dialog/index",
     "van-popup": "@vant/weapp/popup/index",
@@ -42,5 +36,6 @@
   },
   "networkTimeout": {
     "request": 6000
-  }
+  },
+  "lazyCodeLoading": "requiredComponents"
 }

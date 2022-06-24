@@ -1,0 +1,133 @@
+.list-wrap{
+    padding-bottom: 80px;
+}
+.list-item{
+    border-bottom: 1px solid #DDDDDD;
+    padding: 5px 10px 12px;
+}
+.list-item.second-item {
+    padding-top: 20px;
+}
+.list-wrap .list-item:last-of-type{
+    border-bottom: none;
+}
+.list-item.list-item-hover{
+    opacity: 0.7;
+    background: #f7f7f7;
+}
+.list-item-top{
+    display: flex;
+    justify-content: space-between;
+}
+.item-top-left{
+    display: flex;
+}
+.item-top-title{
+    display: flex;
+    flex-direction: column;
+}
+.item-top-name{
+    font-size: 16px;
+    display: flex;
+}
+.item-top-distance{
+    display: flex;
+    font-size: 12px;
+    color: #333333;
+}
+.item-top-distance .distance-icon{
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+}
+.item-top-tip{
+    margin-left: 10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 100px;
+    background-color: #BEECF8;
+    text-align: center;
+    line-height: 26px;
+    font-size: 18px;
+    color: #0092B6;
+}
+.item-top-right{
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    color: #666666;
+    align-items: center;
+}
+.item-top-right.suited-hover{
+    opacity: 0.7;
+}
+.item-top-right .top-right-icon{
+    width: 20px;
+    height: 20px;
+    margin-bottom: 4px;
+}
+.list-item-bottom{
+    display: flex;
+    padding-top: 10px;
+}
+.list-item-bottom .list-icon{
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+}
+.tags-box{
+
+}
+.tags-cell{
+    display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #333333;
+}
+.tags-cell.color1{
+    background-color: #FFE4C4;
+}
+.tags-cell.color2{
+    background-color: #FFDCDC;
+}
+
+.tags-cell.color3{
+    background-color: #E6FAFF;
+}
+
+.tags-cell.color4{
+    background-color: #FDFECE;
+}
+
+.tags-cell.color5{
+    background-color: #D0DDFF;
+}
+
+.tags-cell.color6{
+    background-color: #DAFAEE;
+}
+.bottom-loading{
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.corresponding-box{
+    padding: 20px 0 0;
+}
+.corresponding-title{
+    display: flex;
+    align-items: baseline;
+    font-size: 16px;
+}
+.corresponding-tip{
+    margin-left: 4px;
+    font-size: 12px;
+    color: #666;
+}
+.bottom-card-wrap{
+    padding: 16rpx;
+}
